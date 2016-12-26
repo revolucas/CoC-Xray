@@ -716,6 +716,16 @@ void g_send(NET_Packet& P, bool bReliable = 0, bool bSequential = 1, bool bHighP
 	Level().Send(P,net_flags(bReliable,bSequential,bHighPriority,bSendImmediately));
 }
 
+void u_event_gen(NET_Packet& P, u32 _event, u32 _dest)
+{
+	CGameObject::u_EventGen(P, _event, _dest);
+}
+
+void u_event_send(NET_Packet& P)
+{
+	CGameObject::u_EventSend(P);
+}
+
 //can spawn entities like bolts, phantoms, ammo, etc. which normally crash when using alife():create()
 void spawn_section(LPCSTR sSection, Fvector3 vPosition, u32 LevelVertexID, u16 ParentID, bool bReturnItem=false)
 {
@@ -806,6 +816,8 @@ void CLevel::script_register(lua_State *L)
 	[
 		//Alundaio: Extend level namespace exports
 #ifdef NAMESPACE_LEVEL_EXPORTS
+		def("u_event_gen", &u_event_gen), //Send events via packet
+		def("u_event_send", &u_event_send),
 		def("send", &g_send), //allow the ability to send netpacket to level
 		def("get_target_obj", &g_get_target_obj), //intentionally named to what is in xray extensions
 		def("get_target_dist", &g_get_target_dist),
