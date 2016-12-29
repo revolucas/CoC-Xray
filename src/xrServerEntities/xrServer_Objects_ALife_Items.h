@@ -195,6 +195,10 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemWeapon,CSE_ALifeItem)
 	u16								get_ammo_elapsed	();
 	void							set_ammo_elapsed	(u16 count);
 	u16								get_ammo_magsize	();
+
+	Flags8&							get_addon_flags() { return m_addon_flags; }
+	//void							set_addon_flags(const Flags8 &_flags) { m_addon_flags.flags = _flags.flags; }
+
 	void							clone_addons		(CSE_ALifeItemWeapon* parent);
 
 	virtual BOOL					Net_Relevant		();
