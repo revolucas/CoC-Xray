@@ -249,7 +249,7 @@ void CInifile::Load(IReader* F, LPCSTR path
         }
 
 
-        if (str[0] && (str[0] == '#') && strstr(str, "#include")) //handle includes
+		if (str[0] && (_Trim(str)[0] == '#') && strstr(str, "#include")) //handle includes
         {
             string_path inc_name;
             R_ASSERT(path&&path[0]);
