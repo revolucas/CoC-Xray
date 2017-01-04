@@ -352,6 +352,8 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("get_attached_vehicle", &CScriptGameObject::GetAttachedVehicle)
 #endif
 #ifdef GAME_OBJECT_EXTENDED_EXPORTS
+		.def("get_3d_ui", &CScriptGameObject::Get_3D_UI)
+		.def("reset_3d_ui", &CScriptGameObject::Reset_3D_UI)
 		.def("reset_bone_protections", &CScriptGameObject::ResetBoneProtections)
 		.def("iterate_feel_touch", &CScriptGameObject::IterateFeelTouch)
 		.def("get_luminocity_hemi", &CScriptGameObject::GetLuminocityHemi)

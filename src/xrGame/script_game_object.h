@@ -87,6 +87,7 @@ class CScriptGameObject;
 class CZoneCampfire;
 class CPhysicObject;
 class CArtefact;
+class CUIWindow;
 
 #ifdef DEBUG
     template <typename _object_type>
@@ -826,6 +827,11 @@ public:
 			u8					GetRestrictionType();
 			void				SetRestrictionType(u8 typ);
 
+			Fmatrix*			GetTransform() const;
+			Fmatrix*			GetBoneTransform(LPCSTR bone_name) const;
+
+			CUIWindow*			Get_3D_UI();
+			void				Reset_3D_UI();
 			//Weapon
 			void				Weapon_AddonAttach(CScriptGameObject* item);
 			void				Weapon_AddonDetach(LPCSTR item_section);

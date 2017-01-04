@@ -194,7 +194,8 @@ CCustomDetector::~CCustomDetector()
 {
 	m_artefacts.destroy		();
 	TurnDetectorInternal	(false);
-	xr_delete				(m_ui);
+	if (m_ui)
+		xr_delete(m_ui);
 }
 
 BOOL CCustomDetector::net_Spawn(CSE_Abstract* DC) 
@@ -243,7 +244,8 @@ bool CCustomDetector::IsWorking()
 void CCustomDetector::UpfateWork()
 {
 	UpdateAf				();
-	m_ui->update			();
+	if (m_ui)
+		m_ui->update			();
 }
 
 void CCustomDetector::UpdateVisibility()

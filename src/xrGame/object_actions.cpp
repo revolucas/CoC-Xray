@@ -920,20 +920,13 @@ void CObjectActionIdleMissile::initialize	()
 
 	VERIFY						(m_item);
 	VERIFY						(object().inventory().ActiveItem());
-	VERIFY						(object().inventory().ActiveItem()->object().ID() == m_item->object().ID());
 
-	m_storage->set_property		(
-		object().planner().uid(m_item->object().ID(),ObjectHandlerSpace::eWorldPropertyThrowStarted),
-		false
-	);
-	m_storage->set_property		(
-		object().planner().uid(m_item->object().ID(),ObjectHandlerSpace::eWorldPropertyThrowIdle),
-		false
-	);
-	m_storage->set_property		(
-		object().planner().uid(m_item->object().ID(),ObjectHandlerSpace::eWorldPropertyFiring1),
-		false
-	);
+	u16 _id = m_item->object().ID();
+	VERIFY(object().inventory().ActiveItem()->object().ID() == _id);
+
+	m_storage->set_property(object().planner().uid(_id, ObjectHandlerSpace::eWorldPropertyThrowStarted),false);
+	m_storage->set_property(object().planner().uid(_id, ObjectHandlerSpace::eWorldPropertyThrowIdle),false);
+	m_storage->set_property(object().planner().uid(_id, ObjectHandlerSpace::eWorldPropertyFiring1),false);
 }
 
 //////////////////////////////////////////////////////////////////////////

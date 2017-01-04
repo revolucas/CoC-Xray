@@ -85,7 +85,8 @@ CWeapon::CWeapon()
 
 CWeapon::~CWeapon()
 {
-    xr_delete(m_UIScope);
+	if (m_UIScope)
+		xr_delete(m_UIScope);
     delete_data(m_scopes);
 }
 
@@ -414,18 +415,21 @@ void CWeapon::Load(LPCSTR section)
     }
     else if (m_eScopeStatus == ALife::eAddonPermanent)
     {
-        shared_str scope_tex_name = pSettings->r_string(cNameSect(), "scope_texture");
-        m_zoom_params.m_fScopeZoomFactor = pSettings->r_float(cNameSect(), "scope_zoom_factor");
-        if (!g_dedicated_server)
-        {
-            m_UIScope = xr_new<CUIWindow>();
-            if (!pWpnScopeXml)
-            {
-                pWpnScopeXml = xr_new<CUIXml>();
-                pWpnScopeXml->Load(CONFIG_PATH, UI_PATH, "scopes.xml");
-            }
-            CUIXmlInit::InitWindow(*pWpnScopeXml, scope_tex_name.c_str(), 0, m_UIScope);
-        }
+		m_zoom_params.m_fScopeZoomFactor = pSettings->r_float(cNameSect(), "scope_zoom_factor");
+        shared_str scope_tex_name = READ_IF_EXISTS(pSettings, r_string, cNameSect(), "scope_texture", 0);//pSettings->r_string(cNameSect(), "scope_texture");
+		if (scope_tex_name[0] != 0)
+		{
+			if (!g_dedicated_server)
+			{
+				m_UIScope = xr_new<CUIWindow>();
+				if (!pWpnScopeXml)
+				{
+					pWpnScopeXml = xr_new<CUIXml>();
+					pWpnScopeXml->Load(CONFIG_PATH, UI_PATH, "scopes.xml");
+				}
+				CUIXmlInit::InitWindow(*pWpnScopeXml, scope_tex_name.c_str(), 0, m_UIScope);
+			}
+		}
     }
 
     if (m_eSilencerStatus == ALife::eAddonAttachable)
@@ -1256,8 +1260,8 @@ void CWeapon::UpdateHUDAddonsVisibility()
         HudItemData()->set_bone_visible(wpn_scope, FALSE, TRUE);
     }
     else
-        if (m_eScopeStatus == ALife::eAddonPermanent)
-            HudItemData()->set_bone_visible(wpn_scope, TRUE, TRUE);
+		if (m_eScopeStatus == ALife::eAddonPermanent)
+			HudItemData()->set_bone_visible(wpn_scope, TRUE, TRUE);
 
     if (SilencerAttachable())
     {
@@ -1423,7 +1427,7 @@ void CWeapon::OnZoomOut()
 
 CUIWindow* CWeapon::ZoomTexture()
 {
-    if (UseScopeTexture())
+	if (UseScopeTexture() && m_UIScope)
         return m_UIScope;
     else
         return NULL;
@@ -1749,8 +1753,12 @@ void CWeapon::modify_holder_params(float &range, float &fov) const
 
 bool CWeapon::render_item_ui_query()
 {
-    bool b_is_active_item = (m_pInventory->ActiveItem() == this);
-    bool res = b_is_active_item && IsZoomed() && ZoomHideCrosshair() && ZoomTexture() && !IsRotatingToZoom();
+
+
+	if (m_pInventory->ActiveItem() != this)
+		return false;
+
+    bool res = IsZoomed() && ZoomHideCrosshair() && ZoomTexture() && !IsRotatingToZoom();
     return res;
 }
 
@@ -1761,6 +1769,18 @@ void CWeapon::render_item_ui()
 
     ZoomTexture()->Update();
     ZoomTexture()->Draw();
+}
+
+bool CWeapon::render_item_3d_ui_query()
+{
+	return CHudItemObject::render_item_3d_ui_query();
+}
+
+void CWeapon::render_item_3d_ui()
+{
+	CHudItemObject::render_item_3d_ui();
+	if (m_b_show_ui && m_3d_ui && m_3d_ui->m_wrk_area)
+		m_3d_ui->Draw();
 }
 
 bool CWeapon::unlimited_ammo()

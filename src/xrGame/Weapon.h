@@ -69,6 +69,9 @@ public:
     virtual void			render_item_ui();
     virtual bool			render_item_ui_query();
 
+	virtual void			render_item_3d_ui();
+	virtual bool			render_item_3d_ui_query();
+
     virtual void			OnH_B_Chield();
     virtual void			OnH_A_Chield();
     virtual void			OnH_B_Independent(bool just_before_destroy);
@@ -245,7 +248,7 @@ public:
     }//dont use!!! for buy menu only!!!
 protected:
     //состояние подключенных аддонов
-    u8 m_flagsAddOnState;
+	u8 m_flagsAddOnState;
 
     //возможность подключения различных аддонов
     ALife::EWeaponAddonStatus	m_eScopeStatus;
@@ -311,6 +314,8 @@ public:
     {
         return m_zoom_params.m_bHideCrosshairInZoom || ZoomTexture();
     }
+
+	SZoomParams& GetZoomParams() { return m_zoom_params; }
 
     IC float				GetZoomFactor() const
     {
