@@ -190,7 +190,7 @@ public:
 	
     //обновление видимости для косточек аддонов
     void UpdateAddonsVisibility();
-    void UpdateHUDAddonsVisibility();
+	void UpdateHUDAddonsVisibility(shared_str wpn_scope);
     //инициализация свойств присоединенных аддонов
     virtual void InitAddons();
 
@@ -232,6 +232,12 @@ public:
     {
         return m_sSilencerName;
     }
+	//Alundaio: So we can define a scope bone for different scope sections
+	const shared_str GetScopeBone() const
+	{
+		return READ_IF_EXISTS(pSettings, r_string, m_scopes[m_cur_scope], "scope_bone", "wpn_scope");
+	}
+	//-Alundaio
 
     IC void	ForceUpdateAmmo()
     {

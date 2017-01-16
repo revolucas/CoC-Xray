@@ -19,8 +19,7 @@ CHudItemObject::CHudItemObject			()
 
 CHudItemObject::~CHudItemObject			()
 {
-	if (m_3d_ui)
-		xr_delete(m_3d_ui);
+	xr_delete(m_3d_ui);
 }
 
 DLL_Pure *CHudItemObject::_construct	()
