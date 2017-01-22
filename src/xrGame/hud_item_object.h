@@ -2,26 +2,6 @@
 
 #include "inventory_item_object.h"
 #include "huditem.h"
-#include "ui/UIWindow.h"
-
-
-class CUIHudUI : public CUIWindow
-{
-	typedef CUIWindow inherited;
-
-	CHudItem*				m_parent;
-	Fmatrix					m_attach_offset;
-	LPCSTR					m_attach_bone;
-
-	void					GetUILocatorMatrix(Fmatrix& _m);
-public:
-	CUIWindow*				m_wrk_area;
-
-	virtual void			update();
-	virtual void			Draw();
-
-	void					construct(CHudItem* p, LPCSTR xml_tag);
-};
 
 class CHudItemObject : 
 		public CInventoryItemObject,
@@ -37,14 +17,6 @@ public:
 public:
 	virtual CHudItem	*cast_hud_item		()	{return this;}
 
-	//Alundaio
-	LPCSTR				m_hud_ui_xml_tag_name;
-	bool				m_b_show_ui;
-	CUIHudUI*			m_3d_ui;
-	virtual void		render_item_3d_ui();
-	virtual bool		render_item_3d_ui_query();
-	virtual void		Create_3D_UI();
-	//-Alundaio
 public:
 	virtual void		Load				(LPCSTR section);
 	virtual bool		Action				(u16 cmd, u32 flags);

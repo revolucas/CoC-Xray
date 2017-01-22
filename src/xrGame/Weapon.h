@@ -69,9 +69,6 @@ public:
     virtual void			render_item_ui();
     virtual bool			render_item_ui_query();
 
-	virtual void			render_item_3d_ui();
-	virtual bool			render_item_3d_ui_query();
-
     virtual void			OnH_B_Chield();
     virtual void			OnH_A_Chield();
     virtual void			OnH_B_Independent(bool just_before_destroy);
@@ -190,7 +187,7 @@ public:
 	
     //обновление видимости для косточек аддонов
     void UpdateAddonsVisibility();
-	void UpdateHUDAddonsVisibility(shared_str wpn_scope);
+    void UpdateHUDAddonsVisibility();
     //инициализация свойств присоединенных аддонов
     virtual void InitAddons();
 
@@ -232,12 +229,6 @@ public:
     {
         return m_sSilencerName;
     }
-	//Alundaio: So we can define a scope bone for different scope sections
-	const shared_str GetScopeBone() const
-	{
-		return READ_IF_EXISTS(pSettings, r_string, m_scopes[m_cur_scope], "scope_bone", "wpn_scope");
-	}
-	//-Alundaio
 
     IC void	ForceUpdateAmmo()
     {
@@ -254,7 +245,7 @@ public:
     }//dont use!!! for buy menu only!!!
 protected:
     //состояние подключенных аддонов
-	u8 m_flagsAddOnState;
+    u8 m_flagsAddOnState;
 
     //возможность подключения различных аддонов
     ALife::EWeaponAddonStatus	m_eScopeStatus;
@@ -320,8 +311,6 @@ public:
     {
         return m_zoom_params.m_bHideCrosshairInZoom || ZoomTexture();
     }
-
-	SZoomParams& GetZoomParams() { return m_zoom_params; }
 
     IC float				GetZoomFactor() const
     {

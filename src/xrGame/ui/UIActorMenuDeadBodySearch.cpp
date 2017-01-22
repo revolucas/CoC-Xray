@@ -132,6 +132,10 @@ void CUIActorMenu::DeInitDeadBodySearchMode()
 
 bool CUIActorMenu::ToDeadBodyBag(CUICellItem* itm, bool b_use_cursor_pos)
 {
+	PIItem quest_item = (PIItem)itm->m_pData;
+	if (quest_item->IsQuestItem())
+		return false;
+
 	if ( m_pPartnerInvOwner )
 	{
 		if ( !m_pPartnerInvOwner->deadbody_can_take_status() )
@@ -142,13 +146,15 @@ bool CUIActorMenu::ToDeadBodyBag(CUICellItem* itm, bool b_use_cursor_pos)
 	else // box
 	{
 		if ( !m_pInvBox->can_take() )
-		{
 			return false;
+
+		luabind::functor<bool> funct;
+		if (ai().script_engine().functor("_G.CInventoryBox_CanTake", funct))
+		{
+			if (funct(m_pInvBox->cast_game_object()->lua_game_object(), quest_item->cast_game_object()->lua_game_object()) == false)
+				return false;
 		}
 	}
-	PIItem quest_item					= (PIItem)itm->m_pData;
-	if(quest_item->IsQuestItem())
-		return false;
 
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
 	CUIDragDropListEx*	new_owner		= NULL;

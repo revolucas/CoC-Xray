@@ -32,7 +32,7 @@ private:
 protected:
 	u32						m_dw_curr_substate_time;
 public:
-							CHUDState()					{ SetState(eHidden); m_nextState = eHidden; }
+							CHUDState			()					{SetState(eHidden);}
 	IC		u32				GetNextState		() const			{return		m_nextState;}
 	IC		u32				GetState			() const			{return		m_hud_item_state;}
 

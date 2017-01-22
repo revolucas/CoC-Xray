@@ -50,7 +50,6 @@
 #include "../xrEngine/feel_touch.h"
 #include "weaponammo.h"
 #include "WeaponMagazinedWGrenade.h"
-#include "ui/UIWindow.h"
 #endif
 //-Alundaio
 
@@ -1116,31 +1115,6 @@ bool CScriptGameObject::is_weapon_going_to_be_strapped	( CScriptGameObject const
 }
 //Alundaio:
 #ifdef GAME_OBJECT_EXTENDED_EXPORTS
-CUIWindow* CScriptGameObject::Get_3D_UI()
-{
-	CHudItemObject* hi = smart_cast<CHudItemObject*>(&object());
-	if (!hi)
-		return (0);
-
-	if (hi->m_3d_ui != NULL)
-		return (hi->m_3d_ui->m_wrk_area);
-
-	return (0);
-}
-
-void CScriptGameObject::Reset_3D_UI()
-{
-	CHudItemObject* hi = smart_cast<CHudItemObject*>(&object());
-	if (!hi)
-		return;
-
-	if (hi->m_3d_ui)
-	{
-		xr_delete(hi->m_3d_ui);
-		hi->Create_3D_UI();
-	}
-}
-
 u16 CScriptGameObject::AmmoGetCount()
 {
 	CWeaponAmmo* ammo = smart_cast<CWeaponAmmo*>(&object());
@@ -1507,17 +1481,6 @@ void CScriptGameObject::SetRestrictionType(u8 typ)
 		if (typ != RestrictionSpace::eRestrictorTypeNone)
 			Level().space_restriction_manager().register_restrictor(restr, RestrictionSpace::ERestrictorTypes(typ));
 	}
-}
-
-Fmatrix* CScriptGameObject::GetTransform() const
-{
-	return &object().XFORM();
-}
-
-Fmatrix* CScriptGameObject::GetBoneTransform(LPCSTR bone_name) const
-{
-	IKinematics *pK = smart_cast<IKinematics*>(object().Visual());
-	return &pK->LL_GetTransform(pK->LL_BoneID(bone_name));
 }
 #endif
 //-Alundaio
