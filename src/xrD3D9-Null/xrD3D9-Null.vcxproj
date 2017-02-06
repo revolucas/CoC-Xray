@@ -137,7 +137,6 @@
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>xrD3D9-Null.def</ModuleDefinitionFile>

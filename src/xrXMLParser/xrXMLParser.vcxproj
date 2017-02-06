@@ -147,7 +147,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -199,7 +198,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -253,7 +252,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <ResourceCompile>
@@ -301,7 +300,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <ResourceCompile>
@@ -345,7 +344,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <ResourceCompile>

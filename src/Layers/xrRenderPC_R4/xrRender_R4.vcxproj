@@ -126,12 +126,11 @@
       <SmallerTypeCheck>true</SmallerTypeCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>-Zm113 %(AdditionalOptions)</AdditionalOptions>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
@@ -166,19 +165,18 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <AdditionalOptions>-Zm113 %(AdditionalOptions)</AdditionalOptions>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
       <DisableSpecificWarnings>4005;4099</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>dxguid.lib;d3dx11.lib;oalib.lib;D3DCompiler.lib;d3d11.lib;dxgi.lib;nvapi.lib;atimgpud_s_x86.lib;dxerr.lib;d3d10.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\src\;$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_DIR)Lib\x86;$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)nvapi\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_DIR)Lib\x86;$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)nvapi\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -207,12 +205,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>-Zm113 %(AdditionalOptions)</AdditionalOptions>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
       <DisableSpecificWarnings>4005;4099</DisableSpecificWarnings>
@@ -250,12 +247,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>-Zm113 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -288,12 +284,11 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>-Zm113 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>

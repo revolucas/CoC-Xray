@@ -115,9 +115,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>$(xrSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;dSINGLE;_USRDLL;XRPHYSICS_EXPORTS;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -128,14 +126,15 @@
       <SmallerTypeCheck>true</SmallerTypeCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
@@ -152,7 +151,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -167,13 +166,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -190,10 +187,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NEW|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -205,15 +200,15 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation>
       </BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -230,10 +225,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_LuaJit_one|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -246,14 +239,14 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation>
       </BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -270,10 +263,8 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Mixed|Win32'">
     <ClCompile>
-      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>$(xrSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -282,13 +273,14 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libvorbisfile_static.lib;libogg_static.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>

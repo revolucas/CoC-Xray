@@ -117,7 +117,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\luajit-2\src\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\luajit-2\bin\$(PlatformShortName)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateMapFile>false</GenerateMapFile>
       <SubSystem>
       </SubSystem>

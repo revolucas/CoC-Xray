@@ -127,21 +127,20 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <IntrinsicFunctions>false</IntrinsicFunctions>
-      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>.;$(SolutionDir);$(SolutionDir)xrServerEntities;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(xrSdkDir)include\loki;$(XRAY_16X_LIBS)OpenAutomate\inc;$(SolutionDir)3rd party\CxImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_LUAJIT_ONE;WIN32;DEBUG;XRGAME_EXPORTS;_WINDOWS;_USRDLL;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>false</StringPooling>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>true</SmallerTypeCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -152,6 +151,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4237;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -179,7 +179,7 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -191,7 +191,6 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -202,6 +201,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <DisableSpecificWarnings>4237;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -227,13 +227,13 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>.;$(SolutionDir);$(SolutionDir)xrServerEntities;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(SolutionDir)3rd party\CxImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -243,7 +243,6 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -251,7 +250,6 @@
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <DisableSpecificWarnings>4995;4005;4237;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
@@ -264,7 +262,7 @@
     <Link>
       <AdditionalOptions>/ignore:4099</AdditionalOptions>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\src\;$(xrSdkDir)libraries;$(xrLibDir);$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)jpeg\libraries\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;$(xrSdkDir)libraries;$(xrLibDir);$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)jpeg\libraries\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -283,13 +281,13 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>.;$(SolutionDir);$(SolutionDir)xrServerEntities;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(SolutionDir)3rd party\CxImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -299,7 +297,6 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -312,7 +309,7 @@
       <DisableSpecificWarnings>4995;4005;4237;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -341,13 +338,13 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>.;$(SolutionDir)3rd party\LuaJIT-1.1.8\etc\;$(SolutionDir)3rd party\luabind\;$(SolutionDir);$(SolutionDir)xrServerEntities;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(SolutionDir)3rd party\CxImage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_LUAJIT_ONE;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRGAME_EXPORTS;dSINGLE;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
@@ -358,7 +355,6 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>

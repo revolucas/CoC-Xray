@@ -135,7 +135,7 @@
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalOptions>/NODEFAULTLIB:LIBCMTD %(AdditionalOptions)</AdditionalOptions>
@@ -174,7 +174,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -215,7 +214,7 @@
       <BrowseInformation>
       </BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -258,7 +257,7 @@
       <BrowseInformation>
       </BrowseInformation>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -295,7 +294,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalDependencies>libogg_static.lib;libvorbis_static.lib;libvorbisfile_static.lib;OpenAL32.lib;%(AdditionalDependencies)</AdditionalDependencies>

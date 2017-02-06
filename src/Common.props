@@ -29,7 +29,11 @@
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
       <PreprocessorDefinitions>_VC80_UPGRADE=0x0710;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <DebugInformationFormat>None</DebugInformationFormat>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <MinimalRebuild>true</MinimalRebuild>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
     </ClCompile>
     <Link>
       <LargeAddressAware>true</LargeAddressAware>

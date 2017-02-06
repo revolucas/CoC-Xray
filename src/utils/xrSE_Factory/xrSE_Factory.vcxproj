@@ -117,13 +117,13 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <Optimization>Disabled</Optimization>
+      <Optimization>Full</Optimization>
       <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>.;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(SolutionDir)xrServerEntities;$(xrSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessToFile>false</PreprocessToFile>
       <PreprocessSuppressLineNumbers>false</PreprocessSuppressLineNumbers>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <SmallerTypeCheck>false</SmallerTypeCheck>
@@ -135,7 +135,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
@@ -167,7 +167,7 @@
       <AdditionalIncludeDirectories>.;$(SolutionDir)xrServerEntities;$(xrSdkDir)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DEBUG;MIXED;WIN32;DEBUG;_WINDOWS;_USRDLL;XRSE_FACTORY_EXPORTS;dSINGLE;MSVC;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <MinimalRebuild>false</MinimalRebuild>
+      <MinimalRebuild>true</MinimalRebuild>
       <SmallerTypeCheck>false</SmallerTypeCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>Default</StructMemberAlignment>
@@ -181,7 +181,7 @@
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -221,7 +221,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -237,7 +236,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NEW|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -259,7 +258,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
@@ -276,7 +274,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release_LuaJit_one|Win32'">
     <ClCompile>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Full</Optimization>
       <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -298,7 +296,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>stdafx.h</PrecompiledHeaderFile>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>

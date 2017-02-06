@@ -117,7 +117,6 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>.;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(XRAY_16X_LIBS)nvapi;$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
@@ -126,12 +125,11 @@
       <SmallerTypeCheck>true</SmallerTypeCheck>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -155,7 +153,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>.;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(XRAY_16X_LIBS)nvapi;$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -170,12 +167,11 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalDependencies>nvapi.lib;atimgpud_s_x86.lib;oalib.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\src\;$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_DIR)Lib\x86;$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)nvapi\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;$(xrSdkDir)libraries;$(xrLibDir);$(DXSDK_DIR)Lib\x86;$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)nvapi\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
       <OptimizeReferences>true</OptimizeReferences>
@@ -195,7 +191,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>.;$(SolutionDir)3rd party\luajit-2\src\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(XRAY_16X_LIBS)nvapi;$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -210,7 +205,6 @@
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -236,7 +230,6 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>true</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <AdditionalIncludeDirectories>.;$(SolutionDir)3rd party\LuaJIT-1.1.8\etc\;$(SolutionDir)3rd party\luabind\;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(XRAY_16X_LIBS)nvapi;$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>USE_LUAJIT_ONE;WIN32;NDEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -247,12 +240,11 @@
       <BufferSecurityCheck>false</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalDependencies>nvapi.lib;atimgpud_s_x86.lib;oalib.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -277,19 +269,17 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <OmitFramePointers>false</OmitFramePointers>
-      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>.;$(xrSdkDir)include;$(XRAY_16X_LIBS)OpenAutomate\inc;$(XRAY_16X_LIBS)nvapi;$(DXSDK_DIR)Include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MIXED;WIN32;DEBUG;_WINDOWS;_USRDLL;XRRENDER_R1_EXPORTS;_SECURE_SCL=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FunctionLevelLinking>false</FunctionLevelLinking>
-      <FloatingPointModel>Fast</FloatingPointModel>
+      <FloatingPointModel>Precise</FloatingPointModel>
       <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
       <AdditionalDependencies>nvapi.lib;atimgpud_s_x86.lib;oalib.lib;%(AdditionalDependencies)</AdditionalDependencies>

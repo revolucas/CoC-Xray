@@ -304,7 +304,6 @@
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <CompileAs>Default</CompileAs>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
@@ -315,7 +314,7 @@
     <Link>
       <AdditionalDependencies>vfw32.lib;libogg_static.lib;libtheora_static.lib;oalib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x86;$(SolutionDir)3rd party\luajit-2\src\;$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)libogg-1.1.4\win32\lib\$(Platform)\Release;$(XRAY_16X_LIBS)libtheora-1.1.1\win32\lib\$(Platform)\Release;$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DXSDK_DIR)Lib\x86;$(SolutionDir)3rd party\luajit-2\bin\$(PlatformShortName)\;$(XRAY_16X_LIBS)OpenAutomate\libraries;$(XRAY_16X_LIBS)libogg-1.1.4\win32\lib\$(Platform)\Release;$(XRAY_16X_LIBS)libtheora-1.1.1\win32\lib\$(Platform)\Release;$(xrSdkDir)libraries;$(xrLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <SubSystem>NotSet</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>

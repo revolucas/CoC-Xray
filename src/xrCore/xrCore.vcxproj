@@ -170,7 +170,6 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <BrowseInformation />
       <WarningLevel>Level4</WarningLevel>
-      <DebugInformationFormat>None</DebugInformationFormat>
       <UndefinePreprocessorDefinitions>USE_LUAJIT_ONE</UndefinePreprocessorDefinitions>
     </ClCompile>
     <Link>
