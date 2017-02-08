@@ -8,11 +8,11 @@ class CActor;
 
 class CActorCameraManager	:public CCameraManager
 {
+protected:
 	typedef CCameraManager	inherited;
 
 	SCamEffectorInfo		m_cam_info_hud;
 
-protected:
 	virtual void			UpdateCamEffectors		();
 	virtual bool			ProcessCameraEffector	(CEffectorCam* eff);
 
@@ -48,9 +48,10 @@ public:
 
 class CAnimatorCamEffector :public CEffectorCam
 {
+protected:
 	typedef				CEffectorCam			inherited;
 	bool				m_bCyclic;
-protected:
+
 	virtual bool		Cyclic					() const		{return m_bCyclic;}
 	CObjectAnimator*							m_objectAnimator;
 public:
@@ -70,8 +71,9 @@ public:
 
 class CAnimatorCamEffectorScriptCB :public CAnimatorCamEffector 
 {
+protected:
 	typedef 	CAnimatorCamEffector			inherited;
-
+private:
 	shared_str			cb_name;
 public:
 	CAnimatorCamEffectorScriptCB	(LPCSTR _cb){cb_name =_cb;};
@@ -111,6 +113,7 @@ public:
 
 class SndShockEffector:public CEffectorController
 {
+protected:
 	typedef CEffectorController inherited;
 public:
 	float						m_snd_length;	//ms
@@ -133,8 +136,9 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 class CControllerPsyHitCamEffector :public CEffectorCam {
+protected:
 	typedef CEffectorCam inherited;
-	
+private:	
 	float				m_time_total;
 	float				m_time_current;
 	Fvector				m_dangle_target;

@@ -118,6 +118,7 @@ public:
         u32		ic_total,	ic_culled;
     }			stats;
 public:
+	bool is_sun();
     // Sector detection and visibility
     CSector*													pLastSector;
     Fvector														vLastCameraPos;

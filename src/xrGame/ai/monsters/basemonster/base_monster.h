@@ -57,6 +57,7 @@ class anti_aim_ability;
 
 class CBaseMonster : public CCustomMonster, public CStepManager
 {
+protected:
 	typedef	CCustomMonster								inherited;
 	
 public:

@@ -14,7 +14,7 @@ class CAgentManager;
 class CObject;
 
 class CAgentManagerPlanner : public CActionPlanner<CAgentManager> {
-private:
+protected:
 	typedef CActionPlanner<CAgentManager>	inherited;
 
 public:

@@ -88,7 +88,7 @@ class CAI_Stalker :
 	public CAI_PhraseDialogManager,
 	public CStepManager
 {
-private:
+protected:
 	typedef CCustomMonster								inherited;
 
 public:

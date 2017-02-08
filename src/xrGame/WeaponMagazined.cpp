@@ -790,14 +790,14 @@ void CWeaponMagazined::switch2_Empty()
 {
     OnZoomOut();
 
-    if (!TryReload())
-    {
+/*     if (!TryReload())
+    { */
         OnEmptyClick();
-    }
+/*     }
     else
     {
         inherited::FireEnd();
-    }
+    } */
 }
 void CWeaponMagazined::PlayReloadSound()
 {

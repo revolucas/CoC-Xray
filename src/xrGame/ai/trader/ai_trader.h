@@ -27,7 +27,7 @@ class CAI_Trader : public CEntityAlive,
 	public CScriptEntity,
 	public CAI_PhraseDialogManager
 {
-
+protected:
 	typedef CEntityAlive inherited;
 
 private:
