@@ -867,7 +867,7 @@ HRESULT	CRender::shader_compile			(
 	FS.file_list	( m_file_set, folder_name, FS_ListFiles | FS_RootOnly, "*");
 
 	string_path temp_file_name, file_name;
-	if (ps_use_precompiled_shaders == 0 || !match_shader_id(name, sh_name, m_file_set, temp_file_name)) {
+	if (!match_shader_id(name, sh_name, m_file_set, temp_file_name)) {
 		string_path file;
 		xr_strcpy		( file, "shaders_cache\\r1\\" );
 		xr_strcat		( file, name );
