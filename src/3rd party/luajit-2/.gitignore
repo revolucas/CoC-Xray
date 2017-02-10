@@ -1,0 +1,13 @@
+*.[oa]
+*.so
+*.obj
+*.lib
+*.exp
+*.dll
+*.exe
+*.manifest
+*.dmp
+*.swp
+.tags
+*.log
+*.tlog
