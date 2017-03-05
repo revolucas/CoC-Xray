@@ -107,7 +107,7 @@ void CScriptGameObject::Kill					(CScriptGameObject* who, bool bypass_actor_chec
 		return;
 	}
 	if (!l_tpEntity->AlreadyDie())
-		l_tpEntity->KillEntity					(who ? who->object().ID() : object().ID(), (BOOL)bypass_actor_check);
+		l_tpEntity->KillEntity					(who ? who->object().ID() : object().ID());
 	else
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"attempt to kill dead object %s",*object().cName());
 

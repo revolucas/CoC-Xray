@@ -818,4 +818,4 @@
 #endif
 
 
-#define NVAPI_INTERFACE extern __success(return == NVAPI_OK) NvAPI_Status __cdecl
+#define NVAPI_INTERFACE extern /*__success(return == NVAPI_OK)*/ NvAPI_Status __cdecl

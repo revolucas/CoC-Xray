@@ -44,8 +44,8 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
         // HRESULT co_res =
         Params = xr_strdup(GetCommandLine());
         xr_strlwr(Params);
-        if (!strstr(Params, "-editor"))
-            CoInitializeEx(NULL, COINIT_MULTITHREADED);
+        //if (!strstr(Params, "-editor"))
+        //    CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
         string_path fn, dr, di;
 
@@ -176,8 +176,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvRese
         //. LogFile.reserve (256);
     break;
     case DLL_THREAD_ATTACH:
-        if (!strstr(GetCommandLine(), "-editor"))
-            CoInitializeEx(NULL, COINIT_MULTITHREADED);
+       // if (!strstr(GetCommandLine(), "-editor"))
+       //     CoInitializeEx(NULL, COINIT_MULTITHREADED);
         timeBeginPeriod(1);
         break;
     case DLL_THREAD_DETACH:

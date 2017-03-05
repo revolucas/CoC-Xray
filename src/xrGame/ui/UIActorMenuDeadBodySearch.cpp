@@ -139,8 +139,22 @@ bool CUIActorMenu::ToDeadBodyBag(CUICellItem* itm, bool b_use_cursor_pos)
 	if ( m_pPartnerInvOwner )
 	{
 		if ( !m_pPartnerInvOwner->deadbody_can_take_status() )
-		{
 			return false;
+		
+		if (m_pPartnerInvOwner->is_alive())
+		{
+			//Alundaio: 
+			luabind::functor<bool> funct;
+			if (ai().script_engine().functor("actor_menu_inventory.CUIActorMenu_CanMoveToPartner", funct))
+		{
+				float itmWeight			 = quest_item->Weight();
+				float partner_inv_weight = m_pPartnerInvOwner->inventory().CalcTotalWeight();
+				float partner_max_weight = m_pPartnerInvOwner->MaxCarryWeight();
+			
+				if (funct(m_pPartnerInvOwner->cast_game_object()->lua_game_object(),quest_item->object().lua_game_object(), 0, 0, itmWeight, partner_inv_weight, partner_max_weight) == false)
+			return false;
+		}
+			//-Alundaio
 		}
 	}
 	else // box

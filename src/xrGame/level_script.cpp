@@ -19,6 +19,7 @@
 #include "UI/UIDialogWnd.h"
 #include "date_time.h"
 #include "ai_space.h"
+#include "script_engine.h"
 #include "level_graph.h"
 #include "PHCommander.h"
 #include "PHScriptCall.h"
@@ -37,6 +38,7 @@
 #include "alife_object_registry.h"
 #include "xrServer_Objects_ALife_Monsters.h"
 #include "hudmanager.h"
+#include "relation_registry.h"
 
 #include "raypick.h"
 #include "../xrcdb/xr_collide_defs.h"
@@ -603,8 +605,6 @@ void set_pp_effector_factor2(int id, float f)
 
 	if(pp) pp->SetCurrentFactor(f);
 }
-
-#include "relation_registry.h"
 
 int g_community_goodwill(LPCSTR _community, int _entity_id)
  {

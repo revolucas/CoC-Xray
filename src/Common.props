@@ -14,10 +14,11 @@
     <xrGameBinDir>$(xrGameDir)bin\</xrGameBinDir>
     <xr3rdPartyDir>$(SolutionDir)3rd party\</xr3rdPartyDir>
     <dxSdkDir>$(xrSdkDir)include\dxsdk\</dxSdkDir>
+    <xrLuaDir>$(SolutionDir)3rd party\luajit-2\src\</xrLuaDir>
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>E:\STALKER\X-Ray Source\x_ray_1602_VS13\xray-16\src\3rd party;$(IncludePath);$(xrSdkDir)include;</IncludePath>
-    <OutDir>$(xrGameDir)bin_dbg\</OutDir>
+    <OutDir>$(xrGameDir)bin_rel\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
@@ -87,6 +88,10 @@
     </BuildMacro>
     <BuildMacro Include="dxSdkDir">
       <Value>$(dxSdkDir)</Value>
+      <EnvironmentVariable>true</EnvironmentVariable>
+    </BuildMacro>
+    <BuildMacro Include="xrLuaDir">
+      <Value>$(xrLuaDir)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

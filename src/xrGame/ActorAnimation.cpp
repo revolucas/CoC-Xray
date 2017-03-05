@@ -291,7 +291,6 @@ void CActor::g_SetSprintAnimation( u32 mstate_rl,MotionID &head,MotionID &torso,
 	
 	bool jump = (mstate_rl&mcFall)		||
 				(mstate_rl&mcLanding)	||
-				//(mstate_rl&mcLanding)	||
 				(mstate_rl&mcLanding2)	||
 				(mstate_rl&mcJump)		;
 	
@@ -344,8 +343,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	else							
 		ST 		= &m_anims->m_normal;
 
-	//STorsoWpn* __TW = &ST->m_torso[4]; //Alundaio: Animation Set knife/grenade running animation without weapon by XEM #100
-
 	bool bAccelerated = isActorAccelerated(mstate_rl, IsZoomAimingMode());
 	if ( bAccelerated )
 	{
@@ -385,6 +382,7 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	{
 		g_SetSprintAnimation			(mstate_rl,M_head,M_torso,M_legs);
 		moving_idx						= STorsoWpn::eSprint;
+		M_torso = ST->m_torso[4].moving[moving_idx]; //Alundaio: Fix torso animations for no weapon
 	}
 
 	if (this == Level().CurrentViewEntity())
@@ -539,6 +537,8 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 				}
 			}
 		}
+		else
+			M_torso = ST->m_torso[4].moving[moving_idx]; //Alundaio: Fix torso animations for no weapon
 	}
 	MotionID		mid = smart_cast<IKinematicsAnimated*>(Visual())->ID_Cycle("norm_idle_0");
 

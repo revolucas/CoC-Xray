@@ -68,5 +68,3 @@
 #define NV_EXTN_OP_VOTE_BALLOT                              7
 
 #define NV_EXTN_OP_GET_LANE_ID                              8
-#define NV_EXTN_OP_FP16_ATOMIC                             12
-#define NV_EXTN_OP_FP32_ATOMIC                             13

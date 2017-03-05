@@ -372,7 +372,6 @@ void CScriptGameObject::stop_particles(LPCSTR pname, LPCSTR bone)
 }
 
 //AVO: directly set entity health instead of going throuhg normal health property which operates on delta
-#ifdef GAME_OBJECT_TESTING_EXPORTS
 void CScriptGameObject::SetHealthEx(float hp)
 {
     CEntity *obj = smart_cast<CEntity*>(&object());
@@ -450,5 +449,4 @@ TEST_OBJECT_CLASS(CScriptGameObject::IsAmmo, CWeaponAmmo)
 //TEST_OBJECT_CLASS(CScriptGameObject::IsTorch, CTorch)
 TEST_OBJECT_CLASS(CScriptGameObject::IsWeaponGL, CWeaponMagazinedWGrenade)
 TEST_OBJECT_CLASS(CScriptGameObject::IsInventoryBox, CInventoryBox)
-#endif
 //end AVO

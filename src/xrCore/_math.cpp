@@ -249,6 +249,7 @@ void _initialize_cpu(void)
     {
         CPU::ID.feature &= ~_CPU_FEATURE_MMX;
         CPU::ID.feature &= ~_CPU_FEATURE_3DNOW;
+		CPU::ID.feature &= ~_CPU_FEATURE_3DNOWEXT;
         CPU::ID.feature &= ~_CPU_FEATURE_SSE;
         CPU::ID.feature &= ~_CPU_FEATURE_SSE2;
         CPU::ID.feature &= ~_CPU_FEATURE_SSE3;
@@ -261,6 +262,7 @@ void _initialize_cpu(void)
     xr_strcpy(features, sizeof(features), "RDTSC");
     if (CPU::ID.feature&_CPU_FEATURE_MMX) xr_strcat(features, ", MMX");
     if (CPU::ID.feature&_CPU_FEATURE_3DNOW) xr_strcat(features, ", 3DNow!");
+	if (CPU::ID.feature&_CPU_FEATURE_3DNOWEXT) xr_strcat(features, ", 3DNowExt!");
     if (CPU::ID.feature&_CPU_FEATURE_SSE) xr_strcat(features, ", SSE");
     if (CPU::ID.feature&_CPU_FEATURE_SSE2) xr_strcat(features, ", SSE2");
     if (CPU::ID.feature&_CPU_FEATURE_SSE3) xr_strcat(features, ", SSE3");

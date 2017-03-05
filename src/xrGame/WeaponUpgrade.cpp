@@ -141,13 +141,13 @@ bool CWeapon::install_upgrade_hit( LPCSTR section, bool test )
 	if ( result2 && !test )
 	{
 		string32 buffer;
-		fvHitPower[egdMaster] = (float)atof( _GetItem( *s_sHitPower, 0, buffer ) );
+		fvHitPower[egdMaster] += (float)atof( _GetItem( *s_sHitPower, 0, buffer ) );
 		fvHitPower[egdNovice] = fvHitPower[egdStalker] = fvHitPower[egdVeteran] = fvHitPower[egdMaster];
 
 		int num_game_diff_param = _GetItemCount( *s_sHitPower );
-		if ( num_game_diff_param > 1 ) { fvHitPower[egdVeteran]	= (float)atof( _GetItem( *s_sHitPower, 1, buffer ) ); }
-		if ( num_game_diff_param > 2 ) { fvHitPower[egdStalker]	= (float)atof( _GetItem( *s_sHitPower, 2, buffer ) ); }
-		if ( num_game_diff_param > 3 ) { fvHitPower[egdNovice]	= (float)atof( _GetItem( *s_sHitPower, 3, buffer ) ); }
+		if ( num_game_diff_param > 1 ) { fvHitPower[egdVeteran]	+= (float)atof( _GetItem( *s_sHitPower, 1, buffer ) ); }
+		if ( num_game_diff_param > 2 ) { fvHitPower[egdStalker]	+= (float)atof( _GetItem( *s_sHitPower, 2, buffer ) ); }
+		if ( num_game_diff_param > 3 ) { fvHitPower[egdNovice]	+= (float)atof( _GetItem( *s_sHitPower, 3, buffer ) ); }
 	}
 	result |= result2;
 

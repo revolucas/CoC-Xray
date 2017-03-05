@@ -1187,9 +1187,6 @@ void CApplication::OnEvent(EVENT E, u64 P1, u64 P2)
 
 static CTimer phase_timer;
 extern ENGINE_API BOOL g_appLoaded = FALSE;
-//AVO: used by SPAWN_ANTIFREEZE (by alpet)
-extern ENGINE_API BOOL g_bootComplete = FALSE;
-//-AVO
 
 void CApplication::LoadBegin()
 {
@@ -1199,10 +1196,6 @@ void CApplication::LoadBegin()
 
         g_appLoaded = FALSE;
         
-        //AVO:
-        g_bootComplete = FALSE;
-        //-AVO
-
 #ifndef DEDICATED_SERVER
         _InitializeFont(pFontSystem, "ui_font_letterica18_russian", 0);
 
@@ -1230,11 +1223,6 @@ void CApplication::LoadEnd()
 void CApplication::destroy_loading_shaders()
 {
     m_pRender->destroy_loading_shaders();
-
-    //AVO:
-    g_bootComplete = TRUE;
-    //-AVO
-
     //hLevelLogo.destroy ();
     //sh_progress.destroy ();
     //. ::Sound->mute (false);
@@ -1273,7 +1261,7 @@ void CApplication::LoadStage()
     phase_timer.Start();
     Msg("* phase cmem: %d K", Memory.mem_usage() / 1024);
 
-    if (g_pGamePersistent->GameType() == 1 && strstr(Core.Params, "alife"))
+	if (g_pGamePersistent->GameType() == 1 && !xr_strcmp(g_pGamePersistent->m_game_params.m_alife, "alife"))
         max_load_stage = 17;
     else
         max_load_stage = 14;

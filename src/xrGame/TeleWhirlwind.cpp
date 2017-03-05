@@ -55,7 +55,7 @@ void CTeleWhirlwind::set_throw_power(float throw_pow)
 
 void CTeleWhirlwind::draw_out_impact(Fvector& dir,float& val)
 {
-	VERIFY2(m_saved_impacts.size(),"NO IMPACTS ADDED!");
+	//VERIFY2(m_saved_impacts.size(),"NO IMPACTS ADDED!");
   if (0==m_saved_impacts.size()) return;
 	dir.set(m_saved_impacts[0].force);
 	val=dir.magnitude();

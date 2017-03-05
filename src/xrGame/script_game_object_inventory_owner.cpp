@@ -48,10 +48,20 @@
 #include "Torch.h"
 #include "physicobject.h"
 #include "customoutfit.h"
+#include "InventoryBox.h"
 //Alundaio
 #include "inventory_upgrade_manager.h"
 #include "inventory_upgrade_root.h"
 #include "inventory_item.h"
+#include "inventory_item_impl.h"
+#include "inventory_item.h"
+#include "inventory.h"
+#include "xrserver_objects_alife_items.h"
+#include "./xrServerEntities/inventory_space.h"
+#include "ai_space.h"
+#include "script_engine.h"
+
+using namespace luabind;
 //-Alundaio
 
 bool CScriptGameObject::GiveInfoPortion(LPCSTR info_id)
@@ -247,7 +257,6 @@ void CScriptGameObject::IterateInventory(luabind::functor<bool> functor, luabind
 			return;
 }
 
-#include "InventoryBox.h"
 void CScriptGameObject::IterateInventoryBox(luabind::functor<bool> functor, luabind::object object)
 {
     CInventoryBox			*inventory_box = smart_cast<CInventoryBox*>(&this->object());
@@ -1706,11 +1715,7 @@ void CScriptGameObject::IterateInstalledUpgrades(luabind::functor<void> functor)
 }
 
 
-#include "inventory_item_impl.h"
-#include "inventory_item.h"
-#include "inventory.h"
-#include "xrserver_objects_alife_items.h"
-#include "./xrServerEntities/inventory_space.h"
+
 CScriptGameObject *CScriptGameObject::ItemOnBelt	(u32 item_id) const
 {
 	CInventoryOwner	*inventory_owner = smart_cast<CInventoryOwner*>(&object());

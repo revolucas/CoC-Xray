@@ -62,10 +62,6 @@ typedef enum
 //!                argument (D3D_FEATURE_LEVEL supported by the device) that the function fills in. This argument
 //!                can contain -1 (NVAPI_DEVICE_FEATURE_LEVEL_NULL), if the requested featureLevel is less than DirecX 10.0.
 //!
-//!            NOTE: When NvAPI_D3D11_CreateDevice is called with 10+ feature level we have an issue on few set of
-//!                  tesla hardware (G80/G84/G86/G92/G94/G96) which does not support all feature level 10+ functionality
-//!                  e.g. calling driver with mismatch between RenderTarget and Depth Buffer. App developers should
-//!                  take into consideration such limitation when using NVAPI on such tesla hardwares.
 //! SUPPORTED OS:  Windows Vista and higher
 //!
 //!

@@ -1,0 +1,1 @@
+These are only headers required to build renderers with VS2013+, for older versions install full DXSDK from Miscrosoft and update project includes and libs

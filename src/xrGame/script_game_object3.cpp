@@ -40,7 +40,6 @@
 #include "space_restriction_manager.h"
 #include "artefact.h"
 //Alundaio
-#ifdef GAME_OBJECT_EXTENDED_EXPORTS
 #include "holder_custom.h"
 #include "actor.h"
 #include "CharacterPhysicsSupport.h"
@@ -50,7 +49,6 @@
 #include "../xrEngine/feel_touch.h"
 #include "weaponammo.h"
 #include "WeaponMagazinedWGrenade.h"
-#endif
 //-Alundaio
 
 namespace MemorySpace {

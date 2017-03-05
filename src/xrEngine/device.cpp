@@ -40,6 +40,7 @@ ENGINE_API BOOL g_bRendering = FALSE;
 
 BOOL g_bLoaded = FALSE;
 ref_light precache_light = 0;
+int g_dwFPSlimit = 120;
 
 BOOL CRenderDevice::Begin()
 {
@@ -208,8 +209,6 @@ int g_svDedicateServerUpdateReate = 100;
 
 ENGINE_API xr_list<LOADING_EVENT> g_loading_events;
 
-extern bool IsMainMenuActive(); //ECO_RENDER add
-
 void CRenderDevice::on_idle()
 {
     if (!b_is_Ready)
@@ -220,6 +219,18 @@ void CRenderDevice::on_idle()
 
 #ifdef DEDICATED_SERVER
     u32 FrameStartTime = TimerGlobal.GetElapsed_ms();
+#else
+	// FPS Lock
+	if (g_dwFPSlimit > 0)
+	{
+		static DWORD dwLastFrameTime = 0;
+		int dwCurrentTime = timeGetTime();
+
+		if ((dwCurrentTime - dwLastFrameTime) < (1000 / g_dwFPSlimit))
+			return;
+
+		dwLastFrameTime = dwCurrentTime;
+	}
 #endif
     if (psDeviceFlags.test(rsStatistic)) 
 		g_bEnableStatGather = TRUE;
@@ -268,19 +279,7 @@ void CRenderDevice::on_idle()
     mt_csLeave.Enter();
     mt_csEnter.Leave();
 
-#ifdef ECO_RENDER // ECO_RENDER START
-	static u32 time_frame = 0;
-	u32 time_curr = timeGetTime();
-	u32 time_diff = time_curr - time_frame;
-	time_frame = time_curr;
-	u32 optimal = 10;
-	if (Device.Paused() || IsMainMenuActive())
-		optimal = 32;
-	if (time_diff < optimal)
-		Sleep(optimal - time_diff);
-#else
 	Sleep(0);
-#endif // ECO_RENDER END
 
 #ifndef DEDICATED_SERVER
     Statistic->RenderTOTAL_Real.FrameStart();
@@ -377,6 +376,11 @@ void CRenderDevice::Run()
     mt_csEnter.Enter();
     mt_bMustExit = FALSE;
     thread_spawn(mt_Thread, "X-RAY Secondary thread", 0, this);
+	// Load FPS Lock
+	if (strstr(Core.Params, "-nofpslock"))
+		g_dwFPSlimit = -1;
+	else if (strstr(Core.Params, "-fpslock60"))
+		g_dwFPSlimit = 60;
     // Message cycle
     seqAppStart.Process(rp_AppStart);
 
