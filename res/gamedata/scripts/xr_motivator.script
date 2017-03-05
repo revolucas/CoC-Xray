@@ -325,17 +325,7 @@ function motivator_binder:death_callback(victim, who)
 	db.delete_enemy( self.e_index )
 
 	self:clear_callbacks()
-	--' Наносим небольшой импульс вперед.
-	if(actor_stats.remove_from_ranking~=nil)then
-		local community = character_community(self.object)
-		if community == "zombied" or
-			 community == "monolith"
-		then
-		else
-			actor_stats.remove_from_ranking(self.object:id())
-		end
 
-	end
 	release_body_manager.get_release_body_manager():moving_dead_body(self.object)
 end
 

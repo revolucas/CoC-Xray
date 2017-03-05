@@ -69,9 +69,7 @@ function actor_binder:net_destroy()
 					xr_sound.stop_sounds_by_id(v.id)
 			end
 	end
-	if(actor_stats.remove_from_ranking~=nil)then
-		actor_stats.remove_from_ranking(self.object:id())
-	end
+
 	level.show_weapon(true)
 	db.del_actor(self.object)
 
@@ -84,20 +82,26 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.level_border_exit, nil)
 	self.object:set_callback(callback.take_item_from_box, nil)
 	self.object:set_callback(callback.use_object, nil)
-
-	----| aVo |--------------------------------------------------------------------
-	self.object:set_callback(callback.hit, nil)
-	self.object:set_callback(callback.key_press, nil)
-	self.object:set_callback(callback.key_release, nil)
-	self.object:set_callback(callback.key_hold, nil)
-	self.object:set_callback(callback.mouse_move, nil)
-	self.object:set_callback(callback.mouse_wheel, nil)
-	self.object:set_callback(callback.item_to_belt, nil)
-	self.object:set_callback(callback.item_to_ruck, nil)
-	self.object:set_callback(callback.item_to_slot, nil)
-	self.object:set_callback(callback.actor_before_death, nil)
-	----| end:aVo |----------------------------------------------------------------
-
+	-- CoCRay
+	self.object:set_callback(callback.hud_animation_end,nil)
+	self.object:set_callback(callback.actor_before_death,nil)
+	self.object:set_callback(callback.key_press,nil)
+	self.object:set_callback(callback.key_release,nil)
+	self.object:set_callback(callback.key_hold,nil)
+	self.object:set_callback(callback.mouse_move,nil)
+	self.object:set_callback(callback.mouse_wheel,nil)
+	self.object:set_callback(callback.on_attach_vehicle,nil)
+	self.object:set_callback(callback.on_detach_vehicle,nil)
+	self.object:set_callback(callback.on_use_vehicle,nil)
+	self.object:set_callback(callback.weapon_jammed,nil)
+	self.object:set_callback(callback.weapon_zoom_in,nil)
+	self.object:set_callback(callback.weapon_zoom_out,nil)
+	self.object:set_callback(callback.weapon_magazine_empty,nil)
+	self.object:set_callback(callback.item_to_belt,nil)
+	self.object:set_callback(callback.item_to_slot,nil)
+	self.object:set_callback(callback.item_to_ruck,nil)
+	-- //
+	
 	log("--------->"..tostring(_G.amb_vol))
 	log("--------->"..tostring(_G.mus_vol))
 	if(_G.amb_vol~=0) then
@@ -131,83 +135,96 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.task_state, self.task_callback, self)
 	self.object:set_callback(callback.take_item_from_box, self.take_item_from_box, self)
 	self.object:set_callback(callback.use_object, self.use_inventory_item, self)
-	
-	----| aVo |--------------------------------------------------------------------
-	self.object:set_callback(callback.hit, self.actor_hit, self)
-	self.object:set_callback(callback.key_press, self.key_press, self)
-	self.object:set_callback(callback.key_release, self.key_release, self)
-	self.object:set_callback(callback.key_hold, self.key_hold, self)
-	self.object:set_callback(callback.mouse_move, self.mouse_move, self)
-	self.object:set_callback(callback.mouse_wheel, self.mouse_wheel, self)
-	self.object:set_callback(callback.item_to_ruck, self.item_to_ruck, self)
-	self.object:set_callback(callback.item_to_belt, self.item_to_belt, self)
-	self.object:set_callback(callback.item_to_slot, self.item_to_slot, self)
-	self.object:set_callback(callback.actor_before_death, self.on_actor_before_death, self)
-	----| end:aVo |----------------------------------------------------------------
+	-- CoCRay
+	self.object:set_callback(callback.hud_animation_end,self.hud_animation_end,self)
+	self.object:set_callback(callback.actor_before_death,self.actor_before_death,self)
+	self.object:set_callback(callback.key_press,self.key_press,self)
+	self.object:set_callback(callback.key_release,self.key_release,self)
+	self.object:set_callback(callback.key_hold,self.key_hold,self)
+	self.object:set_callback(callback.mouse_move,self.mouse_move,self)
+	self.object:set_callback(callback.mouse_wheel,self.mouse_wheel,self)
+	self.object:set_callback(callback.on_attach_vehicle,self.on_attach_vehicle,self)
+	self.object:set_callback(callback.on_detach_vehicle,self.on_detach_vehicle,self)
+	self.object:set_callback(callback.on_use_vehicle,self.on_use_vehicle,self)
+	self.object:set_callback(callback.weapon_jammed,self.weapon_jammed,self)
+	self.object:set_callback(callback.weapon_zoom_in,self.weapon_zoom_in,self)
+	self.object:set_callback(callback.weapon_zoom_out,self.weapon_zoom_out,self)
+	self.object:set_callback(callback.weapon_magazine_empty,self.weapon_magazine_empty,self)
+	self.object:set_callback(callback.item_to_belt,self.item_to_belt,self)
+	self.object:set_callback(callback.item_to_slot,self.item_to_slot,self)
+	self.object:set_callback(callback.item_to_ruck,self.item_to_ruck,self)
+	-- //
 end
----------------------------------------------------------------------------------------------------------------------
 
+-- CoCRay
+function self:hud_animation_end(hud_obj,hud_section,motion,state,anim_slot) 
 
-----| aVo |--------------------------------------------------------------------
--- actor hit callback
-function actor_binder:actor_hit(obj, amount, local_direction, who, bone_index)
-	-- local msg = string.format("actor_hit %f, %i", amount, bone_index)
-	-- get_console():execute("load ~:"..msg)
 end
--- key press callback
-function actor_binder:key_press(key)
-	-- sm:call("key_press", key)
-	-- log(string.format("key pressed %d", key))
-	if key == DIK_keys.DIK_F7 then
-		log("F7 pressed")
-	end
-end
--- key release callback (turn on in build_config_defines.h only if absolutely needed)
-function actor_binder:key_release(key)
-	-- sm:call("key_release", key)
-	-- log(string.format("key released %d", key))
-	if key == DIK_keys.DIK_F7 then
-		log("F7 released")
-	end
-end
--- key hold callback (turn on in build_config_defines.h only if absolutely needed)
-function actor_binder:key_hold(key)
-	-- sm:call("key_hold", key)
-	-- log(string.format("key hold %d", key))
-	if key == DIK_keys.DIK_F7 then
-		log("F7 hold")
-	end
-end
--- mouse move callback (turn on in build_config_defines.h only if absolutely needed)
-function actor_binder:mouse_move(dx, dy)
-	log(string.format("mouse moved to: [%d]:[%d]", dx, dy))
-end
--- mouse wheel callback (direction is 120 up and -120 down)
-function actor_binder:mouse_wheel(direction)
-	log(string.format("mouse wheel moved %s", tostring(direction)))
-end
--- item to ruck callback
--- note: this is called on new game and level change
-function actor_binder:item_to_ruck(obj)
-	log(string.format("item_to_ruck [%s]", obj:name()))
-end
--- item to belt callback
--- note: this is called on new game and level change
-function actor_binder:item_to_belt(obj)
-	log(string.format("item_to_belt [%s]", obj:name()))
-end
--- item to slot callback
--- note: this is called on new game and level change
-function actor_binder:item_to_slot(obj)
-	log(string.format("item_to_slot [%s]", obj:name()))
-end
--- actor before death callback
--- IMPORTANT: if you wish to kill actor you need to call db.actor:kill(db.actor, true) in actor_before_death callback, to ensure all objects are properly destroyed.
-function actor_binder:on_actor_before_death(whoID)
-  log("[AVO] on_actor_before_death callback")
-  --db.actor:set_health_ex(1)
+
+function self:actor_before_death(who_id) 
 	db.actor:kill(db.actor, true)
 end
+
+function self:key_press(key) 
+
+end
+
+function self:key_release(key) 
+
+end
+
+function self:key_hold(key) 
+
+end
+
+function self:mouse_move(x,y) 
+
+end
+
+function self:mouse_wheel(dir) 
+
+end
+
+function self:on_attach_vehicle(obj) 
+
+end
+
+function self:on_detach_vehicle(obj) 
+
+end
+
+function self:on_use_vehicle(obj) 
+
+end
+
+function self:weapon_jammed(wpn) 
+
+end
+
+function self:weapon_zoom_in(actor,wpn) 
+
+end
+
+function self:weapon_zoom_out(actor,wpn) 
+
+end
+
+function self:weapon_magazine_empty(wpn,ammo_total) 
+
+end
+
+function self:item_to_belt(obj) 
+
+end
+
+function self:item_to_slot(obj) 
+
+end
+
+function self:item_to_ruck(obj) 
+
+end
+-- //
 
 ----------------------------------------------------------------------------------------------------------------------
 function actor_binder:take_item_from_box(box, item)
@@ -323,7 +340,7 @@ function actor_binder:update(delta)
 	if string.find(command_line(), "-designer") then
 		return
 	end
-  
+
 	if self.already_jumped==false and jump_level.need_jump==true and (device().frame > self.spawn_frame+2000) then
 		jump_level.try_to_jump()
 		self.already_jumped = true

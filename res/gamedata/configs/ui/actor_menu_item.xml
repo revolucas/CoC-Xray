@@ -17,7 +17,7 @@
 	</static_cost>
 
 	<static_no_trade x="20" y="60" width="280" height="20">
-		<text align="l" font="letterica16" r="196" g="18" b="18" complex_mode="1"/>
+		<text align="l" font="letterica16" complex_mode="1"/>
 	</static_no_trade>
 
 	<descr_list x="20" y="60" width="265" height="130" always_show_scroll="0" fit_to_height="1">
@@ -207,6 +207,24 @@
 			<text font="letterica18" align="c" vert_align="c" r="170" g="170" b="170">ui_st_outfit_protect</text>
 		</caption>
 -->
+		<fire_wound_immunity x="0" y="0" width="18" height="18" stretch="1">
+			<texture>ui_am_propery_01</texture>
+			<text font="letterica16" x="22" y="0" r="170" g="170" b="170" align="l" vert_align="c"/>
+			<progress_immunity x="130" y="4" width="128" height="9" horz="1">
+				<progress>
+	                <texture a="150">ui_inGame2_hint_wnd_bar_alfa_line</texture>
+	            </progress>
+	            <background>
+	                <texture>ui_inGame2_hint_wnd_bar</texture>
+	            </background>
+				<color_less color="pda_red"  />
+				<color_more color="pda_green"/>
+			</progress_immunity>
+			<static_value x="225" y="0" width="40" height="18" magnitude="100">
+				<text font="letterica16" color="ui_6" align="r" vert_align="c"/>
+			</static_value>
+		</fire_wound_immunity>
+		
 		<burn_immunity x="0" y="0" width="18" height="18" stretch="1">
 			<texture>ui_am_prop_thermo</texture>
 			<text font="letterica16" x="22" y="0" r="170" g="170" b="170" align="l" vert_align="c"/>
@@ -298,7 +316,7 @@
 		</telepatic_immunity>
 
 		<wound_immunity x="0" y="0" width="18" height="18" stretch="1">
-			<texture>ui_am_prop_damage</texture>
+			<texture>ui_am_prop_wound</texture>
 			<text font="letterica16" x="22" y="0" r="170" g="170" b="170" align="l" vert_align="c"/>
 			<progress_immunity x="130" y="4" width="128" height="9" horz="1">
 				<progress>
@@ -315,8 +333,8 @@
 			</static_value>
 		</wound_immunity>
 
-		<fire_wound_immunity x="0" y="0" width="18" height="18" stretch="1">
-			<texture>ui_am_propery_01</texture>
+		<strike_immunity x="0" y="0" width="18" height="18" stretch="1">
+			<texture>ui_am_prop_strike</texture>
 			<text font="letterica16" x="22" y="0" r="170" g="170" b="170" align="l" vert_align="c"/>
 			<progress_immunity x="130" y="4" width="128" height="9" horz="1">
 				<progress>
@@ -331,8 +349,25 @@
 			<static_value x="225" y="0" width="40" height="18" magnitude="100">
 				<text font="letterica16" color="ui_6" align="r" vert_align="c"/>
 			</static_value>
-		</fire_wound_immunity>
-
+		</strike_immunity>
+		
+		<explosion_immunity x="0" y="0" width="18" height="18" stretch="1">
+			<texture>ui_am_prop_explo</texture>
+			<text font="letterica16" x="22" y="0" r="170" g="170" b="170" align="l" vert_align="c"/>
+			<progress_immunity x="130" y="4" width="128" height="9" horz="1">
+				<progress>
+	                <texture a="150">ui_inGame2_hint_wnd_bar_alfa_line</texture>
+	            </progress>
+	            <background>
+	                <texture>ui_inGame2_hint_wnd_bar</texture>
+	            </background>
+				<color_less color="pda_red"  />
+				<color_more color="pda_green"/>
+			</progress_immunity>
+			<static_value x="225" y="0" width="40" height="18" magnitude="100">
+				<text font="letterica16" color="ui_6" align="r" vert_align="c"/>
+			</static_value>
+		</explosion_immunity>
 	</outfit_info>
 
 </w>

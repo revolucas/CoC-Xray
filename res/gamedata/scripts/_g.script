@@ -1,3 +1,80 @@
+
+-- CoCray
+------------------------------------------------------------------------------------------------------
+-- ENGINE EXPORTS!!!
+------------------------------------------------------------------------------------------------------
+-- returning false will prevent item transfer
+function CInventoryBox_CanTake(obj,itm)
+	return true
+end
+-- called when an inventory item is eaten/used
+-- returning false will prevent the item from being used
+function CInventory__eat(npc,item)
+	return true
+end
+
+-- Called before actor hit callback
+-- returning false will ignore the hit completely
+function CActor__BeforeHitCallback(actor,shit,bone_id)
+	--[[
+		hit.light_burn
+		hit.burn
+		hit.strike
+		hit.shock
+		hit.wound
+		hit.radiation
+		hit.telepatic
+		hit.chemical_burn
+		hit.explosion
+		hit.fire_wound
+	--]]
+	--printf("power=%s impuse=%s type=%s dir=%s who=%s",shit.power,shit.impulse,hit_to_section[shit.type],shit.direction and vec_to_str(shit.direction),shit.draftsman and shit.draftsman:name())
+	return true
+end
+
+-- called in CSE_ALifeDynamicObject::on_unregister()
+-- good place to remove ids from persistent tables
+function CSE_ALifeDynamicObject_on_unregister(id)
+
+end
+
+function CALifeUpdateManager__on_before_change_level(packet)
+--[[
+	C++:
+	net_packet.r					(&graph().actor()->m_tGraphID,sizeof(graph().actor()->m_tGraphID));
+	net_packet.r					(&graph().actor()->m_tNodeID,sizeof(graph().actor()->m_tNodeID));
+	net_packet.r_vec3				(graph().actor()->o_Position);
+	net_packet.r_vec3				(graph().actor()->o_Angle);
+--]]
+-- Here you can do stuff when level changes BEFORE save is called, even change destination!. Packet is constructed as stated above
+
+	-- READ PACKET
+	--[[
+	local pos,angle = vector(),vector()
+	local gvid = packet:r_u16()
+	local lvid = packet:r_u32()
+	packet:r_vec3(pos)
+	packet:r_vec3(angle)
+	
+	
+	-- REPACK it for engine method to read as normal
+	packet:w_begin(13)
+	packet:w_u16(gvid)
+	packet:w_u32(lvid)
+	packet:w_vec3(pos)
+	packet:w_vec3(angle)
+	-- reset read pointer
+	packet:r_seek(2)
+	--]]
+		
+end
+-- //
+
+
+
+
+
+
 if (jit == nil) then
 	profiler.setup_hook	()
 end
@@ -81,7 +158,7 @@ local scripts_to_print =	{
 							["task_objects"]	 = true
 							}
 function printf(fmt,...)
-
+	--[[
 	local is_g = 0
 	local result = fmt
 	if debug == nil then
@@ -101,10 +178,8 @@ function printf(fmt,...)
 		result = fmt
 	end
 	log(string.format(result,...))
-
+	--]]
 end
-
-printf = function() end
 
 ----------------------------------------------------------------------
 if nil == time_global then
