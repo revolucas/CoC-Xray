@@ -10,11 +10,8 @@ You need https://developer.microsoft.com/en-us/windows/downloads/windows-8-1-sdk
 You need these SDK libraries: https://drive.google.com/file/d/0B0zCaycrwhLHX09kaXdSeWNhWVE/view?usp=sharing
 
 1. In Windows Advanced System Settings, create two new Environment variables.
-
 *XRAY_16X_GAME* should be the location where binary files are output. ex. E:\STALKER\Games\
-
 *XRAY_16X_LIBS* should be the folder in which you extracted the needed SDK libraries. ex. E:\STALKER\X-Ray Source\xray-16-libraries\
-
 2. After building the solution copy lua51.dll from `src\3rd party\luajit-2\bin\x86` into your XRAY_16X_GAME folder.
 3. If you are not using CoC, then you need the minimal changes foud in `res\gamedata`
 
