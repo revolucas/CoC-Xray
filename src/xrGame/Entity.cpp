@@ -276,11 +276,13 @@ void CEntity::KillEntity(u16 whoID, BOOL bypass_actor_check /*AVO: added for act
         }
 #endif
     }
+	/* Alundaio: Should not matter who kills self. CScripGameObject::Kill sets self as killer if nil passed
     else
     {
         if (m_killer_id != ALife::_OBJECT_ID(-1))
             return;
     }
+	*/
 
     m_killer_id = whoID;
 
