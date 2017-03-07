@@ -2,6 +2,8 @@
 #include "UIGameCustom.h"
 #include "level.h"
 #include "ui/uistatic.h"
+#include "UIDialogHolder.h"
+#include "ui/UIDialogWnd.h"
 
 using namespace luabind;
 
@@ -19,6 +21,8 @@ void CUIGameCustom::script_register(lua_State *L)
 			.def("wnd",					&StaticDrawableWrapper::wnd),
 
 			class_< CUIGameCustom >("CUIGameCustom")
+			.def("TopInputReceiver", 		&CUIGameCustom::TopInputReceiver)
+			.def("SetMainInputReceiver",	&CUIGameCustom::SetMainInputReceiver)
 			.def("AddDialogToRender",		&CUIGameCustom::AddDialogToRender)
 			.def("RemoveDialogToRender",	&CUIGameCustom::RemoveDialogToRender)
 			.def("AddCustomStatic",			&CUIGameCustom::AddCustomStatic)
