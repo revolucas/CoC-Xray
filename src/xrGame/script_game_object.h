@@ -813,7 +813,9 @@ public:
 #endif
 //Alundaio
 #ifdef GAME_OBJECT_EXTENDED_EXPORTS
-            void SetHealthEx(float hp); //AVO
+			u32					get_dest_level_vertex_id();
+
+            void				SetHealthEx(float hp); //AVO
 			float				GetLuminocityHemi();
 			float				GetLuminocity();
 			bool				Use(CScriptGameObject* obj);

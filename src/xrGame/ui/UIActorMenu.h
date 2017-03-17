@@ -347,6 +347,8 @@ public:
 
 	IC	UIHint*					get_hint_wnd				() { return m_hint_wnd; }
 
+	//Alundaio
+	bool m_bHeldCtrl;
 	//AxelDominator && Alundaio consumable use condition
 	void RefreshCurrentItemCell();
 	void SetCurrentItem(CUICellItem* itm);		//Alundaio: Made public

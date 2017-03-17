@@ -6,6 +6,7 @@
 #include "UICursor.h"
 //Alundaio
 #include "../Inventory.h" 
+#include <dinput.h>
 //-Alundaio
 
 CUIDragItem* CUIDragDropListEx::m_drag_item = NULL;
@@ -203,9 +204,24 @@ void CUIDragDropListEx::OnItemDBClick(CUIWindow* w, void* pData)
 	OnItemSelected						(w, pData);
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 
-	if(m_f_item_db_click && m_f_item_db_click(itm) ){
-		DestroyDragItem						();
-		return;
+	if(m_f_item_db_click)
+	{
+		if (m_bHeldCtrl)
+		{
+			xr_vector<CUICellItem*> cell_stack;
+			u32 size = itm->ChildsCount();
+			for (u32 j = 0; j < size; j++)
+			{
+				CUICellItem* chld = itm->Child(j);
+				if (chld)
+					m_f_item_db_click(chld);
+			}
+		}
+		if (m_f_item_db_click(itm))
+		{
+			DestroyDragItem();
+			return;
+		}
 	}
 
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
@@ -361,6 +377,26 @@ void CUIDragDropListEx::ReinitScroll()
 
 		m_container->SetWndPos		(Fvector2().set(0,0));
 }
+
+//Alundaio
+bool CUIDragDropListEx::OnKeyboardAction(int dik, EUIMessages keyboard_action)
+{
+	if (WINDOW_KEY_PRESSED == keyboard_action)
+	{
+		if (dik == DIK_LCONTROL)
+			m_bHeldCtrl = true;
+	}
+	else if (WINDOW_KEY_RELEASED == keyboard_action)
+	{
+		if (dik == DIK_LCONTROL)
+			m_bHeldCtrl = false;
+	}
+
+	if (inherited::OnKeyboardAction(dik, keyboard_action))return true;
+
+	return false;
+}
+//-Alundaio
 
 bool CUIDragDropListEx::OnMouseAction(float x, float y, EUIMessages mouse_action)
 {
