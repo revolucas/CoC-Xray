@@ -382,7 +382,6 @@ void CActor::g_SetAnimation( u32 mstate_rl )
 	{
 		g_SetSprintAnimation			(mstate_rl,M_head,M_torso,M_legs);
 		moving_idx						= STorsoWpn::eSprint;
-		M_torso = ST->m_torso[4].moving[moving_idx]; //Alundaio: Fix torso animations for no weapon
 	}
 
 	if (this == Level().CurrentViewEntity())

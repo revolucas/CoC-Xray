@@ -1,6 +1,7 @@
 #pragma once
 #include "inventory_space.h"
 #include "GameObject.h"
+#include "script_export_space.h"
 
 class CInventoryBox :public CGameObject
 {
@@ -38,4 +39,9 @@ public:
 protected:
 				void	SE_update_status				();
 
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CInventoryBox)
+#undef script_type_list
+#define script_type_list save_type_list(CInventoryBox)

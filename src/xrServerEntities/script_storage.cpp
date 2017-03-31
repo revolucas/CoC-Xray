@@ -7,6 +7,7 @@
 ////////////////////////////////////////////////////////////////////////////
 
 #include "pch_script.h"
+#include "script_storage_space.h"
 #include "script_storage.h"
 #include "script_thread.h"
 #include <stdarg.h>
@@ -626,9 +627,10 @@ bool CScriptStorage::load_buffer(lua_State *L, LPCSTR caBuffer, size_t tSize, LP
 
     if (l_iErrorCode)
     {
-#ifdef DEBUG
-        print_output	(L,caScriptName,l_iErrorCode);
-#endif //-DEBUG
+//#ifdef DEBUG
+		if (strstr(Core.Params, "-dbg"))
+			print_output	(L,caScriptName,l_iErrorCode);
+//#endif //-DEBUG
         on_error(L);
         return			(false);
     }
@@ -684,9 +686,9 @@ bool CScriptStorage::do_file(LPCSTR caScriptName, LPCSTR caNameSpaceName)
 #endif // #ifdef USE_DEBUGGER
     if (l_iErrorCode)
     {
-#ifdef DEBUG
+//#ifdef DEBUG
         print_output(lua(),caScriptName,l_iErrorCode);
-#endif
+//#endif
         on_error(lua());
         lua_settop(lua(), start);
         return		(false);

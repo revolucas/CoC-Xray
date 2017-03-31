@@ -15,6 +15,31 @@
 #include "character_info_defs.h"
 #include "game_graph_space.h"
 #include "game_location_selector.h"
+#include "Artefact.h"
+#include "medkit.h"
+#include "antirad.h"
+#include "CustomOutfit.h"
+#include "Scope.h"
+#include "Silencer.h"
+#include "GrenadeLauncher.h"
+#include "Weapon.h"
+#include "WeaponMagazined.h"
+#include "WeaponMagazinedWGrenade.h"
+#include "InventoryBox.h"
+#include "InventoryOwner.h"
+#include "Actor.h"
+#include "Explosive.h"
+#include "script_zone.h"
+#include "ai/trader/ai_trader.h"
+#include "ai/stalker/ai_stalker.h"
+#include "CustomMonster.h"
+#include "Torch.h"
+#include "space_restrictor.h"
+#include "CustomZone.h"
+#include "HudItem.h"
+#include "FoodItem.h"
+#include "PhysicsShellHolder.h"
+#include "BottleItem.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -770,49 +795,45 @@ public:
             bool				is_door_blocked_by_npc					() const;
             bool				is_weapon_going_to_be_strapped			( CScriptGameObject const* object ) const;
 
-           
-#ifdef GAME_OBJECT_TESTING_EXPORTS
-			//AVO: functions for object testing
-            //_DECLARE_FUNCTION10(IsGameObject, bool);
-            //_DECLARE_FUNCTION10(IsCar, bool);
-            //_DECLARE_FUNCTION10(IsHeli, bool);
-            //_DECLARE_FUNCTION10(IsHolderCustom, bool);
-            _DECLARE_FUNCTION10(IsEntityAlive, bool);
-            _DECLARE_FUNCTION10(IsInventoryItem, bool);
-            _DECLARE_FUNCTION10(IsInventoryOwner, bool);
-            _DECLARE_FUNCTION10(IsActor, bool);
-            _DECLARE_FUNCTION10(IsCustomMonster, bool);
-            _DECLARE_FUNCTION10(IsWeapon, bool);
-            //_DECLARE_FUNCTION10(IsMedkit, bool);
-            //_DECLARE_FUNCTION10(IsEatableItem, bool);
-            //_DECLARE_FUNCTION10(IsAntirad, bool);
-            _DECLARE_FUNCTION10(IsCustomOutfit, bool);
-            _DECLARE_FUNCTION10(IsScope, bool);
-            _DECLARE_FUNCTION10(IsSilencer, bool);
-            _DECLARE_FUNCTION10(IsGrenadeLauncher, bool);
-            _DECLARE_FUNCTION10(IsWeaponMagazined, bool);
-            _DECLARE_FUNCTION10(IsSpaceRestrictor, bool);
-            _DECLARE_FUNCTION10(IsStalker, bool);
-            _DECLARE_FUNCTION10(IsAnomaly, bool);
-            _DECLARE_FUNCTION10(IsMonster, bool);
-            //_DECLARE_FUNCTION10(IsExplosive, bool);
-            //_DECLARE_FUNCTION10(IsScriptZone, bool);
-            //_DECLARE_FUNCTION10(IsProjector, bool);
-            _DECLARE_FUNCTION10(IsTrader, bool);
-            _DECLARE_FUNCTION10(IsHudItem, bool);
-           //_DECLARE_FUNCTION10(IsFoodItem, bool);
-            _DECLARE_FUNCTION10(IsArtefact, bool);
-            _DECLARE_FUNCTION10(IsAmmo, bool);
-            //_DECLARE_FUNCTION10(IsMissile, bool);
-            //_DECLARE_FUNCTION10(IsPhysicsShellHolder, bool);
-            //_DECLARE_FUNCTION10(IsGrenade, bool);
-            //_DECLARE_FUNCTION10(IsBottleItem, bool);
-            //_DECLARE_FUNCTION10(IsTorch, bool);
-            _DECLARE_FUNCTION10(IsWeaponGL, bool);
-            _DECLARE_FUNCTION10(IsInventoryBox, bool);
-#endif
 //Alundaio
-#ifdef GAME_OBJECT_EXTENDED_EXPORTS
+#ifdef GAME_OBJECT_EXTENDED_EXPORTS           
+			_DECLARE_FUNCTION14(cast_GameObject, CScriptGameObject);
+			_DECLARE_FUNCTION14(cast_Car, CCar);
+			_DECLARE_FUNCTION14(cast_Heli, CHelicopter);
+			_DECLARE_FUNCTION14(cast_HolderCustom, CHolderCustom);
+			_DECLARE_FUNCTION14(cast_EntityAlive, CEntityAlive);
+			_DECLARE_FUNCTION14(cast_InventoryItem, CInventoryItem);
+			_DECLARE_FUNCTION14(cast_InventoryOwner, CInventoryOwner);
+			_DECLARE_FUNCTION14(cast_Actor, CActor);
+			_DECLARE_FUNCTION14(cast_Weapon, CWeapon);
+			_DECLARE_FUNCTION14(cast_Medkit, CMedkit);
+			_DECLARE_FUNCTION14(cast_EatableItem, CEatableItem);
+			_DECLARE_FUNCTION14(cast_Antirad, CAntirad);
+			_DECLARE_FUNCTION14(cast_CustomOutfit, CCustomOutfit);
+			_DECLARE_FUNCTION14(cast_Scope, CScope);
+			_DECLARE_FUNCTION14(cast_Silencer, CSilencer);
+			_DECLARE_FUNCTION14(cast_GrenadeLauncher, CGrenadeLauncher);
+			_DECLARE_FUNCTION14(cast_WeaponMagazined, CWeaponMagazined);
+			_DECLARE_FUNCTION14(cast_SpaceRestrictor, CSpaceRestrictor);
+			_DECLARE_FUNCTION14(cast_Stalker, CAI_Stalker);
+			_DECLARE_FUNCTION14(cast_CustomZone, CCustomZone);
+			_DECLARE_FUNCTION14(cast_Monster, CCustomMonster);
+			_DECLARE_FUNCTION14(cast_Explosive, CExplosive);
+			_DECLARE_FUNCTION14(cast_ScriptZone, CScriptZone);
+			//_DECLARE_FUNCTION14(cast_Projector, CProjector);
+			_DECLARE_FUNCTION14(cast_Trader, CAI_Trader);
+			_DECLARE_FUNCTION14(cast_HudItem, CHudItem);
+			_DECLARE_FUNCTION14(cast_FoodItem, CFoodItem);
+			_DECLARE_FUNCTION14(cast_Artefact, CArtefact);
+			_DECLARE_FUNCTION14(cast_Ammo, CWeaponAmmo);
+			//_DECLARE_FUNCTION14(cast_Missile, CMissile);
+			_DECLARE_FUNCTION14(cast_PhysicsShellHolder, CPhysicsShellHolder);
+			//_DECLARE_FUNCTION14(cast_Grenade, CGrenade);
+			_DECLARE_FUNCTION14(cast_BottleItem, CBottleItem);
+			_DECLARE_FUNCTION14(cast_Torch, CTorch);
+			_DECLARE_FUNCTION14(cast_WeaponMagazinedWGrenade, CWeaponMagazinedWGrenade);
+			_DECLARE_FUNCTION14(cast_InventoryBox, CInventoryBox);
+
 			u32					get_dest_level_vertex_id();
 
             void				SetHealthEx(float hp); //AVO

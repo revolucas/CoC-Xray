@@ -9,6 +9,7 @@ class CMotionDef;
 #include "actor_defs.h"
 #include "inventory_space.h"
 #include "hudsound.h"
+#include "script_export_space.h"
 
 struct attachable_hud_item;
 class motion_marks;
@@ -46,11 +47,11 @@ public:
 
 class CHudItem :public CHUDState
 {
-protected:
+public:
 							CHudItem			();
 	virtual					~CHudItem			();
 	virtual DLL_Pure*		_construct			();
-	
+protected:
 	Flags16					m_huditem_flags;
 	enum{
 		fl_pending			= (1<<0),
@@ -175,5 +176,10 @@ public:
 	virtual CHudItem*			cast_hud_item			()				{ return this; }
     void PlayAnimCrouchIdleMoving(); //AVO: new crouch idle animation
     bool HudAnimationExist(LPCSTR anim_name);
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
+add_to_type_list(CHudItem)
+#undef script_type_list
+#define script_type_list save_type_list(CHudItem)

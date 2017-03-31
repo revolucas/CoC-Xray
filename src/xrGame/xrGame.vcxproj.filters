@@ -11035,6 +11035,44 @@
       <Filter>Core\Client\Objects\zones\Ameba</Filter>
     </ClCompile>
     <ClCompile Include="HolderEntityObject.cpp" />
+    <ClCompile Include="CustomOutfit_script.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Outfit</Filter>
+    </ClCompile>
+    <ClCompile Include="medkit_script.cpp" />
+    <ClCompile Include="WeaponAmmo_script.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Weapons\Custom Weapon\Ammo</Filter>
+    </ClCompile>
+    <ClCompile Include="eatable_item_script.cpp">
+      <Filter>Core\Client\Objects\inventory\EatableItem</Filter>
+    </ClCompile>
+    <ClCompile Include="antirad_script.cpp" />
+    <ClCompile Include="InventoryBox_script.cpp">
+      <Filter>Core\Client\Objects\inventory_box</Filter>
+    </ClCompile>
+    <ClCompile Include="InventoryOwner_script.cpp">
+      <Filter>Core\Client\Objects\inventory\InventoryOwner</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorCondition_script.cpp">
+      <Filter>Core\Client\Objects\actor\base</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomZone_script.cpp">
+      <Filter>Core\Client\Objects\zones\CustomZone</Filter>
+    </ClCompile>
+    <ClCompile Include="HudItem_script.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\HudItem</Filter>
+    </ClCompile>
+    <ClCompile Include="FoodItem_script.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Food &amp; Drugs</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysicsShellHolder_script.cpp">
+      <Filter>Core\Client\Objects\physics\PhysicsShellHolder</Filter>
+    </ClCompile>
+    <ClCompile Include="BottleItem_script.cpp">
+      <Filter>Core\Client\Objects\items &amp; weapons\Food &amp; Drugs</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory_item_script.cpp">
+      <Filter>Core\Client\Objects\inventory\InventoryItem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ai\monsters\chimera\chimera_attack_state.h">

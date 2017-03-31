@@ -23,6 +23,26 @@
 #include "physicobject.h"
 #include "artefact.h"
 #include "stalker_sound_data.h"
+#include "level_changer.h"
+
+#include "eatable_item.h"
+#include "car.h"
+#include "helicopter.h"
+#include "actor.h"
+#include "customoutfit.h"
+#include "customzone.h"
+#include "ai\monsters\basemonster\base_monster.h"
+#include "medkit.h"
+#include "antirad.h"
+#include "scope.h"
+#include "silencer.h"
+#include "torch.h"
+#include "GrenadeLauncher.h"
+#include "searchlight.h"
+#include "WeaponAmmo.h"
+#include "grenade.h"
+#include "BottleItem.h"
+#include "WeaponMagazinedWGrenade.h"
 
 class CWeapon;
 
@@ -310,7 +330,7 @@ CPhysicObject* CScriptGameObject::get_physics_object()
 {
     return smart_cast<CPhysicObject*>(&object());
 }
-#include "level_changer.h"
+
 void CScriptGameObject::enable_level_changer(bool b)
 {
     CLevelChanger* lch = smart_cast<CLevelChanger*>(&object());
@@ -381,72 +401,78 @@ void CScriptGameObject::SetHealthEx(float hp)
 }
 //-AVO
 
-// AVO: functions for testing object class
-// Credits: KD
-//#include "car.h"
-//#include "helicopter.h"
-#include "actor.h"
-#include "customoutfit.h"
-//#include "customzone.h"
-#include "ai\monsters\basemonster\base_monster.h"
-//#include "Artifact.h"
-//#include "medkit.h"
-//#include "antirad.h"
-#include "scope.h"
-#include "silencer.h"
-#include "torch.h"
-#include "GrenadeLauncher.h"
-#include "searchlight.h"
-//#include "WeaponAmmo.h"
-//#include "grenade.h"
-//#include "BottleItem.h"
-#include "WeaponMagazinedWGrenade.h"
-
-#define TEST_OBJECT_CLASS(A,B)\
-bool A () const\
+#define SPECIFIC_CAST(A,B)\
+B* A ()\
 {\
     B				*l_tpEntity = smart_cast<B*>(&object());\
     if (!l_tpEntity)\
-        return false;\
+        return (0);\
                 else\
-        return true;\
+        return l_tpEntity;\
 };\
 
-//TEST_OBJECT_CLASS(CScriptGameObject::IsGameObject, CGameObject)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsCar, CCar)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsHeli, CHelicopter)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsHolderCustom, CHolderCustom)
-TEST_OBJECT_CLASS(CScriptGameObject::IsEntityAlive, CEntityAlive)
-TEST_OBJECT_CLASS(CScriptGameObject::IsInventoryItem, CInventoryItem)
-TEST_OBJECT_CLASS(CScriptGameObject::IsInventoryOwner, CInventoryOwner)
-TEST_OBJECT_CLASS(CScriptGameObject::IsActor, CActor)
-TEST_OBJECT_CLASS(CScriptGameObject::IsCustomMonster, CCustomMonster)
-TEST_OBJECT_CLASS(CScriptGameObject::IsWeapon, CWeapon)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsMedkit, CMedkit)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsEatableItem, CEatableItem)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsAntirad, CAntirad)
-TEST_OBJECT_CLASS(CScriptGameObject::IsCustomOutfit, CCustomOutfit)
-TEST_OBJECT_CLASS(CScriptGameObject::IsScope, CScope)
-TEST_OBJECT_CLASS(CScriptGameObject::IsSilencer, CSilencer)
-TEST_OBJECT_CLASS(CScriptGameObject::IsGrenadeLauncher, CGrenadeLauncher)
-TEST_OBJECT_CLASS(CScriptGameObject::IsWeaponMagazined, CWeaponMagazined)
-TEST_OBJECT_CLASS(CScriptGameObject::IsSpaceRestrictor, CSpaceRestrictor)
-TEST_OBJECT_CLASS(CScriptGameObject::IsStalker, CAI_Stalker)
-TEST_OBJECT_CLASS(CScriptGameObject::IsAnomaly, CCustomZone)
-TEST_OBJECT_CLASS(CScriptGameObject::IsMonster, CBaseMonster)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsExplosive, CExplosive)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsScriptZone, CScriptZone)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsProjector, CProjector)
-TEST_OBJECT_CLASS(CScriptGameObject::IsTrader, CAI_Trader)
-TEST_OBJECT_CLASS(CScriptGameObject::IsHudItem, CHudItem)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsFoodItem, CFoodItem)
-TEST_OBJECT_CLASS(CScriptGameObject::IsArtefact, CArtefact)
-TEST_OBJECT_CLASS(CScriptGameObject::IsAmmo, CWeaponAmmo)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsMissile, CMissile)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsPhysicsShellHolder, CPhysicsShellHolder)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsGrenade, CGrenade)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsBottleItem, CBottleItem)
-//TEST_OBJECT_CLASS(CScriptGameObject::IsTorch, CTorch)
-TEST_OBJECT_CLASS(CScriptGameObject::IsWeaponGL, CWeaponMagazinedWGrenade)
-TEST_OBJECT_CLASS(CScriptGameObject::IsInventoryBox, CInventoryBox)
-//end AVO
+SPECIFIC_CAST(CScriptGameObject::cast_GameObject, CScriptGameObject);
+SPECIFIC_CAST(CScriptGameObject::cast_Car, CCar);
+SPECIFIC_CAST(CScriptGameObject::cast_Heli, CHelicopter);
+SPECIFIC_CAST(CScriptGameObject::cast_HolderCustom, CHolderCustom);
+SPECIFIC_CAST(CScriptGameObject::cast_EntityAlive, CEntityAlive);
+SPECIFIC_CAST(CScriptGameObject::cast_InventoryItem, CInventoryItem);
+SPECIFIC_CAST(CScriptGameObject::cast_InventoryOwner, CInventoryOwner);
+SPECIFIC_CAST(CScriptGameObject::cast_Actor, CActor);
+SPECIFIC_CAST(CScriptGameObject::cast_Weapon, CWeapon);
+CMedkit* CScriptGameObject::cast_Medkit()
+{
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? smart_cast<CMedkit*>(ii) : (0);
+}
+CEatableItem* CScriptGameObject::cast_EatableItem()
+{
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? ii->cast_eatable_item() : (0);
+}
+CAntirad* CScriptGameObject::cast_Antirad()
+{
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? smart_cast<CAntirad*>(ii) : (0);
+}
+SPECIFIC_CAST(CScriptGameObject::cast_CustomOutfit, CCustomOutfit);
+SPECIFIC_CAST(CScriptGameObject::cast_Scope, CScope);
+SPECIFIC_CAST(CScriptGameObject::cast_Silencer, CSilencer);
+SPECIFIC_CAST(CScriptGameObject::cast_GrenadeLauncher, CGrenadeLauncher);
+SPECIFIC_CAST(CScriptGameObject::cast_WeaponMagazined, CWeaponMagazined);
+SPECIFIC_CAST(CScriptGameObject::cast_SpaceRestrictor, CSpaceRestrictor);
+SPECIFIC_CAST(CScriptGameObject::cast_Stalker, CAI_Stalker);
+SPECIFIC_CAST(CScriptGameObject::cast_CustomZone, CCustomZone);
+SPECIFIC_CAST(CScriptGameObject::cast_Monster, CCustomMonster);
+SPECIFIC_CAST(CScriptGameObject::cast_Explosive, CExplosive);
+SPECIFIC_CAST(CScriptGameObject::cast_ScriptZone, CScriptZone);
+//SPECIFIC_CAST(CScriptGameObject::cast_Projector, CProjector);
+SPECIFIC_CAST(CScriptGameObject::cast_Trader, CAI_Trader);
+CHudItem* CScriptGameObject::cast_HudItem()
+{
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? smart_cast<CHudItem*>(ii) : (0);
+}
+CFoodItem* CScriptGameObject::cast_FoodItem()
+{
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? ii->cast_food_item() : (0);
+}
+SPECIFIC_CAST(CScriptGameObject::cast_Artefact, CArtefact);
+SPECIFIC_CAST(CScriptGameObject::cast_Ammo, CWeaponAmmo);
+//SPECIFIC_CAST(CScriptGameObject::cast_Missile, CMissile);
+SPECIFIC_CAST(CScriptGameObject::cast_PhysicsShellHolder, CPhysicsShellHolder);
+//SPECIFIC_CAST(CScriptGameObject::cast_Grenade, CGrenade);
+CBottleItem* CScriptGameObject::cast_BottleItem()
+{
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? smart_cast<CBottleItem*>(ii) : (0);
+}
+CTorch* CScriptGameObject::cast_Torch()
+{
+
+	CInventoryItem* ii = object().cast_inventory_item();
+	return ii ? smart_cast<CTorch*>(ii) : (0);
+}
+SPECIFIC_CAST(CScriptGameObject::cast_WeaponMagazinedWGrenade, CWeaponMagazinedWGrenade);
+SPECIFIC_CAST(CScriptGameObject::cast_InventoryBox, CInventoryBox);

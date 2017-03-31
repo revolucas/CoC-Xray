@@ -10,5 +10,6 @@ void CSpaceRestrictor::script_register(lua_State *L)
 	[
 		class_<CSpaceRestrictor,CGameObject>("CSpaceRestrictor")
 			.def(constructor<>())
+			.def("Radius", &CSpaceRestrictor::Radius)
 	];
 }

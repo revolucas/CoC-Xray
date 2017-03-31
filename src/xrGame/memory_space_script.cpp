@@ -128,6 +128,7 @@ void CMemoryInfo::script_register(lua_State *L)
 			.def("object",					&not_yet_visible_object),
 
 		class_<CDangerObject>("danger_object")
+			//.def(constructor<>())
 			.enum_("danger_type")
 			[
 				value("bullet_ricochet",	CDangerObject::eDangerTypeBulletRicochet),

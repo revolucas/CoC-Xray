@@ -5,6 +5,8 @@
 
 #include "EntityCondition.h"
 #include "actor_defs.h"
+#include "script_export_space.h"
+#include "Wound.h"
 
 template <typename _return_type>
 class CScriptCallbackEx;
@@ -170,6 +172,8 @@ protected:
 	//typedef xr_vector<SMedicineInfluenceValues>::iterator BOOSTS_VECTOR_ITER;
 	//BOOSTS_VECTOR m_vecBoosts;
 	ref_sound m_use_sound;
+
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
 class CActorDeathEffector

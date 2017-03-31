@@ -231,9 +231,9 @@ void CScriptEngine::setup_callbacks()
         luabind::set_error_callback(CScriptEngine::lua_error);
 #endif
 
-#ifndef MASTER_GOLD
+//#ifndef MASTER_GOLD
         luabind::set_pcall_callback		(CScriptEngine::lua_pcall_failed);
-#endif // MASTER_GOLD
+//#endif // MASTER_GOLD
     }
 
 #if !XRAY_EXCEPTIONS
@@ -410,6 +410,11 @@ void CScriptEngine::process_file_if_exists(LPCSTR file_name, bool warn_if_not_ex
                 m_stack_is_ready	= true;
             }
 #endif
+			if (strstr(Core.Params, "-dbg"))
+			{
+
+			}
+
             add_no_file(file_name, string_length);
             return;
         }

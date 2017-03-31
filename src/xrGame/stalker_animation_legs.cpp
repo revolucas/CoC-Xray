@@ -150,20 +150,16 @@ MotionID CStalkerAnimationManager::legs_move_animation		()
 		(movement.mental_state() != eMentalStateFree)
 	);
 
-	if (eMentalStateDanger != movement.mental_state()) {
+	if (eMentalStateDanger != movement.mental_state())
+	{
 		m_target_speed			= movement.speed(eMovementDirectionForward);
-		m_last_non_zero_speed	= m_target_speed;
+		m_last_non_zero_speed	= m_target_speed; 
 
-		return					(
-			m_data_storage->m_part_animations.A[
-				body_state()
-			].m_movement.A[
-				movement.movement_type()
-			].A[
-				eMovementDirectionForward
-			].A[
-				1
-			]
+		//Alun: Sprint stalker fix
+		if (movement.movement_type() == eMovementTypeRun && movement.mental_state() == eMentalStatePanic)
+			return (m_data_storage->m_part_animations.A[eBodyStateStand].m_movement.A[2].A[4].A[0]);
+
+		return (m_data_storage->m_part_animations.A[body_state()].m_movement.A[movement.movement_type()].A[eMovementDirectionForward].A[1]
 		);
 	}
 

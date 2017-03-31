@@ -2,6 +2,7 @@
 
 #include "space_restrictor.h"
 #include "../xrEngine/feel_touch.h"
+#include "script_export_space.h"
 
 class CActor;
 class CLAItem;
@@ -325,4 +326,9 @@ public:
 private:
 	virtual bool            light_in_slow_mode () { return true; }
 
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+
+add_to_type_list(CCustomZone)
+#undef script_type_list
+#define script_type_list save_type_list(CCustomZone)
