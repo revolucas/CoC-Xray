@@ -201,7 +201,7 @@ enum
 
 //Swartz: actor shadow
 extern ECORE_API Flags32 ps_actor_shadow_flags; 
-
+extern ECORE_API	int	        ps_r2_fxaa;
 enum
 {
 RFLAG_ACTOR_SHADOW = (1<<0),
