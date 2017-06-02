@@ -1156,8 +1156,9 @@ CScriptGameObject *CScriptGameObject::active_detector() const
     if (result)
     {
         CCustomDetector *detector = smart_cast<CCustomDetector*>(result);
-        VERIFY(detector);
-        return			(detector->IsWorking() ? result->object().lua_game_object() : 0);
+		if (!detector)
+			return (0);
+        return (detector->IsWorking() ? result->object().lua_game_object() : 0);
     }
     return (0);
 }

@@ -43,7 +43,6 @@ private:
 	Ivector2				m_orig_cell_capacity;
 	Ivector2				m_virtual_cells_alignment;
 	bool					m_bConditionProgBarVisible;
-	bool					m_bHeldCtrl;
 protected:
 	CUICellItem*			m_selected_item;
 	CUICellContainer*		m_container;
@@ -142,7 +141,6 @@ public:
 	virtual		bool		OnMouseAction		(float x, float y, EUIMessages mouse_action);
 	virtual		void		SendMessage			(CUIWindow* pWnd, s16 msg, void* pData = NULL);
 
-	virtual bool				OnKeyboardAction(int dik, EUIMessages keyboard_action);
 				void		OnDragEvent			(CUIDragItem* drag_item, bool b_receive);
 };
 

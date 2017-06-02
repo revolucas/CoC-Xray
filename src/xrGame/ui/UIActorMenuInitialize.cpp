@@ -104,6 +104,10 @@ void CUIActorMenu::Construct()
 	m_OutfitSlotHighlight		->Show(false);
 	m_DetectorSlotHighlight		= UIHelper::CreateStatic(uiXml, "detector_slot_highlight", this);
 	m_DetectorSlotHighlight		->Show(false);
+	m_KnifeSlotHighlight		= UIHelper::CreateStatic(uiXml, "knife_slot_highlight", this);
+	m_KnifeSlotHighlight		->Show(false);
+	m_BinocSlotHighlight		= UIHelper::CreateStatic(uiXml, "binoc_slot_highlight", this);
+	m_BinocSlotHighlight		->Show(false);
 	m_QuickSlotsHighlight[0]	= UIHelper::CreateStatic(uiXml, "quick_slot_highlight", this);
 	m_QuickSlotsHighlight[0]	->Show(false);
 	m_ArtefactSlotsHighlight[0]	= UIHelper::CreateStatic(uiXml, "artefact_slot_highlight", this);
@@ -143,6 +147,9 @@ void CUIActorMenu::Construct()
 	m_pDeadBodyBagList			= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_deadbody_bag", this);
 	m_pQuickSlot				= UIHelper::CreateDragDropReferenceList(uiXml, "dragdrop_quick_slots", this);
 	m_pQuickSlot->Initialize	();
+	
+	m_pInventoryKnifeList		= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_knife", this);
+	m_pInventoryBinocList		= UIHelper::CreateDragDropListEx(uiXml, "dragdrop_binoc", this);
 
 	m_pTrashList				= UIHelper::CreateDragDropListEx		(uiXml, "dragdrop_trash", this);
 	m_pTrashList->m_f_item_drop	= CUIDragDropListEx::DRAG_CELL_EVENT	(this,&CUIActorMenu::OnItemDrop);
@@ -237,7 +244,9 @@ void CUIActorMenu::Construct()
 	InitCallbacks						();
 
 	BindDragDropListEvents				(m_pInventoryBeltList);		
-	BindDragDropListEvents				(m_pInventoryPistolList);		
+	BindDragDropListEvents				(m_pInventoryPistolList);	
+	BindDragDropListEvents				(m_pInventoryKnifeList);
+	BindDragDropListEvents				(m_pInventoryBinocList);
 	BindDragDropListEvents				(m_pInventoryAutomaticList);	
 	BindDragDropListEvents				(m_pInventoryOutfitList);	
 	BindDragDropListEvents				(m_pInventoryHelmetList);	

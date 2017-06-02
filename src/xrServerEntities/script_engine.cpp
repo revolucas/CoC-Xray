@@ -406,21 +406,22 @@ void CScriptEngine::process_file_if_exists(LPCSTR file_name, bool warn_if_not_ex
 #	endif
             {
                 print_stack			();
-                Msg					("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too",file_name,S1);
+                Msg					("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too",file_name,S);
                 m_stack_is_ready	= true;
             }
-#endif
-			if (strstr(Core.Params, "-dbg"))
+#else
+			if (strstr(Core.Params, "-dbgscript"))
 			{
-
+				print_stack();
+				Msg("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too", file_name, S);
 			}
-
+#endif
             add_no_file(file_name, string_length);
             return;
         }
         //#ifndef MASTER_GOLD
         if (strstr(Core.Params, "-dbg"))
-            Msg("* loading script %s", S1);
+            Msg("* loading script %s.script", S1);
         //#endif // MASTER_GOLD
         m_reload_modules = false;
         load_file_into_namespace(S, *file_name ? file_name : "_G");

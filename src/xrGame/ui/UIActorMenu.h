@@ -106,6 +106,9 @@ protected:
 	CUIDragDropListEx*			m_pTradePartnerList;
 	CUIDragDropListEx*			m_pDeadBodyBagList;
 	CUIDragDropListEx*			m_pTrashList;
+	
+	CUIDragDropListEx*			m_pInventoryKnifeList;
+	CUIDragDropListEx*			m_pInventoryBinocList;
 
 	enum						{e_af_count = 5};
 	CUIStatic*					m_belt_list_over[e_af_count];
@@ -116,6 +119,8 @@ protected:
 	CUIStatic*					m_HelmetSlotHighlight;
 	CUIStatic*					m_OutfitSlotHighlight;
 	CUIStatic*					m_DetectorSlotHighlight;
+	CUIStatic*					m_KnifeSlotHighlight;
+	CUIStatic*					m_BinocSlotHighlight;
 	CUIStatic*					m_QuickSlotsHighlight[4];
 	CUIStatic*					m_ArtefactSlotsHighlight[e_af_count];
 
@@ -347,8 +352,6 @@ public:
 
 	IC	UIHint*					get_hint_wnd				() { return m_hint_wnd; }
 
-	//Alundaio
-	bool m_bHeldCtrl;
 	//AxelDominator && Alundaio consumable use condition
 	void RefreshCurrentItemCell();
 	void SetCurrentItem(CUICellItem* itm);		//Alundaio: Made public
