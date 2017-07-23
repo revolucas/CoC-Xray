@@ -68,8 +68,8 @@ LPCSTR af_immunity_caption[] =  // ALife::EInfluenceType
 
 	//Alundaio: Uncommented
 	"ui_inv_outfit_wound_protection",			// "(wound_imm)",
-	"ui_inv_outfit_explosion_protection",		// "(explosion_imm)",
 	"ui_inv_outfit_fire_wound_protection",		// "(fire_wound_imm)",
+	"ui_inv_outfit_explosion_protection",		// "(explosion_imm)",
 	"ui_inv_outfit_strike_protection",			// "(strike_imm)",
 };
 
