@@ -12,8 +12,9 @@ You need these SDK libraries: https://drive.google.com/file/d/0B0zCaycrwhLHX09ka
 1. In Windows Advanced System Settings, create two new Environment variables.
 `XRAY_16X_GAME` should be the location where binary files are output. ex. E:\STALKER\Games\
 `XRAY_16X_LIBS` should be the folder in which you extracted the needed SDK libraries. ex. E:\STALKER\X-Ray Source\xray-16-libraries\
+Then from Property pages, edit user macro paths for Common.props
 2. After building the solution copy lua51.dll from `src\3rd party\luajit-2\bin\x86` into your XRAY_16X_GAME folder.
-3. If you are not using CoC, then you need the minimal changes foud in `res\gamedata`
+3. If you are not using CoC, then you need the minimal changes foud in `res\gamedata` *No longer working sorry*
 
 * Notes: Currently only Release/Win32 will build
 * If you find a bug or have an enhancement request, file an [Issue](https://github.com/revolucas/xray-16/issues).
