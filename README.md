@@ -10,8 +10,8 @@ You need https://developer.microsoft.com/en-us/windows/downloads/windows-8-1-sdk
 You need these SDK libraries: https://drive.google.com/file/d/0B0zCaycrwhLHX09kaXdSeWNhWVE/view?usp=sharing
 
 1. Open Property Manager tab (View > Other Windows > Property Manager)
-2. Under User Macros, change xrSdkLibDir to point to the downloaded SDK Libraries
-3. Under User Macros, change xrGameDir to point to your desired output location for the compiled binaries
+2. Under User Macros, change `xrSdkLibDir` to point to the downloaded SDK Libraries
+3. Under User Macros, change `xrGameDir` to point to your desired output location for the compiled binaries
 4. After building the solution copy lua51.dll from `src\3rd party\luajit-2\bin\x86` into your XRAY_16X_GAME folder.
 5. If you are not using CoC, then you need the minimal changes foud in `res\gamedata` *No longer working sorry*
 
