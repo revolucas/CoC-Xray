@@ -9,3 +9,9 @@ intermediate/
 intermediate_plugs/
 _build/
 /src/*.tss
+*.lastbuildstate
+*.log
+*.tlog
+*.obj
+*.pdb
+*.sdf
