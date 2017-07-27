@@ -354,8 +354,8 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LuaJIT-1.1.8\LuaJIT-1.1.8.vcxproj">
-      <Project>{2ac1029e-e582-40cf-9cd1-5efa4211afc9}</Project>
+    <ProjectReference Include="..\luajit-2\src\luajit.vcxproj">
+      <Project>{632aeeb6-dc06-4e15-9551-b2b09a4b73c5}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

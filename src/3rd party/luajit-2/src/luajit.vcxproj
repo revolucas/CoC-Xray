@@ -78,10 +78,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IntDir>$(xrIntDir)$(ProjectName)\</IntDir>
+    <OutDir>$(xrGameDir)bin_dbg\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IntDir>$(xrIntDir)$(ProjectName)\</IntDir>
-    <OutDir>$(xrBinDir)</OutDir>
+    <OutDir>$(xrGameDir)bin_rel\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
