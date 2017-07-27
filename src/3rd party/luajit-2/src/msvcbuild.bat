@@ -1,5 +1,5 @@
 @rem Script to build LuaJIT with MSVC.
-@rem Copyright (C) 2005-2015 Mike Pall. See Copyright Notice in luajit.h
+@rem Copyright (C) 2005-2017 Mike Pall. See Copyright Notice in luajit.h
 @rem
 @rem Either open a "Visual Studio .NET Command Prompt"
 @rem (Note that the Express Edition does not contain an x64 compiler)
@@ -14,22 +14,14 @@
 @if not defined INCLUDE goto :FAIL
 
 @setlocal
-@set LJCOMPILE=cl /nologo /c /O2 /W3 /D_CRT_SECURE_NO_DEPRECATE
+@set LJCOMPILE=cl /nologo /c /O2 /W3 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_STDIO_INLINE=__declspec(dllexport)__inline
 @set LJLINK=link /nologo
 @set LJMT=mt /nologo
 @set LJLIB=lib /nologo /nodefaultlib
 @set DASMDIR=..\dynasm
 @set DASM=%DASMDIR%\dynasm.lua
-@set LJBINPATH=..\bin\
-@set LJTARGETARCH=%1
-@if defined LJTARGETARCH (
-  @set LJBINPATH=%LJBINPATH%%LJTARGETARCH%\
-)
-@if not exist %LJBINPATH% (
-  @mkdir %LJBINPATH%
-)
-@set LJDLLNAME=%LJBINPATH%lua51.dll
-@set LJLIBNAME=%LJBINPATH%lua51.lib
+@set LJDLLNAME=lua51.dll
+@set LJLIBNAME=lua51.lib
 @set ALL_LIB=lib_base.c lib_math.c lib_bit.c lib_string.c lib_table.c lib_io.c lib_os.c lib_package.c lib_debug.c lib_jit.c lib_ffi.c
 
 %LJCOMPILE% host\minilua.c
@@ -100,12 +92,14 @@ if exist %LJDLLNAME%.manifest^
 
 %LJCOMPILE% luajit.c
 @if errorlevel 1 goto :BAD
-%LJLINK% /out:%LJBINPATH%lua51.exe luajit.obj %LJLIBNAME%
+%LJLINK% /out:luajit.exe luajit.obj %LJLIBNAME%
 @if errorlevel 1 goto :BAD
-if exist %LJBINPATH%lua51.exe.manifest^
-  %LJMT% -manifest %LJBINPATH%lua51.exe.manifest -outputresource:%LJBINPATH%lua51.exe
+if exist luajit.exe.manifest^
+  %LJMT% -manifest luajit.exe.manifest -outputresource:luajit.exe
 
 @del *.obj *.manifest minilua.exe buildvm.exe
+@del host\buildvm_arch.h
+@del lj_bcdef.h lj_ffdef.h lj_libdef.h lj_recdef.h lj_folddef.h
 @echo.
 @echo === Successfully built LuaJIT for Windows/%LJARCH% ===
 

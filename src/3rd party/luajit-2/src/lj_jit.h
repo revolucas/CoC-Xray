@@ -1,6 +1,6 @@
 /*
 ** Common definitions for the JIT compiler.
-** Copyright (C) 2005-2015 Mike Pall. See Copyright Notice in luajit.h
+** Copyright (C) 2005-2017 Mike Pall. See Copyright Notice in luajit.h
 */
 
 #ifndef _LJ_JIT_H
@@ -154,6 +154,12 @@ typedef uint8_t MCode;
 #else
 typedef uint32_t MCode;
 #endif
+
+/* Linked list of MCode areas. */
+typedef struct MCLink {
+  MCode *next;		/* Next area. */
+  size_t size;		/* Size of current area. */
+} MCLink;
 
 /* Stack snapshot header. */
 typedef struct SnapShot {
