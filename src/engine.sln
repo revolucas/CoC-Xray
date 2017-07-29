@@ -111,6 +111,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "editor_controls", "editor_controls\editor_controls.vcxproj", "{B45374AA-C7ED-42CF-BBD3-DEAA2B7ACB48}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xrEngine", "xrEngine\xrEngine.vcxproj", "{2578C6D8-660D-48AE-9322-7422F8664F06}"
+	ProjectSection(ProjectDependencies) = postProject
+		{61D4856F-FA82-4F02-BB88-909DDFB1FE74} = {61D4856F-FA82-4F02-BB88-909DDFB1FE74}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "luabind.beta7-devel.rc4", "3rd party\luabind\luabind.beta7-devel.rc4.vcxproj", "{CC52E0B3-CC35-4934-9302-035B748F3F2C}"
 EndProject
