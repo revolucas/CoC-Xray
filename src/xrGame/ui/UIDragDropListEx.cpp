@@ -4,8 +4,10 @@
 #include "object_broker.h"
 #include "UICellItem.h"
 #include "UICursor.h"
+#include "../Level.h"
 //Alundaio
-#include "../Inventory.h" 
+#include "../Inventory.h"
+#include <dinput.h>
 //-Alundaio
 
 CUIDragItem* CUIDragDropListEx::m_drag_item = NULL;
@@ -206,9 +208,20 @@ void CUIDragDropListEx::OnItemDBClick(CUIWindow* w, void* pData)
 	OnItemSelected						(w, pData);
 	CUICellItem*		itm				= smart_cast<CUICellItem*>(w);
 
-	if(m_f_item_db_click && m_f_item_db_click(itm) ){
-		DestroyDragItem						();
-		return;
+	if (m_f_item_db_click)
+	{
+		if (Level().IR_GetKeyState(DIK_LCONTROL))
+		{
+			u32 size = itm->ChildsCount();
+			for (u32 j = 0; j < size; j++)
+				m_f_item_db_click(itm);
+		}
+
+		if (m_f_item_db_click(itm))
+		{
+			DestroyDragItem();
+			return;
+		}
 	}
 
 	CUIDragDropListEx*	old_owner		= itm->OwnerList();
