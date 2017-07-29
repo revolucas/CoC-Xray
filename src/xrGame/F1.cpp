@@ -24,18 +24,18 @@ void CF1::script_register	(lua_State *L)
 		class_<CF1,CGameObject>("CF1")
 			.def(constructor<>()),
 			//new 14.10.08 peacemaker
-		class_<CWeaponAmmo,CGameObject>("CWeaponAmmo")
-			.def(constructor<>()),
-		class_<CMedkit,CGameObject>("CMedkit")
-			.def(constructor<>()),
-		class_<CAntirad,CGameObject>("CAntirad")
-			.def(constructor<>()),
-		class_<CFoodItem,CGameObject>("CFoodItem")
-			.def(constructor<>()),
-		class_<CBottleItem,CGameObject>("CBottleItem")
-			.def(constructor<>()),
-		class_<CInventoryBox,CGameObject>("CInventoryBox")
-			.def(constructor<>()),
+		//class_<CWeaponAmmo,CGameObject>("CWeaponAmmo") //Alun: Moved to WeaponAmmo_script.cpp
+		//	.def(constructor<>()),
+		//class_<CMedkit,CGameObject>("CMedkit") //Alun: Moved to Medkit_script.cpp
+		//	.def(constructor<>()),
+		//class_<CAntirad,CGameObject>("CAntirad") //Alun: Moved to Antirad_script.cpp
+		//	.def(constructor<>()),
+		//class_<CFoodItem,CGameObject>("CFoodItem") //Alun: Moved to FoodItem_script.cpp
+		//	.def(constructor<>()),
+		//class_<CBottleItem,CGameObject>("CBottleItem") //Alun: Moved to BottleItem_script.cpp
+		//	.def(constructor<>()),
+		//class_<CInventoryBox,CGameObject>("CInventoryBox") //Alun: Moved to InventoryBox_script.cpp
+		//	.def(constructor<>()),
 		class_<CExplosiveItem,CGameObject>("CExplosiveItem")
 			.def(constructor<>())
 	];

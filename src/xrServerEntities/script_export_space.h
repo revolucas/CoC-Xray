@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include <loki/hierarchygenerators.h>
+
 struct lua_State;
 
 #ifdef SCRIPT_REGISTRATOR
