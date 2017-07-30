@@ -1,6 +1,5 @@
 #include "pch_script.h"
 #include "antirad.h"
-#include "eatable_item.h"
 
 using namespace luabind;
 
@@ -9,7 +8,7 @@ void CAntirad::script_register(lua_State *L)
 {
 	module(L)
 		[
-			class_<CAntirad, CEatableItem>("CAntirad")
+			class_<CAntirad, CGameObject>("CAntirad")
 			.def(constructor<>())
 		];
 }
