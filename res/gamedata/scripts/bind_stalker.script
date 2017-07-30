@@ -84,12 +84,11 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.use_object, nil)
 	-- CoCRay
 	self.object:set_callback(callback.hud_animation_end,nil)
-	self.object:set_callback(callback.actor_before_death,nil)
+	self.object:set_callback(callback.hit,nil)
 	self.object:set_callback(callback.key_press,nil)
 	self.object:set_callback(callback.key_release,nil)
 	self.object:set_callback(callback.key_hold,nil)
-	self.object:set_callback(callback.mouse_move,nil)
-	self.object:set_callback(callback.mouse_wheel,nil)
+	self.object:set_callback(callback.actor_before_death,nil)
 	self.object:set_callback(callback.on_attach_vehicle,nil)
 	self.object:set_callback(callback.on_detach_vehicle,nil)
 	self.object:set_callback(callback.on_use_vehicle,nil)
@@ -97,13 +96,12 @@ function actor_binder:net_destroy()
 	self.object:set_callback(callback.weapon_zoom_in,nil)
 	self.object:set_callback(callback.weapon_zoom_out,nil)
 	self.object:set_callback(callback.weapon_magazine_empty,nil)
+	self.object:set_callback(callback.weapon_no_ammo,nil)
 	self.object:set_callback(callback.item_to_belt,nil)
 	self.object:set_callback(callback.item_to_slot,nil)
 	self.object:set_callback(callback.item_to_ruck,nil)
 	-- //
 	
-	log("--------->"..tostring(_G.amb_vol))
-	log("--------->"..tostring(_G.mus_vol))
 	if(_G.amb_vol~=0) then
 		get_console():execute("snd_volume_eff "..tostring(_G.amb_vol))
 		_G.amb_vol = 0
@@ -128,21 +126,21 @@ function actor_binder:reinit()
 	self.st = db.storage[npc_id]
 	self.st.pstor = nil
 
-	self.object:set_callback(callback.inventory_info, self.info_callback, self)
-	self.object:set_callback(callback.on_item_take, self.on_item_take, self)
-	self.object:set_callback(callback.on_item_drop, self.on_item_drop, self)
-	self.object:set_callback(callback.trade_sell_buy_item, self.on_trade, self) -- for game stats
-	self.object:set_callback(callback.task_state, self.task_callback, self)
-	self.object:set_callback(callback.take_item_from_box, self.take_item_from_box, self)
-	self.object:set_callback(callback.use_object, self.use_inventory_item, self)
+	self.object:set_callback(callback.inventory_info, actor_binder.info_callback, self)
+	self.object:set_callback(callback.on_item_take, actor_binder.on_item_take, self)
+	self.object:set_callback(callback.on_item_drop, actor_binder.on_item_drop, self)
+	self.object:set_callback(callback.trade_sell_buy_item, actor_binder.on_trade, self) -- for game stats
+	self.object:set_callback(callback.task_state, actor_binder.task_callback, self)
+	self.object:set_callback(callback.take_item_from_box, actor_binder.take_item_from_box, self)
+	self.object:set_callback(callback.use_object, actor_binder.use_inventory_item, self)
 	-- CoCRay
+	db.actor = self.object
 	self.object:set_callback(callback.hud_animation_end,self.hud_animation_end,self)
-	self.object:set_callback(callback.actor_before_death,self.actor_before_death,self)
+	self.object:set_callback(callback.hit,self.hit_callback,self)
 	self.object:set_callback(callback.key_press,self.key_press,self)
 	self.object:set_callback(callback.key_release,self.key_release,self)
 	self.object:set_callback(callback.key_hold,self.key_hold,self)
-	self.object:set_callback(callback.mouse_move,self.mouse_move,self)
-	self.object:set_callback(callback.mouse_wheel,self.mouse_wheel,self)
+	self.object:set_callback(callback.actor_before_death,self.actor_before_death,self)
 	self.object:set_callback(callback.on_attach_vehicle,self.on_attach_vehicle,self)
 	self.object:set_callback(callback.on_detach_vehicle,self.on_detach_vehicle,self)
 	self.object:set_callback(callback.on_use_vehicle,self.on_use_vehicle,self)
@@ -150,6 +148,7 @@ function actor_binder:reinit()
 	self.object:set_callback(callback.weapon_zoom_in,self.weapon_zoom_in,self)
 	self.object:set_callback(callback.weapon_zoom_out,self.weapon_zoom_out,self)
 	self.object:set_callback(callback.weapon_magazine_empty,self.weapon_magazine_empty,self)
+	self.object:set_callback(callback.weapon_no_ammo,self.weapon_no_ammo,self)
 	self.object:set_callback(callback.item_to_belt,self.item_to_belt,self)
 	self.object:set_callback(callback.item_to_slot,self.item_to_slot,self)
 	self.object:set_callback(callback.item_to_ruck,self.item_to_ruck,self)
@@ -157,71 +156,81 @@ function actor_binder:reinit()
 end
 
 -- CoCRay
-function self:hud_animation_end(hud_obj,hud_section,motion,state,anim_slot) 
+function actor_binder:hud_animation_end(hud_obj,hud_section,motion,state,anim_slot) 
 
 end
 
-function self:actor_before_death(who_id) 
+function actor_binder:hit_callback(obj,amount,local_direction,who,bone_index)
+	if (amount <= 0) then 
+		return
+	end
+end
+
+function actor_binder:actor_before_death(who_id) 
 	db.actor:kill(db.actor, true)
 end
 
-function self:key_press(key) 
+function actor_binder:key_press(key) 
 
 end
 
-function self:key_release(key) 
+function actor_binder:key_release(key) 
 
 end
 
-function self:key_hold(key) 
+function actor_binder:key_hold(key) 
 
 end
 
-function self:mouse_move(x,y) 
+function actor_binder:mouse_move(x,y) 
 
 end
 
-function self:mouse_wheel(dir) 
+function actor_binder:mouse_wheel(dir) 
 
 end
 
-function self:on_attach_vehicle(obj) 
+function actor_binder:on_attach_vehicle(obj) 
 
 end
 
-function self:on_detach_vehicle(obj) 
+function actor_binder:on_detach_vehicle(obj) 
 
 end
 
-function self:on_use_vehicle(obj) 
+function actor_binder:on_use_vehicle(obj) 
 
 end
 
-function self:weapon_jammed(wpn) 
+function actor_binder:weapon_jammed(wpn) 
 
 end
 
-function self:weapon_zoom_in(actor,wpn) 
+function actor_binder:weapon_zoom_in(actor,wpn) 
 
 end
 
-function self:weapon_zoom_out(actor,wpn) 
+function actor_binder:weapon_zoom_out(actor,wpn) 
 
 end
 
-function self:weapon_magazine_empty(wpn,ammo_total) 
+function actor_binder:weapon_magazine_empty(wpn,ammo_total) 
 
 end
 
-function self:item_to_belt(obj) 
+function actor_binder:weapon_no_ammo(wpn)
 
 end
 
-function self:item_to_slot(obj) 
+function actor_binder:item_to_belt(obj) 
 
 end
 
-function self:item_to_ruck(obj) 
+function actor_binder:item_to_slot(obj) 
+
+end
+
+function actor_binder:item_to_ruck(obj) 
 
 end
 -- //
@@ -559,7 +568,6 @@ function actor_binder:load(reader)
 	self.f_surge_manager_loaded = true
 	sr_psy_antenna.load(reader)
 	sim_board.get_sim_board().simulation_started = reader:r_bool()
-
 	xr_sound.actor_load(reader)
 	local n = reader:r_stringZ()
 	if(n~="nil") then
@@ -571,13 +579,10 @@ function actor_binder:load(reader)
 	for i = 1,n do
 		db.script_ids[reader:r_u16()] = reader:r_stringZ()
 	end
-
 	task_manager.get_task_manager():load(reader)
-
 --	self.actor_weapon_on_start = reader:r_bool()
 	
 	self.loaded_active_slot = reader:r_u8()
-	
 	self.loaded_slot_applied = false
 
 	local b = reader:r_bool()

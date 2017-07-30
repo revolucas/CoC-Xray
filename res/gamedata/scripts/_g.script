@@ -3,7 +3,6 @@
 ------------------------------------------------------------------------------------------------------
 -- ENGINE EXPORTS!!!
 ------------------------------------------------------------------------------------------------------
--- returning false will prevent item transfer
 function CInventoryBox_CanTake(obj,itm)
 	return true
 end
@@ -17,18 +16,26 @@ end
 -- returning false will ignore the hit completely
 function CActor__BeforeHitCallback(actor,shit,bone_id)
 	--[[
-		hit.light_burn
-		hit.burn
-		hit.strike
-		hit.shock
-		hit.wound
-		hit.radiation
-		hit.telepatic
-		hit.chemical_burn
-		hit.explosion
-		hit.fire_wound
+	local hit_to_section = {
+		[hit.light_burn] = "light_burn",
+		[hit.burn] = "burn",
+		[hit.strike] = "strike",
+		[hit.shock] = "shock",
+		[hit.wound] = "wound",
+		[hit.radiation] = "radiation",
+		[hit.telepatic] = "telepatic",
+		[hit.chemical_burn] = "chemical_burn",
+		[hit.explosion] = "explosion",
+		[hit.fire_wound] = "fire_wound",
+	}
+	printf("power=%s impuse=%s type=%s dir=%s who=%s",shit.power,shit.impulse,hit_to_section[shit.type],shit.direction and vec_to_str(shit.direction),shit.draftsman and shit.draftsman:name())
 	--]]
-	--printf("power=%s impuse=%s type=%s dir=%s who=%s",shit.power,shit.impulse,hit_to_section[shit.type],shit.direction and vec_to_str(shit.direction),shit.draftsman and shit.draftsman:name())
+	if (shit.power > 0) then 
+		if (shit.draftsman and shit.draftsman:id() ~= 0 and IsStalker(shit.draftsman) and shit.draftsman:relation(db.actor) == game_object.friend) then 
+			return false 
+		end
+	end
+
 	return true
 end
 
@@ -47,26 +54,22 @@ function CALifeUpdateManager__on_before_change_level(packet)
 	net_packet.r_vec3				(graph().actor()->o_Angle);
 --]]
 -- Here you can do stuff when level changes BEFORE save is called, even change destination!. Packet is constructed as stated above
-
 	-- READ PACKET
-	--[[
 	local pos,angle = vector(),vector()
 	local gvid = packet:r_u16()
 	local lvid = packet:r_u32()
 	packet:r_vec3(pos)
 	packet:r_vec3(angle)
-	
-	
 	-- REPACK it for engine method to read as normal
+	--[[
 	packet:w_begin(13)
 	packet:w_u16(gvid)
 	packet:w_u32(lvid)
 	packet:w_vec3(pos)
 	packet:w_vec3(angle)
+	--]]
 	-- reset read pointer
 	packet:r_seek(2)
-	--]]
-		
 end
 -- //
 
@@ -786,62 +789,44 @@ function get_param_string(src_string , obj)
 	end
 end
 
-local save_markers = {}
-
+local save_marker_result = {}
 -- Функции для проверки корректности сейв лоад
 function set_save_marker(p, mode, check, prefix)
-
-	-- определяем ключ маркера.
-	local result = ""
---	if debug ~= nil then
---		local info_table = debug.getinfo(2)
---		local script_name = string.gsub(info_table.short_src, "%.script", "")
---		script_name = string.gsub(script_name, "gamedata\\scripts\\", "")
---		result = script_name
---	end
-
---	if prefix ~= nil then
-		result = result .. "_" .. prefix
---	end
-
-	if check == true then
-		if save_markers[result] == nil then
-			abort("Trying to check without marker %s", result)
-		end
-
+	prefix = tostring(prefix)
+		if (check ~= true) then
 		if mode == "save" then
-			local dif = p:w_tell() - save_markers[result]
-			printf(result..": SAVE DIF: %s", dif)
-			if dif >= 8000 then
-				printf("WARNING! may be this is problem save point")
+			save_marker_result[prefix] = p:w_tell() or 0
+			if p:w_tell() > 16000 then
+				abort("ERROR: You are saving too much")
 			end
-			if dif >= 10240 then
---				abort("You are saving too much")
-			end
-			p:w_u16(dif)
 		else
-			local c_dif = p:r_tell() - save_markers[result]
-			local dif = p:r_u16()
-			 if dif ~= c_dif then
-			 	abort("INCORRECT LOAD [%s].[%s][%s]", result, dif, c_dif)
-			 else
-			 	printf(result..": LOAD DIF: %s", dif)
-			 end
+			save_marker_result[prefix] = p:r_tell() or 0
 		end
 		return
 	end
-
-	if mode == "save" then
-		printf(result..": set save marker: %s", p:w_tell())
-		save_markers[result] = p:w_tell()
-		if p:w_tell() > 16000 then
-			abort("You are saving too much")
+		if not (save_marker_result[prefix]) then
+		abort("ERROR set_save_marker:%s: Trying to check without marker mode=%s",prefix,mode)
+		if (mode == "save") then
+			p:w_u16(0)
+		elseif (mode == "load") then
+			p:r_u16()
 		end
-	else
-		printf(result..": set load marker: %s", p:r_tell())
-		save_markers[result] = p:r_tell()
+		return
 	end
-
+		if mode == "save" then
+		local dif = p:w_tell() - save_marker_result[prefix]
+		if dif >= 8000 then
+			printf("ERROR set_save_marker:%s: WARNING! may be this is problem save point dif=%s",prefix,dif)
+		end
+		p:w_u16(dif)
+	else
+		local c_dif = p:r_tell() - save_marker_result[prefix]
+		local dif = p:r_u16()
+		if dif ~= c_dif then
+			printf("ERROR set_save_marker:%s: INCORRECT LOAD dif=%s c_dif=%s", prefix, dif, c_dif)
+		end
+	end
+		save_marker_result[prefix] = nil
 end
 -- переводит вектор в строку.
 function vec_to_str (vector)
