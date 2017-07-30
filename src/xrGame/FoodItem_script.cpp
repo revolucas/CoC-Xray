@@ -1,6 +1,5 @@
 #include "pch_script.h"
 #include "FoodItem.h"
-#include "eatable_item.h"
 
 using namespace luabind;
 
@@ -9,7 +8,7 @@ void CFoodItem::script_register(lua_State *L)
 {
 	module(L)
 		[
-			class_<CFoodItem, CEatableItem>("CFoodItem")
+			class_<CFoodItem, CGameObject>("CFoodItem")
 			.def(constructor<>())
 		];
 }

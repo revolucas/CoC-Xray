@@ -13,9 +13,9 @@ You need these SDK libraries: https://drive.google.com/file/d/0B0zCaycrwhLHX09ka
 2. Under User Macros, change `xrSdkLibDir` to point to the downloaded SDK Libraries
 3. Under User Macros, change `xrGameDir` to point to your desired output location for the compiled binaries
 4. After building the solution copy lua51.dll from `src\3rd party\luajit-2\bin\x86` into your xrGameDir folder.
-5. If you are not using CoC, then you need the minimal changes foud in `res\gamedata` *No longer working sorry*
+5. If you are not using CoC, then you need the minimal changes foud in `res\gamedata`
 
-* Notes: Currently only Release/Win32 will build
+* Notes: Currently only Release/Win32 and Debug/Win32 will build
 * If you find a bug or have an enhancement request, file an [Issue](https://github.com/revolucas/xray-16/issues).
 * Please go to our [Wiki](https://github.com/avoitishin/xray-16/wiki) pages for detailed description of changes and other useful information.   
 
