@@ -105,7 +105,7 @@ void CPHObject::Collide()
 				qResultIt i=result.begin(),e=result.end();
 				for(;i!=e;++i)	{
 					CPHObject* obj2=static_cast<CPHObject*>(*i);
-					if(obj2==this || !obj2->m_flags.test(st_dirty))		continue;
+					if(obj2 == NULL || obj2==this || !obj2->m_flags.test(st_dirty))		continue;
 					dGeomID	motion_ray=ph_world->GetMotionRayGeom();
 					dGeomRayMotionSetGeom(motion_ray,I.dGeom());
 					dGeomRayMotionsSet(motion_ray,(const dReal*) from,(const dReal*)&dir,magnitude);
@@ -125,7 +125,7 @@ void	CPHObject::		CollideDynamics					()
 	qResultIt i=result.begin(),e=result.end();
 	for(;i!=e;++i)	{
 		CPHObject* obj2=static_cast<CPHObject*>(*i);
-		if(obj2==this || !obj2->m_flags.test(st_dirty))		continue;
+		if(obj2 == NULL || obj2==this || !obj2->m_flags.test(st_dirty))		continue;
 		if(CPHCollideValidator::DoCollide(*this,*obj2)) NearCallback(this,obj2,dSpacedGeom(),obj2->dSpacedGeom());
 	}
 }
