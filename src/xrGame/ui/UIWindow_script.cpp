@@ -233,7 +233,9 @@ void CUIWindow::script_register(lua_State *L)
 
 				value("EDIT_TEXT_COMMIT",				int(EDIT_TEXT_COMMIT)),
 	// CMainMenu
-				value("MAIN_MENU_RELOADED",				int(MAIN_MENU_RELOADED))
+				value("MAIN_MENU_RELOADED",				int(MAIN_MENU_RELOADED)),
+	// CUITrackBar
+				value("TRACK_VALUE_CHANGED",			int(TRACK_VALUE_CHANGED))
 			]
 	];
 }
