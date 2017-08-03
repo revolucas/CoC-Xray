@@ -148,8 +148,8 @@ void CUIDragDropListEx::DestroyDragItem()
 }
 
 Fvector2 CUIDragDropListEx::GetDragItemPosition()
-{
-	return m_drag_item->GetPosition();
+{	//Alun: More accurate then Left-Top of dragged icon
+	return GetUICursor().GetCursorPosition(); //m_drag_item->GetPosition();
 }
 
 
