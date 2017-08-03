@@ -49,6 +49,8 @@
 #include "../xrEngine/feel_touch.h"
 #include "weaponammo.h"
 #include "WeaponMagazinedWGrenade.h"
+#include "level_path_manager.h"
+#include "game_path_manager.h"
 //-Alundaio
 
 namespace MemorySpace {
@@ -407,13 +409,41 @@ void CScriptGameObject::inactualize_patrol_path		()
 		stalker->movement().patrol().make_inactual();
 }
 
+void CScriptGameObject::inactualize_level_path		()
+{
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->movement().level_path().make_inactual();
+}
+
+void CScriptGameObject::inactualize_game_path		()
+{
+	CAI_Stalker					*stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		ai().script_engine().script_log					(ScriptStorage::eLuaMessageTypeError,"CAI_Stalker : cannot access class member movement!");
+	else
+		stalker->movement().game_path().make_inactual();
+}
+
+u32 CScriptGameObject::get_dest_game_vertex_id()
+{
+	CAI_Stalker *stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError, "CAI_Stalker : cannot access class member get_dest_level_vertex_id!");
+	else
+		return (stalker->movement().game_dest_vertex_id());
+	return (-1);
+}
+
 u32 CScriptGameObject::get_dest_level_vertex_id()
 {
 	CAI_Stalker *stalker = smart_cast<CAI_Stalker*>(&object());
 	if (!stalker)
 		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError, "CAI_Stalker : cannot access class member get_dest_level_vertex_id!");
 	else
-		return stalker->movement().level_dest_vertex_id();
+		return (stalker->movement().level_dest_vertex_id());
 	return (-1);
 }
 
