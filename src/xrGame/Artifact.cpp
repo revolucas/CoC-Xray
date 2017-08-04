@@ -380,9 +380,9 @@ bool CArtefact::Action(s32 cmd, u32 flags)
 	return inherited::Action(cmd,flags);
 }
 
-void CArtefact::OnStateSwitch(u32 S)
+void CArtefact::OnStateSwitch(u32 S, u32 oldState)
 {
-	inherited::OnStateSwitch	(S);
+	inherited::OnStateSwitch	(S, oldState);
 	switch(S){
 	case eShowing:
 		{
@@ -390,7 +390,10 @@ void CArtefact::OnStateSwitch(u32 S)
 		}break;
 	case eHiding:
 		{
-			PlayHUDMotion("anm_hide", FALSE, this, S);
+			if (oldState != eHiding)
+			{
+				PlayHUDMotion("anm_hide", FALSE, this, S);
+			}
 		}break;
 	case eActivating:
 		{

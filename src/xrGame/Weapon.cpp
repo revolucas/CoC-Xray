@@ -689,7 +689,7 @@ void CWeapon::OnEvent(NET_Packet& P, u16 type)
             m_set_next_ammoType_on_reload = NextAmmo;
 
         if (OnClient()) SetAmmoElapsed(int(AmmoElapsed));
-        OnStateSwitch(u32(state));
+        OnStateSwitch(u32(state), GetState());
     }
     break;
     default:
@@ -1867,9 +1867,9 @@ const float &CWeapon::hit_probability() const
     return					(m_hit_probability[g_SingleGameDifficulty]);
 }
 
-void CWeapon::OnStateSwitch(u32 S)
+void CWeapon::OnStateSwitch(u32 S, u32 oldState)
 {
-    inherited::OnStateSwitch(S);
+    inherited::OnStateSwitch(S, oldState);
     m_BriefInfo_CalcFrame = 0;
 
     if (GetState() == eReload)

@@ -33,16 +33,16 @@ private:
 protected:
 	u32						m_dw_curr_substate_time;
 public:
-							CHUDState			()					{SetState(eHidden);}
-	IC		u32				GetNextState		() const			{return		m_nextState;}
-	IC		u32				GetState			() const			{return		m_hud_item_state;}
-
-	IC		void			SetState			(u32 v)				{m_hud_item_state = v; m_dw_curr_state_time=Device.dwTimeGlobal;ResetSubStateTime();}
-	IC		void			SetNextState		(u32 v)				{m_nextState = v;}
-	IC		u32				CurrStateTime		() const			{return Device.dwTimeGlobal-m_dw_curr_state_time;}
-	IC		void			ResetSubStateTime	()					{m_dw_curr_substate_time=Device.dwTimeGlobal;}
-	virtual void			SwitchState			(u32 S)				= 0;
-	virtual void			OnStateSwitch		(u32 S)				= 0;
+							CHUDState			()						{SetState(eHidden);}
+	IC		u32				GetNextState		() const				{return		m_nextState;}
+	IC		u32				GetState			() const				{return		m_hud_item_state;}
+	
+	IC		void			SetState			(u32 v)					{m_hud_item_state = v; m_dw_curr_state_time=Device.dwTimeGlobal;ResetSubStateTime();}
+	IC		void			SetNextState		(u32 v)					{m_nextState = v;}
+	IC		u32				CurrStateTime		() const				{return Device.dwTimeGlobal-m_dw_curr_state_time;}
+	IC		void			ResetSubStateTime	()						{m_dw_curr_substate_time=Device.dwTimeGlobal;}
+	virtual void			SwitchState			(u32 S)					= 0;
+	virtual void			OnStateSwitch		(u32 S, u32 oldState) 	= 0;
 };
 
 class CHudItem :public CHUDState
@@ -105,7 +105,7 @@ public:
 	bool						IsShowing			()	const		{	return GetState() == eShowing;}
 
 	virtual void				SwitchState			(u32 S);
-	virtual void				OnStateSwitch		(u32 S);
+	virtual void				OnStateSwitch		(u32 S, u32 oldState);
 
 	virtual void				OnAnimationEnd		(u32 state);
 	virtual void				OnMotionMark		(u32 state, const motion_marks&){};
