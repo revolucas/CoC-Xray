@@ -182,19 +182,7 @@ void  CWeaponMagazinedWGrenade::PerformSwitchGL()
     swap(m_ammoType, m_ammoType2);
     swap(m_DefaultCartridge, m_DefaultCartridge2);
 
-    xr_vector<CCartridge> l_magazine;
-    while (m_magazine.size())
-    {
-        l_magazine.push_back(m_magazine.back()); m_magazine.pop_back();
-    }
-    while (m_magazine2.size())
-    {
-        m_magazine.push_back(m_magazine2.back()); m_magazine2.pop_back();
-    }
-    while (l_magazine.size())
-    {
-        m_magazine2.push_back(l_magazine.back()); l_magazine.pop_back();
-    }
+    m_magazine.swap(m_magazine2);
     iAmmoElapsed = (int) m_magazine.size();
 
     m_BriefInfo_CalcFrame = 0;
@@ -426,7 +414,7 @@ void CWeaponMagazinedWGrenade::ReloadMagazine()
     }
 }
 
-void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S)
+void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S, u32 oldState)
 {
     switch (S)
     {
@@ -440,7 +428,7 @@ void CWeaponMagazinedWGrenade::OnStateSwitch(u32 S)
     }break;
     }
 
-    inherited::OnStateSwitch(S);
+    inherited::OnStateSwitch(S, oldState);
     UpdateGrenadeVisibility(!!iAmmoElapsed || S == eReload);
 }
 
@@ -534,11 +522,14 @@ bool CWeaponMagazinedWGrenade::Detach(LPCSTR item_section_name, bool b_spawn_ite
         !xr_strcmp(*m_sGrenadeLauncherName, item_section_name))
     {
         m_flagsAddOnState &= ~CSE_ALifeItemWeapon::eWeaponAddonGrenadeLauncher;
-        if (m_bGrenadeMode)
-        {
-            UnloadMagazine();
-            PerformSwitchGL();
-        }
+		
+		// Now we need to unload GL's magazine
+		if (!m_bGrenadeMode)
+		{
+			PerformSwitchGL();
+		}
+		UnloadMagazine();
+		PerformSwitchGL();        
 
         UpdateAddonsVisibility();
 
@@ -816,6 +807,26 @@ void CWeaponMagazinedWGrenade::net_Import(NET_Packet& P)
         SwitchMode();
 
     inherited::net_Import(P);
+}
+
+float CWeaponMagazinedWGrenade::Weight() const
+{
+    float res = inherited::Weight();
+
+    const char* last_type = nullptr;
+    float w = 0, bs = 0;
+    for (auto& c : m_magazine2)
+    {
+        // Usually ammos in mag have same type, use it to improve performance
+        if (last_type != c.m_ammoSect.c_str())
+        {
+			last_type = c.m_ammoSect.c_str();
+            w = pSettings->r_float(last_type, "inv_weight");
+            bs = pSettings->r_float(last_type, "box_size");
+        }
+        res += w / bs;
+    }
+    return res;
 }
 
 bool CWeaponMagazinedWGrenade::IsNecessaryItem(const shared_str& item_sect)

@@ -36,7 +36,7 @@ enum EUIMessages
 	// CUICheckButton
 	CHECK_BUTTON_SET,
 	CHECK_BUTTON_RESET, 
-
+	
 	// CUIRadioButton
 	RADIOBUTTON_SET,
 
@@ -128,4 +128,7 @@ enum EUIMessages
 
 	MAIN_MENU_RELOADED,
 	MAP_SELECT_SPOT2,
+
+	//CUITrackBar
+	TRACK_VALUE_CHANGED,
 };

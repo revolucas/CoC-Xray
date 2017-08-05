@@ -120,7 +120,7 @@ end
 function get_stat(index) -- index= int        return string
 	if(index==0) then
 		-- CoCray
-		return get_time_elapsed() 
+		return tostring(get_time_elapsed())
 		-- //
 	elseif(index==1) then
 		return tostring(xr_statistic.actor_statistic.surges)
@@ -135,6 +135,7 @@ function get_stat(index) -- index= int        return string
 	elseif(index==6) then
 		return tostring(xr_statistic.actor_statistic.founded_secrets)
 	end
+	return "Unknown"
 end
 
 killed_monsters_tbl =

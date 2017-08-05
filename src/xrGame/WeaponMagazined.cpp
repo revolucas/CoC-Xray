@@ -262,7 +262,7 @@ bool CWeaponMagazined::TryReload()
             m_pCurrentAmmo = smart_cast<CWeaponAmmo*>(m_pInventory->GetAny(m_ammoTypes[i].c_str()));
             if (m_pCurrentAmmo)
             {
-                m_ammoType = i;
+                m_set_next_ammoType_on_reload = i;
                 SetPending(TRUE);
                 SwitchState(eReload);
                 return				true;
@@ -451,9 +451,9 @@ void CWeaponMagazined::ReloadMagazine()
     VERIFY((u32) iAmmoElapsed == m_magazine.size());
 }
 
-void CWeaponMagazined::OnStateSwitch(u32 S)
+void CWeaponMagazined::OnStateSwitch(u32 S, u32 oldState)
 {
-    inherited::OnStateSwitch(S);
+    inherited::OnStateSwitch(S, oldState);
     CInventoryOwner* owner = smart_cast<CInventoryOwner*>(this->H_Parent());
     switch (S)
     {
@@ -483,7 +483,9 @@ void CWeaponMagazined::OnStateSwitch(u32 S)
     case eHiding:
         if (owner)
             m_sounds_enabled = owner->CanPlayShHdRldSounds();
-        switch2_Hiding();
+
+		if (oldState != eHiding)
+			switch2_Hiding();
         break;
     case eHidden:
         switch2_Hidden();
@@ -1108,6 +1110,7 @@ void CWeaponMagazined::InitAddons()
             m_zoom_params.m_sUseZoomPostprocess = READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "scope_nightvision", 0);
             m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, GetScopeName(), "scope_dynamic_zoom", FALSE);
             m_zoom_params.m_sUseBinocularVision = READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "scope_alive_detector", 0);
+            m_fRTZoomFactor = m_zoom_params.m_fScopeZoomFactor;
             if (m_UIScope)
             {
                 xr_delete(m_UIScope);

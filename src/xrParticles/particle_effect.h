@@ -28,7 +28,7 @@ namespace PAPI{
 			particles_allocated		= max_particles;
 
 			real_ptr				= xr_malloc( sizeof( Particle ) * ( max_particles + 1 ) );
-			particles				= (Particle*) ( (DWORD) real_ptr + ( 64 - ( (DWORD) real_ptr & 63 ) ) );
+			particles = (Particle*)((uintptr_t)real_ptr + (64 - ((uintptr_t)real_ptr & 63)));
 			//Msg( "Allocated %u bytes (%u particles) with base address 0x%p" , max_particles * sizeof( Particle ) , max_particles , particles );
 		}
 					~ParticleEffect	()
@@ -58,7 +58,7 @@ namespace PAPI{
 				return max_particles;
 			}
 
-			Particle* new_particles	= (Particle*) ( (DWORD) new_real_ptr + ( 64 - ( (DWORD) new_real_ptr & 63 ) ) );
+			Particle* new_particles = (Particle*)((uintptr_t)new_real_ptr + (64 - ((uintptr_t)new_real_ptr & 63)));
 			//Msg( "Re-allocated %u bytes (%u particles) with base address 0x%p" , max_count * sizeof( Particle ) , max_count , new_particles );
 
 			CopyMemory			(new_particles, particles, p_count * sizeof(Particle));
@@ -74,9 +74,9 @@ namespace PAPI{
 		IC void		Remove			(int i)
 		{
         	if (0==p_count)			return;
-			Particle& m				= particles[i];
+			Particle& m = particles[ptrdiff_t(i)];
             if (d_cb)				d_cb(owner,param,m,i);
-            m 						= particles[--p_count]; // не менять правило удаления !!! (dependence ParticleGroup)
+			m = particles[ptrdiff_t(--p_count)]; // не менять правило удаления !!! (dependence ParticleGroup)
 			// Msg( "pDel() : %u" , p_count );
 		}
 
@@ -86,7 +86,7 @@ namespace PAPI{
 		{
 			if(p_count >= max_particles)	return FALSE;
 			else{
-				Particle& P = particles[p_count];
+				Particle& P = particles[ptrdiff_t(p_count)];
 				P.pos 		= pos;
 				P.posB 		= posB;
 				P.size 		= size;

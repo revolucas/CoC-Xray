@@ -39,7 +39,7 @@ DWORD WINAPI ttapiThreadProc( LPVOID lpParameter )
 				// Msg( "0x%8.8X Fast %u" , dwId , i );
 				goto process;
 			}
-			__asm pause;
+			_mm_pause();
 		}
 
 		// Moderate
@@ -121,7 +121,7 @@ DWORD ttapi_Init( _processor_info* ID )
 	for ( i = 0 ; i < dwNumIter ; ++i ) {
 		if ( dwDummy == 0 )
 			goto process1;
-		__asm pause;
+		_mm_pause();
 	}
 	process1:
 	QueryPerformanceCounter( &liEnd );
@@ -244,7 +244,7 @@ VOID ttapi_RunAllWorkers()
 		// Waiting task queue to become empty
 		//Start = __rdtsc();
 		while( ttapi_queue_size.size )
-			__asm pause;
+			_mm_pause();
 		//Stop = __rdtsc();
 		//Msg( "Wait: %u ticks" , Stop - Start );
 

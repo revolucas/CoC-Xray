@@ -835,6 +835,9 @@ public:
 			_DECLARE_FUNCTION14(cast_InventoryBox, CInventoryBox);
 
 			u32					get_dest_level_vertex_id();
+			u32					get_dest_game_vertex_id();
+			void				inactualize_level_path();
+			void				inactualize_game_path();
 
             void				SetHealthEx(float hp); //AVO
 			float				GetLuminocityHemi();

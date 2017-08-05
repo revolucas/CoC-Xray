@@ -286,6 +286,7 @@ function get_item(npc, item)
 	if lootable_table[item:section()] == true then
 		npc:transfer_item(item, transfer_to_npc)
 	end
+	return false
 end
 
 function get_all_from_corpse(npc)
