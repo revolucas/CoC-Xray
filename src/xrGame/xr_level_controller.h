@@ -106,6 +106,8 @@ enum	EGameActions
 	kPDA_TAB5,
 	kPDA_TAB6,
 
+	kKICK, // alpet: пинок видимого объекта
+
 	kLASTACTION,
 	kNOTBINDED,
 	kFORCEDWORD		= u32(-1)

@@ -111,6 +111,7 @@ _action  actions[]		= {
 	{ "pda_tab4", kPDA_TAB4, _sp },
 	{ "pda_tab5", kPDA_TAB5, _sp },
 	{ "pda_tab6", kPDA_TAB6, _sp },
+	{ "kick", kKICK, _sp },
 	{ NULL, 				kLASTACTION				,_both}		
 };															
 
