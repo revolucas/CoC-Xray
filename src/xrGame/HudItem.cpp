@@ -112,14 +112,14 @@ void CHudItem::OnEvent(NET_Packet& P, u16 type)
     case GE_WPN_STATE_CHANGE:
     {
         u8				S;
-        P.r_u8(S);
-        OnStateSwitch(u32(S));
+        P.r_u8(S);		
+        OnStateSwitch(u32(S), GetState());
     }
     break;
     }
 }
 
-void CHudItem::OnStateSwitch(u32 S)
+void CHudItem::OnStateSwitch(u32 S, u32 oldState)
 {
     SetState(S);
 

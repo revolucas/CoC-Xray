@@ -120,9 +120,9 @@ void CCustomDetector::ToggleDetector(bool bFastMode)
 
 }
 
-void CCustomDetector::OnStateSwitch(u32 S)
+void CCustomDetector::OnStateSwitch(u32 S, u32 oldState)
 {
-	inherited::OnStateSwitch(S);
+	inherited::OnStateSwitch(S, oldState);
 
 	switch(S)
 	{
@@ -135,9 +135,12 @@ void CCustomDetector::OnStateSwitch(u32 S)
 		}break;
 	case eHiding:
 		{
-			m_sounds.PlaySound			("sndHide", Fvector().set(0,0,0), this, true, false);
-			PlayHUDMotion				(m_bFastAnimMode?"anm_hide_fast":"anm_hide", FALSE/*TRUE*/, this, GetState());
-			SetPending					(TRUE);
+			if (oldState != eHiding)
+			{
+				m_sounds.PlaySound("sndHide", Fvector().set(0, 0, 0), this, true, false);
+				PlayHUDMotion(m_bFastAnimMode ? "anm_hide_fast" : "anm_hide", FALSE/*TRUE*/, this, GetState());
+				SetPending(TRUE);
+			}
 		}break;
 	case eIdle:
 		{
@@ -307,6 +310,13 @@ void CCustomDetector::OnH_B_Independent(bool just_before_destroy)
 	inherited::OnH_B_Independent(just_before_destroy);
 	
 	m_artefacts.clear			();
+
+	if (GetState() != eHidden)
+	{
+		// Detaching hud item and animation stop in OnH_A_Independent
+		TurnDetectorInternal(false);
+		SwitchState(eHidden);
+	}
 }
 
 

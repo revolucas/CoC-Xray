@@ -689,7 +689,7 @@ void CWeapon::OnEvent(NET_Packet& P, u16 type)
             m_set_next_ammoType_on_reload = NextAmmo;
 
         if (OnClient()) SetAmmoElapsed(int(AmmoElapsed));
-        OnStateSwitch(u32(state));
+        OnStateSwitch(u32(state), GetState());
     }
     break;
     default:
@@ -988,7 +988,7 @@ bool CWeapon::Action(u16 cmd, u32 flags)
 
     case kWPN_ZOOM_INC:
     case kWPN_ZOOM_DEC:
-        if (IsZoomEnabled() && IsZoomed())
+        if (IsZoomEnabled() && IsZoomed() && (flags&CMD_START) )
         {
             if (cmd == kWPN_ZOOM_INC)  ZoomInc();
             else					ZoomDec();
@@ -1795,13 +1795,20 @@ float CWeapon::Weight() const
         res += pSettings->r_float(GetSilencerName(), "inv_weight");
     }
 
-    if (iAmmoElapsed)
+    const char* last_type = nullptr; 
+    float w = 0, bs = 0;
+    for (auto& c : m_magazine)
     {
-        float w = pSettings->r_float(m_ammoTypes[m_ammoType].c_str(), "inv_weight");
-        float bs = pSettings->r_float(m_ammoTypes[m_ammoType].c_str(), "box_size");
-
-        res += w*(iAmmoElapsed / bs);
+        // Usually ammos in mag have same type, use it to improve performance
+		if (last_type != c.m_ammoSect.c_str())
+        {
+			last_type = c.m_ammoSect.c_str();
+            w  = pSettings->r_float(last_type, "inv_weight");
+            bs = pSettings->r_float(last_type, "box_size");
+        }
+        res += w / bs;
     }
+
     return res;
 }
 
@@ -1867,9 +1874,9 @@ const float &CWeapon::hit_probability() const
     return					(m_hit_probability[g_SingleGameDifficulty]);
 }
 
-void CWeapon::OnStateSwitch(u32 S)
+void CWeapon::OnStateSwitch(u32 S, u32 oldState)
 {
-    inherited::OnStateSwitch(S);
+    inherited::OnStateSwitch(S, oldState);
     m_BriefInfo_CalcFrame = 0;
 
     if (GetState() == eReload)
