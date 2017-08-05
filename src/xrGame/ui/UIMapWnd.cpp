@@ -22,6 +22,7 @@
 
 #include "UIPropertiesBox.h"
 #include "UIListBoxItem.h"
+#include "UIPdaSpot.h"
 
 #include "../../xrEngine/xr_input.h"		//remove me !!!
 
@@ -40,6 +41,7 @@ CUIMapWnd::CUIMapWnd()
 	m_currentZoom			= 1.0f;
 	m_map_location_hint		= NULL;
 	m_map_move_step			= 10.0f;
+	m_UserSpotWnd = nullptr;
 /*
 #ifdef DEBUG
 //	m_dbg_text_hint			= NULL;
@@ -195,6 +197,10 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 	AttachChild(m_UIPropertiesBox);
 	m_UIPropertiesBox->Hide();
 	m_UIPropertiesBox->SetWindowName( "property_box" );
+
+	m_UserSpotWnd = new CUIPdaSpot();
+	m_UserSpotWnd->SetAutoDelete(true);
+	AttachChild(m_UserSpotWnd);
 }
 
 void CUIMapWnd::Show(bool status)
@@ -234,6 +240,7 @@ void CUIMapWnd::Show(bool status)
 		InventoryUtilities::SendInfoToActor("ui_pda_map_local");
 	}
 	HideCurHint();
+	m_UserSpotWnd->Exit();
 }
 
 void CUIMapWnd::Activated()
@@ -489,25 +496,54 @@ bool CUIMapWnd::UpdateZoom( bool b_zoom_in )
 
 void CUIMapWnd::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
 {
-//	inherited::SendMessage( pWnd, msg, pData);
 	CUIWndCallback::OnEvent(pWnd, msg, pData);
 	if(pWnd == m_UIPropertiesBox &&	msg == PROPERTY_CLICKED && m_UIPropertiesBox->GetClickedItem())
 	{
 		luabind::functor<void> funct;
 		if (ai().script_engine().functor("pda.property_box_clicked", funct))
 			funct(m_UIPropertiesBox);
+		//-----------------------
+		switch (m_UIPropertiesBox->GetClickedItem()->GetTAG())
+		{
+		case MAP_CHANGE_SPOT_HINT_ACT: // Кликнули по кнопке изменить название метки
+			{
+				ShowSettingsWindow(m_cur_location->ObjectID(), m_cur_location->GetLastPosition(), m_cur_location->GetLevelName());
+				break;
+			}
+		case MAP_REMOVE_SPOT_ACT: // Кликнули по кнопке удалить метку
+			{
+				Level().MapManager().RemoveMapLocation(m_cur_location->GetType(), m_cur_location->ObjectID());
+				break;
+			}
+		}
 	}
 }
 
 void CUIMapWnd::ActivatePropertiesBox(CUIWindow* w)
 {
 	m_UIPropertiesBox->RemoveAll();
+
+	CMapSpot* sp = smart_cast<CMapSpot*>(w);
+	if (!sp)
+	{
+		Msg("qweasdd: CUIMapWnd::ActivatePropertiesBox sp is not exist!");
+		return;
+	}
+
+	m_cur_location = sp->MapLocation();
+
 	luabind::functor<void> funct;
 	if (ai().script_engine().functor("pda.property_box_add_properties", funct))
 	{
-		CMapSpot* sp = smart_cast<CMapSpot*>(w);
-		if (sp)
-			funct(m_UIPropertiesBox, sp->MapLocation()->ObjectID(), (LPCSTR)sp->MapLocation()->GetLevelName().c_str(), (LPCSTR)sp->MapLocation()->GetHint());
+		funct(m_UIPropertiesBox, m_cur_location->ObjectID(), (LPCSTR)m_cur_location->GetLevelName().c_str(), (LPCSTR)m_cur_location->GetHint());
+	}
+
+	// Только для меток игрока
+	if (sp->MapLocation()->IsUserDefined())
+	{
+		Msg("qweasdd: CUIMapWnd::ActivatePropertiesBox, register prop boxes. ln = %s, type = %s", m_cur_location->GetLevelName().c_str(), m_cur_location->GetType());
+		m_UIPropertiesBox->AddItem("st_pda_change_spot_hint", NULL, MAP_CHANGE_SPOT_HINT_ACT); // Изменяем название метки
+		m_UIPropertiesBox->AddItem("st_pda_delete_spot", NULL, MAP_REMOVE_SPOT_ACT); // Удаляем метку
 	}
 	
 	if (m_UIPropertiesBox->GetItemsCount() > 0)
@@ -752,4 +788,117 @@ void CUIMapWnd::SpotSelected( CUIWindow* w )
 	{
 		Level().GameTaskManager().SetActiveTask( t );
 	}
+}
+// -------------------------------------------------------------
+// qweasdd: Following functions from Lost Alpha
+bool CUIMapWnd::ConvertCursorPosToMap(Fvector* return_position, CUILevelMap* curr_map)
+{
+	if (fsimilar(GlobalMap()->GetMinZoom(), GetZoom(), EPS_L)) return false;
+
+	if (!curr_map)
+	{
+		Msg("qweasdd: CUIMapWnd::ConvertCursorPosToMap, curr_map == NULL!");
+		return false;
+	}
+
+	Frect PosOnMap = curr_map->GlobalRect();															//v1=PosOnMap
+
+	Frect PosReal = curr_map->BoundRect();
+	PosReal.x1 /= UI().get_current_kx();
+	PosReal.x2 /= UI().get_current_kx();
+
+	Fvector2 Position = m_GlobalMap->GetWndPos();														//v2=Positioin
+	Fvector2 Position2;
+
+	Position.div(m_GlobalMap->GetCurrentZoom());
+
+	Position.abs(Position);
+	Position.sub(PosOnMap.lt);
+
+	//Где находимся от левого верхнего угла
+	//Add cursor position
+	Fvector2 CursorPos = GetUICursor().GetCursorPosition();
+	CursorPos.sub(ActiveMapRect().lt);
+	CursorPos.div(m_GlobalMap->GetCurrentZoom());
+	Position.add(CursorPos);
+
+	//Ratio: Meters to Pixels
+	Fvector2 Ratio;
+	Ratio.x = PosReal.width() / PosOnMap.width();		//Отношение пикселей к реальным метрам
+	Ratio.y = PosReal.height() / PosOnMap.height();
+
+	//Location center isn't usually in the map location center
+	//Центр локации не всегда там где центр локации на карте
+	Fvector2 OffsetPosition;
+	OffsetPosition.set(PosReal.rb.x + PosReal.lt.x, PosReal.rb.y + PosReal.lt.y);
+	OffsetPosition.div(2.0f);
+	OffsetPosition.x *= UI().get_current_kx();
+
+	//Center on map. In PDA
+	Fvector2 CenterOnMap;
+	CenterOnMap.set(PosOnMap.rb.x - PosOnMap.lt.x, PosOnMap.rb.y - PosOnMap.lt.y);
+	CenterOnMap.div(2.0f);
+
+
+	Position.set(Position.x - CenterOnMap.x, CenterOnMap.y - Position.y);
+	Position.mul(Ratio);
+	Position.add(OffsetPosition);
+
+	return_position->set(Position.x, 0.0f, Position.y);
+	Msg("qweasdd: CUIMapWnd::ConvertCursorPosToMap, FINISH!");
+	return true;
+}
+// -------------------------------------------------------------
+void CUIMapWnd::ShowSettingsWindow(u16 id, Fvector pos, shared_str levelName)
+{
+	m_UserSpotWnd->Init(id, levelName.c_str(), pos, false);
+	m_UserSpotWnd->ShowDialog(true);
+}
+// -------------------------------------------------------------
+CMapLocation* CUIMapWnd::UnderSpot(Fvector RealPosition, CUILevelMap* curr_map)
+{
+	Msg("qweasdd: CUIMapWnd::UnderSpot START");
+	Fvector2 RealPositionXZ;
+	RealPositionXZ.set(RealPosition.x, RealPosition.z);
+
+	Locations Spots = Level().MapManager().Locations();
+	Locations_it it;
+	Fvector2 m_position_on_map;
+	Fvector2 m_position_mouse = curr_map->ConvertRealToLocal(RealPositionXZ, false);
+	float TargetLocationDistance = 100.0f;
+	CMapLocation* ml = NULL;
+
+	for (it = Spots.begin(); it != Spots.end(); ++it)
+	{
+		if ((*it).location->IsUserDefined())
+		{
+			Msg("qweasdd: CUIMapWnd::UnderSpot map loc is user defined!");
+			m_position_on_map = curr_map->ConvertRealToLocal((*it).location->CalcPosition(), false);
+
+			float distance = m_position_on_map.distance_to(m_position_mouse);
+
+			Fvector2 FvectorSize = (*it).location->SpotSize();
+			float size = (FvectorSize.x + FvectorSize.y) / 2;
+
+			if ((distance < size) && (distance<TargetLocationDistance))
+			{
+				TargetLocationDistance = distance;
+				ml = (*it).location;
+
+			}
+		}
+	}
+
+	if (ml != NULL)
+		Msg("qweasdd: CUIMapWnd::UnderSpot ml is finded!");
+	else
+		Msg("qweasdd: CUIMapWnd::UnderSpot ml is not finded!");
+
+	return ml;
+}
+// -------------------------------------------------------------
+void CUIMapWnd::CreateSpotWindow(Fvector RealPosition, shared_str map_name)
+{
+	m_UserSpotWnd->Init(u16(-1), map_name.c_str(), RealPosition, true);
+	m_UserSpotWnd->ShowDialog(true);
 }

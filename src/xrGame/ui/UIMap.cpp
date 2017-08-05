@@ -516,6 +516,26 @@ bool CUILevelMap::OnMouseAction(float x, float y, EUIMessages mouse_action)
 	if (inherited::OnMouseAction(x,y,mouse_action))	return true;
 	if (MapWnd()->GlobalMap()->Locked())		return true;
 
+	if (mouse_action == WINDOW_LBUTTON_DB_CLICK)
+	{
+		Msg("qweasdd: CUIMapWnd::OnMouseAction, mouse left btn db click, adding spot!");
+		Fvector RealPosition;
+
+		if (MapWnd()->ConvertCursorPosToMap(&RealPosition, this))
+		{
+			Msg("qweasdd: CUIMapWnd::OnMouseAction, ConvertCursorPosToMap returned true!");
+			CMapLocation* _mapLoc = MapWnd()->UnderSpot(RealPosition, this);
+
+			if (_mapLoc == nullptr)
+			{
+				Msg("qweasdd: CUIMapWnd::OnMouseAction, _mapLoc == NULL!");
+				MapWnd()->CreateSpotWindow(RealPosition, MapName());
+				return true;
+			}
+		}
+
+	}
+
 	if(mouse_action==WINDOW_MOUSE_MOVE && (FALSE==pInput->iGetAsyncBtnState(0)) )
 	{
 		if( MapWnd() )

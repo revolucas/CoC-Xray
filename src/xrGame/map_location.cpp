@@ -30,7 +30,7 @@
 #include "Inventory.h"
 //#include "CustomMonster.h"
 
-CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
+CMapLocation::CMapLocation(LPCSTR type, u16 object_id, bool is_user_loc)
 {
 	m_flags.zero			();
 
@@ -49,9 +49,15 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id)
 	m_mini_map_spot_border_na = NULL;
 	m_complex_spot_border_na = NULL;
 
+	if (is_user_loc)
+	{
+		Msg("qweasdd: CMapLocation user spot init: type = %s", type);
+		m_flags.set(eUserDefined, TRUE);
+	}
+
 	m_objectID				= object_id;
 	m_actual_time			= 0;
-	m_owner_se_object		= (ai().get_alife()) ? ai().alife().objects().object(m_objectID,true) : NULL;
+	m_owner_se_object = (ai().get_alife() && !IsUserDefined()) ? ai().alife().objects().object(m_objectID, true) : nullptr;
 	m_flags.set				(eHintEnabled, TRUE);
 	LoadSpot				(type, false);
 	
@@ -228,13 +234,56 @@ void CMapLocation::LoadSpot(LPCSTR type, bool bReload)
 	}
 }
 
-void CMapLocation::CalcPosition()
+void CMapLocation::InitUserSpot(const shared_str& level_name, const Fvector& pos)
 {
+	m_cached.m_LevelName = level_name;
+	m_position_global = pos;
+	m_position_on_map.set(pos.x, pos.z);
+	m_cached.m_graphID = GameGraph::_GRAPH_ID(-1);
+	m_cached.m_Position.set(pos.x, pos.z);
+	m_cached.m_Direction.set(0.f, 0.f);
+
+	if (ai().get_alife())
+	{
+		const CGameGraph::SLevel& level = ai().game_graph().header().level(*level_name);
+		float min_dist = 128; // flt_max;
+
+		GameGraph::_GRAPH_ID n = ai().game_graph().header().vertex_count();
+
+		for (GameGraph::_GRAPH_ID i = 0; i < n; ++i)
+		{
+			if (ai().game_graph().vertex(i)->level_id() == level.id())
+			{
+				float distance = ai().game_graph().vertex(i)->game_point().distance_to_sqr(m_position_global);
+				if (distance < min_dist)
+				{
+					min_dist = distance;
+					m_cached.m_graphID = i;
+				}
+			}
+		}
+		if (!ai().game_graph().vertex(m_cached.m_graphID))
+		{
+			Msg("qweasdd! Cannot assign game vertex for CUserDefinedMapLocation [map=%s]", *level_name);
+			R_ASSERT(ai().game_graph().vertex(m_cached.m_graphID));
+		}
+	}
+}
+
+Fvector2 CMapLocation::CalcPosition()
+{
+	if (IsUserDefined())
+		return m_cached.m_Position;
+
+	Fvector2 pos;
+	pos.set(0.0f, 0.0f);
+
 	if(m_flags.test( ePosToActor) && Level().CurrentEntity())
 	{
 		m_position_global		= Level().CurrentEntity()->Position();
-		m_cached.m_Position.set	(m_position_global.x, m_position_global.z);
-		return;
+		pos.set(m_position_global.x, m_position_global.z);
+		m_cached.m_Position = pos;
+		return pos;
 	}
 
 	CObject* pObject =  Level().Objects.net_Find(m_objectID);
@@ -243,18 +292,24 @@ void CMapLocation::CalcPosition()
 		if(m_owner_se_object)
 		{
 			m_position_global		= m_owner_se_object->draw_level_position();
-			m_cached.m_Position.set	(m_position_global.x, m_position_global.z);
+			pos.set(m_position_global.x, m_position_global.z);
 		}
 	
 	}else
 	{
 		m_position_global			= pObject->Position();
-		m_cached.m_Position.set		(m_position_global.x, m_position_global.z);
+		pos.set(m_position_global.x, m_position_global.z);
 	}
+
+	m_cached.m_Position = pos;
+	return m_cached.m_Position;
 }
 
 const Fvector2& CMapLocation::CalcDirection()
 {
+	if (IsUserDefined())
+		return m_cached.m_Direction;
+
 	if(Level().CurrentViewEntity()&&Level().CurrentViewEntity()->ID()==m_objectID )
 	{
 		m_cached.m_Direction.set(Device.vCameraDirection.x,Device.vCameraDirection.z);
@@ -284,6 +339,9 @@ const Fvector2& CMapLocation::CalcDirection()
 
 void CMapLocation::CalcLevelName()
 {
+	if (IsUserDefined())
+		return;
+
 	if(m_owner_se_object && ai().get_game_graph())
 	{
 		if(m_cached.m_graphID != m_owner_se_object->m_tGraphID)
@@ -321,8 +379,11 @@ bool CMapLocation::Update() //returns actual
 			CalcLevelName				();
 
 		CalcPosition					();
-	}else
-		m_cached.m_Actuality			= false;
+	}
+	else if (IsUserDefined())
+		m_cached.m_Actuality = true;
+	else
+		m_cached.m_Actuality = false;
 
 	m_cached.m_updatedFrame				= Device.dwFrame;
 	return								m_cached.m_Actuality;
@@ -335,16 +396,18 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 {
 	if( map->MapName() == GetLevelName() )
 	{
-		bool b_alife = !!ai().get_alife();
-
-		if ( b_alife && m_flags.test(eHideInOffline) && !m_owner_se_object->m_bOnline )
+		if (!IsUserDefined())
 		{
-			return;
-		}
+			bool b_alife = !!ai().get_alife();
+			if (b_alife && m_flags.test(eHideInOffline) && !m_owner_se_object->m_bOnline)
+			{
+				return;
+			}
 
-		if ( b_alife && m_owner_se_object->m_flags.test(CSE_ALifeObject::flVisibleForMap) == FALSE )
-		{
-			return;
+			if (b_alife && m_owner_se_object->m_flags.test(CSE_ALifeObject::flVisibleForMap) == FALSE)
+			{
+				return;
+			}
 		}
 
 		if ( IsGameTypeSingle() )
@@ -380,13 +443,16 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 
 		if ( map->IsRectVisible(wnd_rect) ) 
 		{
-			//update heading if needed
-			if( sp->Heading() && !sp->GetConstHeading() )
+			if (!IsUserDefined())
 			{
-				Fvector2 dir_global = CalcDirection();
-				float h = dir_global.getH();
-				float h_ = map->GetHeading()+h;
-				sp->SetHeading( h_ );
+				//update heading if needed
+				if (sp->Heading() && !sp->GetConstHeading())
+				{
+					Fvector2 dir_global = CalcDirection();
+					float h = dir_global.getH();
+					float h_ = map->GetHeading() + h;
+					sp->SetHeading(h_);
+				}
 			}
 			map->AttachChild	(sp);
 		}
@@ -417,7 +483,10 @@ void CMapLocation::UpdateSpot(CUICustomMap* map, CMapSpot* sp )
 	{
 		GameGraph::_GRAPH_ID		dest_graph_id;
 
-		dest_graph_id		= m_owner_se_object->m_tGraphID;
+		if (!IsUserDefined())
+			dest_graph_id = m_owner_se_object->m_tGraphID;
+		else
+			dest_graph_id = m_cached.m_graphID;
 
 		map_point_path.clear();
 
@@ -575,12 +644,33 @@ void CMapLocation::UpdateLevelMap(CUICustomMap* map)
 	}
 }
 
+void CMapLocation::HighlightSpot(bool state, const Fcolor& color)
+{
+	CUIStatic* st = smart_cast<CUIStatic*>(m_level_spot);
+	if (state)
+	{
+		u32 clr = color_rgba((u32)color.r, (u32)color.g, (u32)color.b, (u32)color.a);
+		st->SetTextureColor(clr);
+	}
+	else
+	{
+		if (st->GetTextureColor() != 0xffffffff)
+			st->SetTextureColor(0xffffffff);
+	}
+}
 
 void CMapLocation::save(IWriter &stream)
 {
 	stream.w_stringZ(m_hint);
 	stream.w_u32	(m_flags.flags);
 	stream.w_stringZ(m_owner_task_id);
+
+	if (IsUserDefined())
+	{
+		save_data(m_cached.m_LevelName, stream);
+		save_data(m_cached.m_Position, stream);
+		save_data(m_cached.m_graphID, stream);
+	}
 }
 
 void CMapLocation::load(IReader &stream)
@@ -592,6 +682,16 @@ void CMapLocation::load(IReader &stream)
 
 	stream.r_stringZ(str);
 	m_owner_task_id	= str.c_str();
+
+	if (IsUserDefined())
+	{
+		load_data(m_cached.m_LevelName, stream);
+		load_data(m_cached.m_Position, stream);
+		load_data(m_cached.m_graphID, stream);
+
+		m_position_on_map = m_cached.m_Position;
+		m_position_global.set(m_position_on_map.x, 0.f, m_position_on_map.y);
+	}
 }
 
 void CMapLocation::SetHint(const shared_str& hint)		
@@ -702,6 +802,11 @@ CMapSpot* CMapLocation::GetSpotBorder(CMapSpot* sp)
 	}
 
 	return NULL;
+}
+
+Fvector2 CMapLocation::SpotSize()
+{
+	return m_level_spot->GetWndSize();
 }
 
 
