@@ -198,10 +198,14 @@ void CreateLog(BOOL nl)
 {
     no_log = nl;
     strconcat(sizeof(log_file_name), log_file_name, Core.ApplicationName, "_", Core.UserName, ".log");
-    if (FS.path_exist("$logs$"))
-        FS.update_path(logFName, "$logs$", log_file_name);
-    if (!no_log)
+	if (FS.path_exist("$logs$"))
+		FS.update_path(logFName, "$logs$", log_file_name);
+	if (!no_log)
     {
+		//Alun: Backup existing log
+		xr_string backup_logFName = EFS.ChangeFileExt(logFName,".bkp");
+		FS.file_rename(logFName, backup_logFName.c_str(), true);
+		//-Alun
         IWriter* f = FS.w_open(logFName);
         if (f == NULL)
         {
