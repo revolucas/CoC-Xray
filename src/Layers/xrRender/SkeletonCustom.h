@@ -39,8 +39,8 @@ public:
 	struct WMFace{
 		Fvector3		vert	[3];
 		Fvector2		uv		[3];
-		u16				bone_id	[3][2];
-		float			weight	[3];
+		u16				bone_id[3][4];
+		float			weight[3][3];
 	};
 	DEFINE_VECTOR		(WMFace,WMFacesVec,WMFacesVecIt);
 	WMFacesVec			m_Faces;		// 16 
