@@ -802,11 +802,6 @@ xrTime get_start_time()
 	return (xrTime(Level().GetStartGameTime()));
 }
 
-void reload_language()
-{
-	CStringTable().ReloadLanguage();
-}
-
 #pragma optimize("s",on)
 void CLevel::script_register(lua_State *L)
 {
@@ -1026,8 +1021,7 @@ void CLevel::script_register(lua_State *L)
 	def("start_tutorial",		&start_tutorial),
 	def("stop_tutorial",		&stop_tutorial),
 	def("has_active_tutorial",	&has_active_tutotial),
-	def("translate_string",		&translate_string),
-	def("reload_language",		&reload_language)
+	def("translate_string",		&translate_string)
 
 	];
 }
