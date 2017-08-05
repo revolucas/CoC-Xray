@@ -1803,10 +1803,14 @@ float CWeapon::Weight() const
 		if (last_type != c.m_ammoSect.c_str())
         {
 			last_type = c.m_ammoSect.c_str();
-            w  = pSettings->r_float(last_type, "inv_weight");
-            bs = pSettings->r_float(last_type, "box_size");
+			if (last_type)
+			{
+				w = pSettings->r_float(last_type, "inv_weight");
+				bs = pSettings->r_float(last_type, "box_size");
+			}
         }
-        res += w / bs;
+		if (bs > 0)
+		 res += w / bs;
     }
 
     return res;

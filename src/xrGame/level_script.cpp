@@ -1027,7 +1027,8 @@ void CLevel::script_register(lua_State *L)
 	def("stop_tutorial",		&stop_tutorial),
 	def("has_active_tutorial",	&has_active_tutotial),
 	def("translate_string",		&translate_string),
-	def("reload_language",		&reload_language)
+	def("reload_language",		&reload_language),
+	def("log_stack_trace",		&LogStackTrace)
 
 	];
 }
