@@ -88,7 +88,7 @@ struct ENGINE_API SPPInfo
     void validate(LPCSTR str);
 };
 
-DEFINE_VECTOR(CEffectorCam*, EffectorCamVec, EffectorCamIt);
+DEFINE_LIST(CEffectorCam*, EffectorCamVec, EffectorCamIt);
 DEFINE_VECTOR(CEffectorPP*, EffectorPPVec, EffectorPPIt);
 
 #define effCustomEffectorStartID 10000
