@@ -978,7 +978,7 @@ void CGameObject::create_anim_mov_ctrl	( CBlend *b, Fmatrix *start_pose, bool lo
 //		start_pose		= &renderable.xform;
 		if( m_anim_mov_ctrl )
 			destroy_anim_mov_ctrl();
-
+#ifdef DEBUG
 		VERIFY2			(
 			start_pose,
 			make_string(
@@ -996,7 +996,7 @@ void CGameObject::create_anim_mov_ctrl	( CBlend *b, Fmatrix *start_pose, bool lo
 				smart_cast<IKinematicsAnimated&>(*Visual()).LL_MotionDefName_dbg(b->motionID).second
 			)
 		);
-		
+#endif		
 		VERIFY			(Visual());
 		IKinematics		*K = Visual( )->dcast_PKinematics( );
 		VERIFY			( K );

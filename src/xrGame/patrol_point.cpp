@@ -127,6 +127,7 @@ const u32 &CPatrolPoint::level_vertex_id					() const
 const GameGraph::_GRAPH_ID &CPatrolPoint::game_vertex_id	() const
 {
 	CGameGraph::CVertex const*	vertex = ai().game_graph().vertex(m_game_vertex_id);
+#ifdef DEBUG
 	VERIFY2				(
 		vertex,
 		make_string(
@@ -138,7 +139,7 @@ const GameGraph::_GRAPH_ID &CPatrolPoint::game_vertex_id	() const
 			VPUSH(m_position)
 		)
 	);
-
+#endif
 	if (vertex->level_id() == ai().level_graph().level_id())
 		return			(game_vertex_id(&ai().level_graph(),&ai().cross_table(),&ai().game_graph()));
 

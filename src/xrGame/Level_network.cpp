@@ -99,7 +99,9 @@ void CLevel::remove_objects	()
 #endif // DEBUG
 	if(!g_dedicated_server)
 	{
+#ifdef DEBUG
 		VERIFY										(client_spawn_manager().registry().empty());
+#endif
 		client_spawn_manager().clear			();
 	}
 

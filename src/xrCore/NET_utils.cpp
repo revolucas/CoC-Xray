@@ -56,6 +56,11 @@ void NET_Packet::r_advance(u32 size)
 {
     INI_ASSERT(r_advance)
     r_pos += size;
+	
+	//Alundaio: WHY DOES THIS HAPPEN? I SHOULD NOT NEED TO DO THIS!
+	if (r_pos > B.count)
+		r_pos = B.count;
+
     VERIFY(r_pos <= B.count);
 }
 

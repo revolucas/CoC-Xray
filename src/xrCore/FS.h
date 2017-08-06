@@ -285,8 +285,11 @@ public:
     IC void seek(int ptr) { Pos = ptr; VERIFY((Pos <= Size) && (Pos >= 0)); };
     IC int length() const { return Size; };
     IC void* pointer() const { return &(data[Pos]); };
-    IC void advance(int cnt) { Pos += cnt; VERIFY((Pos <= Size) && (Pos >= 0)); }; //AVO: commented out to allow COC to run in debug. Was failing when reading one of *.thm. UNDONE after non fatal VERIFY implementation
-
+	IC void advance(int cnt) 
+	{ 
+		Pos += cnt;
+		VERIFY((Pos <= Size) && (Pos >= 0)); 
+	};
 public:
     void r(void* p, int cnt);
 

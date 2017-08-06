@@ -227,7 +227,9 @@ public:
 			CScriptGameObject	*lua_game_object() const;
 			int				clsid			() const
 	{
+#ifdef DEBUG
 		THROW				(m_script_clsid >= 0);
+#endif
 		return				(m_script_clsid);
 	}
 public:

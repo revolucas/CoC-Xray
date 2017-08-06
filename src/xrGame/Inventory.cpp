@@ -316,7 +316,7 @@ bool CInventory::Slot(u16 slot_id, PIItem pIItem, bool bNotActivate, bool strict
 {
 	VERIFY(pIItem);
 	
-	if(ItemFromSlot(slot_id) == pIItem)
+	if(slot_id == NO_ACTIVE_SLOT || ItemFromSlot(slot_id) == pIItem)
 		return false;
 
 	if (!IsGameTypeSingle())
@@ -622,7 +622,10 @@ void CInventory::Activate(u16 slot, bool bForce)
 
 PIItem CInventory::ItemFromSlot(u16 slot) const
 {
-	VERIFY(NO_ACTIVE_SLOT != slot);
+	if (slot == NO_ACTIVE_SLOT)
+		return;
+
+	//VERIFY(NO_ACTIVE_SLOT != slot);
 	return m_slots[slot].m_pIItem;
 }
 

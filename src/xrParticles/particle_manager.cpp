@@ -96,11 +96,12 @@ void CParticleManager::PlayEffect(int effect_id, int alist_id)
 	for(PAVecIt it=pa->begin(); it!=pa->end(); ++it)
 	{
 		VERIFY((*it));
-		switch((*it)->type){
-		case PASourceID: 	static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE); break;
-		case PAExplosionID: static_cast<PAExplosion*>(*it)->age = 0.f; break;
-		case PATurbulenceID:static_cast<PATurbulence*>(*it)->age = 0.f; break;
-		}
+		if ((*it))
+			switch((*it)->type){
+			case PASourceID: 	static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,FALSE); break;
+			case PAExplosionID: static_cast<PAExplosion*>(*it)->age = 0.f; break;
+			case PATurbulenceID:static_cast<PATurbulence*>(*it)->age = 0.f; break;
+			}
 	}
 	pa->unlock();
 }
@@ -115,9 +116,10 @@ void CParticleManager::StopEffect(int effect_id, int alist_id, BOOL deffered)
 
     // Step through all the actions in the action list.
     for(PAVecIt it=pa->begin(); it!=pa->end(); ++it){
-        switch((*it)->type){
-        case PASourceID: static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);		break;
-        }
+		if ((*it))
+			switch((*it)->type){
+			case PASourceID: static_cast<PASource*>(*it)->m_Flags.set(PASource::flSilent,TRUE);		break;
+			}
     }
 	if (!deffered){
     	// effect
@@ -143,7 +145,8 @@ void CParticleManager::Update(int effect_id, int alist_id, float dt)
 	for(PAVecIt it=pa->begin(); it!=pa->end(); ++it)
 	{
 		VERIFY((*it));
-    	(*it)->Execute	(pe, dt, kill_old_time);
+		if ((*it))
+    		(*it)->Execute	(pe, dt, kill_old_time);
 	}
 	pa->unlock();
 }
@@ -164,6 +167,9 @@ void CParticleManager::Transform(int alist_id, const Fmatrix& full, const Fvecto
 
 	// Step through all the actions in the action list.
 	for(PAVecIt it=pa->begin(); it!=pa->end(); it++){
+		if (!(*it))
+			continue;
+
 		BOOL r 			= (*it)->m_Flags.is(ParticleAction::ALLOW_ROTATE);
 		const Fmatrix& m = r?full:mT;
         (*it)->Transform(m);
@@ -273,8 +279,12 @@ void CParticleManager::SaveActions(int alist_id, IWriter& W)
 	VERIFY(pa);
 	pa->lock();
     W.w_u32					(pa->size());
-    for (PAVecIt it=pa->begin(); it!=pa->end(); ++it)
-        (*it)->Save			(W);
+	for (PAVecIt it = pa->begin(); it != pa->end(); ++it)
+	{
+		if (!(*it))
+			continue;
+		(*it)->Save(W);
+	}
 	pa->unlock();
 }
 

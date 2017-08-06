@@ -22,25 +22,33 @@ IC	CAttachableItem::CAttachableItem				()
 
 IC	shared_str CAttachableItem::bone_name			() const
 {
+#ifdef DEBUG
 	VERIFY				(m_valid);
+#endif
 	return				(m_bone_name);
 }
 
 IC	const Fmatrix &CAttachableItem::offset			() const
 {
-	VERIFY				(m_valid);
+#ifdef DEBUG
+	VERIFY(m_valid);
+#endif
 	return				(m_offset);
 }
 
 IC	u16	 CAttachableItem::bone_id					() const
 {
-	VERIFY				(m_valid);
+#ifdef DEBUG
+	VERIFY(m_valid);
+#endif
 	return				(m_bone_id);
 }
 
 IC	void CAttachableItem::set_bone_id				(u16 bone_id)
 {
-	VERIFY				(m_valid);
+#ifdef DEBUG
+	VERIFY(m_valid);
+#endif
 	m_bone_id			= bone_id;
 }
 

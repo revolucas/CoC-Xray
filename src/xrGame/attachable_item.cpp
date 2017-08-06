@@ -120,13 +120,17 @@ bool  CAttachableItem::can_be_attached	() const
 }
 void CAttachableItem::afterAttach		()
 {
+#ifdef DEBUG
 	VERIFY							(m_valid);
+#endif
 	object().processing_activate	();
 }
 
 void CAttachableItem::afterDetach		()
 {
+#ifdef DEBUG
 	VERIFY							(m_valid);
+#endif
 	object().processing_deactivate	();
 }
 

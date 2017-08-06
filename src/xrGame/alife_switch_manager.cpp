@@ -181,7 +181,7 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 #endif
 		return;
 	}
-
+#ifdef DEBUG
 	VERIFY2						(
 		(
 			ai().game_graph().vertex(I->m_tGraphID)->level_id()
@@ -192,7 +192,7 @@ void CALifeSwitchManager::try_switch_online	(CSE_ALifeDynamicObject	*I)
 		Level().Objects.dump_all_objects(),
 		make_string("frame [%d] time [%d] object [%s] with id [%d] is offline, but is on the level",Device.dwFrame,Device.dwTimeGlobal,I->name_replace(),I->ID)
 	);
-
+#endif
 	I->try_switch_online		();
 
 	if (!I->m_bOnline && !I->keep_saved_data_anyway())

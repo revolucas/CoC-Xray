@@ -61,10 +61,16 @@
 # else
 # define NODEFAULT __assume(0)
 # endif
+/*
 # define VERIFY(expr) do {} while (0)
 # define VERIFY2(expr, e2) do {} while (0)
 # define VERIFY3(expr, e2, e3) do {} while (0)
 # define VERIFY4(expr, e2, e3, e4)do {} while (0)
+*/
+# define VERIFY(expr) do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.soft_fail(#expr,DEBUG_INFO);} while(0)
+# define VERIFY2(expr,e2) do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.soft_fail(#expr,e2,DEBUG_INFO);} while(0)
+# define VERIFY3(expr,e2,e3) do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.soft_fail(#expr,e2,e3,DEBUG_INFO);} while(0)
+# define VERIFY4(expr,e2,e3,e4)do {static bool ignore_always = false; if (!ignore_always && !(expr)) ::Debug.soft_fail(#expr,e2,e3,e4,DEBUG_INFO);} while(0)
 # define CHK_DX(a) a
 # endif // DEBUG
 
