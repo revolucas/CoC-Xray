@@ -730,7 +730,9 @@ int APIENTRY WinMain_impl(HINSTANCE hInstance,
                     &HeapFragValue,
                     sizeof(HeapFragValue)
                 );
+#ifdef DEBUG
             VERIFY2(result, "can't set process heap low fragmentation");
+#endif
         }
     }
 
