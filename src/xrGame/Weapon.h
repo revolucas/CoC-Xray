@@ -366,6 +366,7 @@ protected:
     Fmatrix					m_StrapOffset;
     bool					m_strapped_mode;
     bool					m_can_be_strapped;
+	bool					m_freelook_switch_back;
 
     Fmatrix					m_Offset;
     // 0-используется без участия рук, 1-одна рука, 2-две руки
