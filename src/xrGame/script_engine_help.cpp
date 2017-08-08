@@ -28,6 +28,8 @@ xr_string to_string					(luabind::object const& o)
 		char buffer[_CVTBUFSIZE];
 		_gcvt_s( buffer, object_cast<float>(o), 16);
 		return buffer;
+	} else if (o.type() == LUA_TFUNCTION) {
+		return xr_string("");
 	}
 
 	return xr_string("<") + lua_typename(L, o.type()) + ">";
