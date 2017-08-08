@@ -177,7 +177,6 @@ void CWeaponStatMgun::UpdateCL()
 		OwnerActor()->Cameras().UpdateFromCamera(Camera());
 		OwnerActor()->Cameras().ApplyDevice(VIEWPORT_NEAR);
 	}
-
 }
 
 //void CWeaponStatMgun::Hit(	float P, Fvector &dir,	CObject* who, 
@@ -228,39 +227,36 @@ void CWeaponStatMgun::UpdateBarrelDir()
 
 void CWeaponStatMgun::cam_Update			(float dt, float fov)
 {
-	Fvector							P,Da;
-	Da.set							(0,0,0);
+	camera->f_fov = g_fov;
 
-	IKinematics* K					= smart_cast<IKinematics*>(Visual());
-	K->CalculateBones_Invalidate	();
-	K->CalculateBones				(TRUE);
-	const Fmatrix& C				= K->LL_GetTransform(m_camera_bone);
-	XFORM().transform_tiny			(P,C.c);
+	Fvector P,Da;
+	Da.set(0,0,0);
+
+	IKinematics* K = smart_cast<IKinematics*>(Visual());
+	K->CalculateBones_Invalidate();
+	K->CalculateBones(TRUE);
+	const Fmatrix& C = K->LL_GetTransform(m_camera_bone);
+	XFORM().transform_tiny(P,C.c);
 
 	Fvector d = C.k;
-	XFORM().transform_dir			(d);
+	XFORM().transform_dir(d);
 	Fvector2 des_cam_dir;
 
 	d.getHP(des_cam_dir.x, des_cam_dir.y);
 	des_cam_dir.mul(-1.0f);
 
 
-	Camera()->yaw		= angle_inertion_var(Camera()->yaw,		des_cam_dir.x,	0.5f,	7.5f,	PI_DIV_6,	Device.fTimeDelta);
-	Camera()->pitch		= angle_inertion_var(Camera()->pitch,	des_cam_dir.y,	0.5f,	7.5f,	PI_DIV_6,	Device.fTimeDelta);
-
-
-
+	Camera()->yaw = angle_inertion_var(Camera()->yaw,		des_cam_dir.x,	0.5f,	7.5f,	PI_DIV_6,	Device.fTimeDelta);
+	Camera()->pitch = angle_inertion_var(Camera()->pitch,	des_cam_dir.y,	0.5f,	7.5f,	PI_DIV_6,	Device.fTimeDelta);
 
 	if(OwnerActor()){
 		// rotate head
 		OwnerActor()->Orientation().yaw			= -Camera()->yaw;
 		OwnerActor()->Orientation().pitch		= -Camera()->pitch;
 	}
-	
 
 	Camera()->Update							(P,Da);
 	Level().Cameras().UpdateFromCamera			(Camera());
-
 }
 
 void CWeaponStatMgun::renderable_Render	()
