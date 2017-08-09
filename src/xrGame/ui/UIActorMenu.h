@@ -145,6 +145,9 @@ protected:
 	
 	CUIProgressBar*				m_WeaponSlot1_progress;
 	CUIProgressBar*				m_WeaponSlot2_progress;
+	CUIProgressBar*				m_KnifeSlot_progress;
+	CUIProgressBar*				m_BinocularSlot_progress;
+	CUIProgressBar*				m_DetectorSlot_progress;
 	CUIProgressBar*				m_Helmet_progress;
 	CUIProgressBar*				m_Outfit_progress;
 	// bottom ---------------------------------

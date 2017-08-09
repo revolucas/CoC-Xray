@@ -106,6 +106,34 @@
 		<middle_color r="255" g="255" b="118"/>
 		<max_color r="107" g="207" b="119"/>
     </progess_bar_weapon2>
+	
+	<!-- New slots -->
+	<progess_bar_knife x="372" y="373" width="58" height="5" horz="1" min="0" max="1" pos="0">
+        <progress>
+            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+        </progress>
+		<min_color r="196" g="18" b="18"/>
+		<middle_color r="255" g="255" b="118"/>
+		<max_color r="107" g="207" b="119"/>
+    </progess_bar_knife>
+	<progess_bar_detector x="476" y="373" width="58" height="5" horz="1" min="0" max="1" pos="0">
+        <progress>
+            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+        </progress>
+		<min_color r="196" g="18" b="18"/>
+		<middle_color r="255" g="255" b="118"/>
+		<max_color r="107" g="207" b="119"/>
+    </progess_bar_detector>
+	<progess_bar_binoc x="596" y="373" width="58" height="5" horz="1" min="0" max="1" pos="0">
+        <progress>
+            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+        </progress>
+		<min_color r="196" g="18" b="18"/>
+		<middle_color r="255" g="255" b="118"/>
+		<max_color r="107" g="207" b="119"/>
+    </progess_bar_binoc>
+	
+	
     <progess_bar_outfit x="484" y="309" width="58" height="5" horz="1" min="0" max="1" pos="0">
         <progress>
             <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>

@@ -936,6 +936,24 @@ void CUIActorMenu::UpdateConditionProgressBars()
 	else
 		m_WeaponSlot2_progress->SetProgressPos(0);
 
+	itm = m_pActorInvOwner->inventory().ItemFromSlot(KNIFE_SLOT);
+	if (itm)
+		m_KnifeSlot_progress->SetProgressPos(iCeil(itm->GetCondition()*10.0f) / 10.0f);
+	else
+		m_KnifeSlot_progress->SetProgressPos(0);
+
+	itm = m_pActorInvOwner->inventory().ItemFromSlot(BINOCULAR_SLOT);
+	if (itm)
+		m_BinocularSlot_progress->SetProgressPos(iCeil(itm->GetCondition()*10.0f) / 10.0f);
+	else
+		m_BinocularSlot_progress->SetProgressPos(0);
+
+	itm = m_pActorInvOwner->inventory().ItemFromSlot(DETECTOR_SLOT);
+	if (itm)
+		m_DetectorSlot_progress->SetProgressPos(iCeil(itm->GetCondition()*10.0f) / 10.0f);
+	else
+		m_DetectorSlot_progress->SetProgressPos(0);
+
 	itm = m_pActorInvOwner->inventory().ItemFromSlot(OUTFIT_SLOT);
 	if(itm)
 		m_Outfit_progress->SetProgressPos(iCeil(itm->GetCondition()*10.0f)/10.0f);

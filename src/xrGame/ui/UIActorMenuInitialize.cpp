@@ -176,6 +176,9 @@ void CUIActorMenu::Construct()
 
 	m_WeaponSlot1_progress	= UIHelper::CreateProgressBar(uiXml, "progess_bar_weapon1", this);
 	m_WeaponSlot2_progress	= UIHelper::CreateProgressBar(uiXml, "progess_bar_weapon2", this);
+	m_KnifeSlot_progress	= UIHelper::CreateProgressBar(uiXml, "progess_bar_knife", this);
+	m_BinocularSlot_progress	= UIHelper::CreateProgressBar(uiXml, "progess_bar_binoc", this);
+	m_DetectorSlot_progress	= UIHelper::CreateProgressBar(uiXml, "progess_bar_detector", this);
 	m_Helmet_progress		= UIHelper::CreateProgressBar(uiXml, "progess_bar_helmet", this);
 	m_Outfit_progress		= UIHelper::CreateProgressBar(uiXml, "progess_bar_outfit", this);
 
