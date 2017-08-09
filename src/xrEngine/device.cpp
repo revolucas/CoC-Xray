@@ -380,7 +380,11 @@ void CRenderDevice::Run()
 	if (strstr(Core.Params, "-nofpslock"))
 		g_dwFPSlimit = -1;
 	else if (strstr(Core.Params, "-fpslock60"))
-		g_dwFPSlimit = 60;
+		g_dwFPSlimit = 61;
+	else if (strstr(Core.Params, "-fpslock144"))
+		g_dwFPSlimit = 145;
+	else if (strstr(Core.Params, "-fpslock240"))
+		g_dwFPSlimit = 241;
     // Message cycle
     seqAppStart.Process(rp_AppStart);
 

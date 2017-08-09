@@ -377,7 +377,7 @@ ALvoid BuildDeviceSpecifierList()
 		for(i = 0; i < numDirs; i++)
 		{
 			strcpy_s			(searchName, dir[i]);
-			strcat_s			(searchName, _T("*oal.dll"));
+			strcat_s			(searchName, _T("wrap_oal.dll")); //Alun: Sorry but this has to be done, It's dumb to auto-load *oal.dll from system32. That is stupid. Game will break for anyone with soft_oal.dll or Sens_oal.dll
 			searchHandle		= FindFirstFile(searchName, &findData);
 			if(searchHandle != INVALID_HANDLE_VALUE)
 			{
@@ -1760,7 +1760,7 @@ ALCAPI ALCdevice* ALCAPIENTRY alcOpenDevice(const ALCchar* deviceName)
 	//
     // Find the device to open.
     //
-    dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), (char*)newDeviceName);
+    dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), (char*)newDeviceName);
     
 	// if device name is "Generic Software" and a device wasn't found, try to find a wrapper...
 	if ((!dll) && (strcmp(newDeviceName, "Generic Software") == 0))
@@ -1778,7 +1778,7 @@ ALCAPI ALCdevice* ALCAPIENTRY alcOpenDevice(const ALCchar* deviceName)
     if(!dll)
     {
         strncpy_s(newDeviceName, alcGetString(0, ALC_DEFAULT_DEVICE_SPECIFIER), 256);
-        dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), (char*)newDeviceName);
+        dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), (char*)newDeviceName);
         
     }
 
@@ -2107,7 +2107,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
 				// 3) if #2 fails to find a match, try the generic names as the ultimate fallback
                 getDefaultPlaybackDeviceNames(longDevice, mixerDevice, 256);
 				if (strlen(longDevice)) { // test long device name first
-					dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), longDevice, false, actualName);
+					dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), longDevice, false, actualName);
 					if(dll)
 					{
 						strcpy_s(alcDefaultDeviceSpecifier, longDevice);
@@ -2125,7 +2125,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
 						strcpy_s(mixerDevice, T2A("X-Fi"));
 					}
 
-					dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), mixerDevice, acceptPartial, actualName);
+					dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), mixerDevice, acceptPartial, actualName);
 					if(dll)
 					{
 						if (acceptPartial == true) {
@@ -2141,7 +2141,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
                 // Try to find a default version.
                 //
 
-                dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), T2A("DirectSound3D"));
+                dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), T2A("DirectSound3D"));
                 if(dll)
                 {
                     strcpy_s(alcDefaultDeviceSpecifier, T2A("DirectSound3D"));
@@ -2149,7 +2149,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
                     break;
                 }
 
-                dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), T2A("DirectSound"));
+                dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), T2A("DirectSound"));
                 if(dll)
                 {
                     strcpy_s(alcDefaultDeviceSpecifier, "DirectSound");
@@ -2157,7 +2157,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
                     break;
                 }
 
-                dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), T2A("MMSYSTEM"));
+                dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), T2A("MMSYSTEM"));
                 if(dll)
                 {
                     strcpy_s(alcDefaultDeviceSpecifier, "MMSYSTEM");
@@ -2165,7 +2165,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
                     break;
                 }
 
-				 dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), T2A("Generic Hardware"), true);
+				 dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), T2A("Generic Hardware"), true);
 				if(dll)
                 {
                     strcpy_s(alcDefaultDeviceSpecifier, T2A("Generic Hardware"));
@@ -2173,7 +2173,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
                     break;
                 }
 
-				dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), T2A("Generic Software"), true);
+				dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), T2A("Generic Software"), true);
 				if(dll)
                 {
                     strcpy_s(alcDefaultDeviceSpecifier, T2A("Generic Software"));
@@ -2226,7 +2226,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
 				// 3) if #2 fails, use the first available capture device name
                 getDefaultCaptureDeviceNames(longDevice, mixerDevice, 256);
 				if (strlen(longDevice)) { // look for long device
-					dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), longDevice, false, actualName, true);
+					dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), longDevice, false, actualName, true);
 					if(dll)
 					{
 						strcpy_s(alcCaptureDefaultDeviceSpecifier, longDevice);
@@ -2243,7 +2243,7 @@ ALCAPI const ALCchar* ALCAPIENTRY alcGetString(ALCdevice* device, ALenum param)
 						acceptPartial = true;
 						strcpy_s(mixerDevice, T2A("X-Fi"));
 					}
-					dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), mixerDevice, acceptPartial, actualName, true);
+					dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), mixerDevice, acceptPartial, actualName, true);
 					if(dll)
 					{
 						if (acceptPartial == true) {
@@ -2304,7 +2304,7 @@ ALCAPI ALCdevice * ALCAPIENTRY alcCaptureOpenDevice(const ALCchar *deviceName, A
 				strncpy_s(newDeviceName, deviceName, 256);
 			}
 
-			g_CaptureDevice->Dll = FindDllWithMatchingSpecifier(_T("*oal.dll"), (char *)newDeviceName, false, NULL, true);
+			g_CaptureDevice->Dll = FindDllWithMatchingSpecifier(_T("wrap_oal.dll"), (char *)newDeviceName, false, NULL, true);
 
 			if (g_CaptureDevice->Dll) {
 				if(FillOutAlcFunctions(g_CaptureDevice)) {
