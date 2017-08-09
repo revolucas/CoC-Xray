@@ -603,7 +603,7 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 
 		if (slot_id == INV_SLOT_2)
 		{
-			if (m_pActorInvOwner->inventory().CanPutInSlot(iitem, INV_SLOT_3))
+			if (m_pActorInvOwner->inventory().CanPutInSlot(iitem, INV_SLOT_3) && !iitem->BaseSlot() == KNIFE_SLOT)
 				return ToSlot(itm, force_place, INV_SLOT_3);
 			if (m_pActorInvOwner->inventory().CanPutInSlot(iitem, KNIFE_SLOT))
 				return ToSlot(itm, force_place, KNIFE_SLOT);
