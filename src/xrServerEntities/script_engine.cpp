@@ -176,12 +176,14 @@ void CScriptEngine::unload()
 
 int CScriptEngine::lua_panic(lua_State *L)
 {
+	ai().script_engine().print_stack();
     print_output(L, "PANIC", LUA_ERRRUN);
     return			(0);
 }
 
 void CScriptEngine::lua_error(lua_State *L)
 {
+	ai().script_engine().print_stack();
     print_output(L, "", LUA_ERRRUN);
     ai().script_engine().on_error(L);
 
@@ -194,6 +196,7 @@ void CScriptEngine::lua_error(lua_State *L)
 
 int  CScriptEngine::lua_pcall_failed(lua_State *L)
 {
+	ai().script_engine().print_stack();
     print_output(L, "", LUA_ERRRUN);
     ai().script_engine().on_error(L);
 
@@ -421,7 +424,7 @@ void CScriptEngine::process_file_if_exists(LPCSTR file_name, bool warn_if_not_ex
         }
         //#ifndef MASTER_GOLD
         if (strstr(Core.Params, "-dbg"))
-            Msg("* loading script %s.script", S1);
+            Msg("* loading script %s", S1);
         //#endif // MASTER_GOLD
         m_reload_modules = false;
         load_file_into_namespace(S, *file_name ? file_name : "_G");

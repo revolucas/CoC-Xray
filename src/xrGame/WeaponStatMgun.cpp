@@ -294,6 +294,9 @@ void CWeaponStatMgun::SetParam			(int id, Fvector2 val)
 
 bool CWeaponStatMgun::attach_Actor		(CGameObject* actor)
 {
+	CActor* real_actor = actor->cast_actor();
+	assert(real_actor);
+	real_actor->cam_Set(eacFirstEye);
 	inheritedHolder::attach_Actor	(actor);
 	SetBoneCallbacks				();
 	FireEnd							();
