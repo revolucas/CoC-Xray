@@ -834,15 +834,14 @@ void CLocatorAPI::_initialize(u32 flags, LPCSTR target_folder, LPCSTR fs_name)
         FS_Path* pAppdataPath = FS.get_path("$app_data_root$");
 
 
-        if (pLogsPath) pLogsPath->_set_root(c_newAppPathRoot);
+        if (pLogsPath) 
+			pLogsPath->_set_root(c_newAppPathRoot);
+
         if (pAppdataPath)
         {
             pAppdataPath->_set_root(c_newAppPathRoot);
             rescan_path(pAppdataPath->m_Path, pAppdataPath->m_Flags.is(FS_Path::flRecurse));
         }
-
-        int x = 0;
-        x = x;
     }
 
     rec_files.clear();
