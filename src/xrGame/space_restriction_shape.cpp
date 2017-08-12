@@ -122,9 +122,9 @@ void CSpaceRestrictionShape::build_border	()
 
 	process_borders					();
 
+#ifdef DEBUG
 	VERIFY3							(!border().empty(),"space restrictor has no border",*m_restrictor->cName());
 
-#ifdef DEBUG
 	test_correctness				();
 #endif
 }
