@@ -725,24 +725,31 @@ void CVisualMemoryManager::update				(float time_delta)
 	}
 #endif
 
-	if (m_object && g_actor && m_object->is_relation_enemy(Actor())) {
-		xr_vector<CNotYetVisibleObject>::iterator	I = std::find_if(
-			m_not_yet_visible_objects.begin(),
-			m_not_yet_visible_objects.end(),
-			CNotYetVisibleObjectPredicate(Actor())
-		);
-		if (I != m_not_yet_visible_objects.end()) {
-			SetActorVisibility				(
-				m_object->ID(),
-				clampr(
-					(*I).m_value/visibility_threshold(),
+	if (m_object && g_actor) 
+	{
+		if (m_object->is_relation_enemy(Actor()))
+		{
+			xr_vector<CNotYetVisibleObject>::iterator	I = std::find_if(
+				m_not_yet_visible_objects.begin(),
+				m_not_yet_visible_objects.end(),
+				CNotYetVisibleObjectPredicate(Actor())
+				);
+			if (I != m_not_yet_visible_objects.end()) 
+			{
+				SetActorVisibility(
+					m_object->ID(),
+					clampr(
+					(*I).m_value / visibility_threshold(),
 					0.f,
 					1.f
-				)
-			);
+					)
+					);
+			}
+			else
+				SetActorVisibility(m_object->ID(), 0.f);
 		}
 		else
-			SetActorVisibility				(m_object->ID(),0.f);
+			SetActorVisibility(m_object->ID(), 0.f);
 	}
 
 	STOP_PROFILE
