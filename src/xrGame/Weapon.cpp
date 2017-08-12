@@ -30,11 +30,15 @@
 #include "ui/UIXmlInit.h"
 #include "Torch.h"
 
+#include "cameralook.h"
+
 #define WEAPON_REMOVE_TIME		60000
 #define ROTATION_TIME			0.25f
 
 BOOL	b_toggle_weapon_aim = FALSE;
 extern CUIXml*	pWpnScopeXml;
+
+static bool m_freelook_switch_back = false;
 
 CWeapon::CWeapon()
 {
@@ -1372,7 +1376,7 @@ void CWeapon::OnZoomIn()
 {
 	//Alun: Force switch to first-person for zooming
 	CActor *pA = smart_cast<CActor *>(H_Parent());
-	if (pA->active_cam() == eacLookAt)
+	if (pA && pA->active_cam() == eacLookAt && pA->cam_Active()->m_look_cam_fp_zoom == true)
 	{
 		pA->cam_Set(eacFirstEye);
 		m_freelook_switch_back = true;

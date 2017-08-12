@@ -40,7 +40,7 @@ ENGINE_API BOOL g_bRendering = FALSE;
 
 BOOL g_bLoaded = FALSE;
 ref_light precache_light = 0;
-int g_dwFPSlimit = 120;
+int g_dwFPSlimit = 121;
 
 BOOL CRenderDevice::Begin()
 {

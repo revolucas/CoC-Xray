@@ -65,6 +65,8 @@ public:
     virtual float CheckLimYaw();
     virtual float CheckLimPitch();
     virtual float CheckLimRoll();
+
+	bool m_look_cam_fp_zoom;
 };
 
 
