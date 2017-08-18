@@ -112,7 +112,10 @@ void CLevel::g_sv_Spawn		(CSE_Abstract* E)
 #ifdef DEBUG_MEMORY_MANAGER
 	mem_alloc_gather_stats		(false);
 #endif // DEBUG_MEMORY_MANAGER
-	if (0==O || (!O->net_Spawn	(E))) 
+	if (O == 0)
+	{
+		Msg("! Failed to spawn entity '%s'", *E->s_name);
+	}else if (!O->net_Spawn(E)) 
 	{
 		O->net_Destroy			( );
 		if(!g_dedicated_server)

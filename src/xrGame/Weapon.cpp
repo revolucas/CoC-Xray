@@ -260,9 +260,7 @@ void CWeapon::Load(LPCSTR section)
     float temp_f = 0.0f;
     temp_f = pSettings->r_float(section, "cam_relax_speed");
     cam_recoil.RelaxSpeed = _abs(deg2rad(temp_f));
-    //AVO: commented out as very minor and is clashing with weapon mods
-    //UNDONE after non fatal VERIFY implementation
-    VERIFY(!fis_zero(cam_recoil.RelaxSpeed));
+	//VERIFY(!fis_zero(cam_recoil.RelaxSpeed));
     if (fis_zero(cam_recoil.RelaxSpeed))
     {
         cam_recoil.RelaxSpeed = EPS_L;
@@ -281,7 +279,7 @@ void CWeapon::Load(LPCSTR section)
     }
     temp_f = pSettings->r_float(section, "cam_max_angle");
     cam_recoil.MaxAngleVert = _abs(deg2rad(temp_f));
-    VERIFY(!fis_zero(cam_recoil.MaxAngleVert));
+	//VERIFY(!fis_zero(cam_recoil.MaxAngleVert));
     if (fis_zero(cam_recoil.MaxAngleVert))
     {
         cam_recoil.MaxAngleVert = EPS;
@@ -289,7 +287,7 @@ void CWeapon::Load(LPCSTR section)
 
     temp_f = pSettings->r_float(section, "cam_max_angle_horz");
     cam_recoil.MaxAngleHorz = _abs(deg2rad(temp_f));
-    VERIFY(!fis_zero(cam_recoil.MaxAngleHorz));
+    //VERIFY(!fis_zero(cam_recoil.MaxAngleHorz));
     if (fis_zero(cam_recoil.MaxAngleHorz))
     {
         cam_recoil.MaxAngleHorz = EPS;

@@ -68,11 +68,10 @@ void CShootingObject::Load	(LPCSTR section)
 
 	//время затрачиваемое на выстрел
 	fOneShotTime			= pSettings->r_float		(section,"rpm");
-
+	if(fis_zero(fOneShotTime))
+		fOneShotTime = EPS;
 	//Alundaio: Two-shot burst rpm; used for Abakan/AN-94
 	fModeShotTime = READ_IF_EXISTS(pSettings, r_float, section, "rpm_mode_2", fOneShotTime);
-
-	VERIFY(fOneShotTime>0.f);
 	fOneShotTime = 60.f / fOneShotTime;
 	fModeShotTime = 60.f / fModeShotTime;
 

@@ -202,7 +202,7 @@ void			CLight_DB::Update			()
 		light*	_sun_original		= (light*) sun_original._get();
 		light*	_sun_adapted		= (light*) sun_adapted._get();
 		CEnvDescriptor&	E			= *g_pGamePersistent->Environment().CurrentEnv;
-		VERIFY						(_valid(E.sun_dir));
+		//VERIFY						(_valid(E.sun_dir));
 #ifdef DEBUG
 		if(E.sun_dir.y>=0)
 		{

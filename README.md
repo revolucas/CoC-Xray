@@ -4,6 +4,8 @@
 This repository contains XRAY Engine sources based on version 1.6.02 for specific use with the Call of Chernobyl modification.
 The original engine is used in S.T.A.L.K.E.R. Call of Pripyat game released by GSC Game World and any changes to this engine are allowed for ***non-commercial*** use only (see [License.txt](https://github.com/avoitishin/xray-16/blob/master/License.txt) for details).
 
+The goal of this project is to expand the moddability and features of the engine; Fixing issues or bugs when necessary. It is not to reshape or rebuild X-Ray using modern technology.
+
 ## Build Instructions
 This project is maintained under Visual Studio 2013.
 You need https://developer.microsoft.com/en-us/windows/downloads/windows-8-1-sdk

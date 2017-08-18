@@ -51,8 +51,14 @@ void IGame_ObjectPool::clear()
 
 CObject* IGame_ObjectPool::create(LPCSTR name)
 {
-    CLASS_ID CLS = pSettings->r_clsid(name, "class");
-    CObject* O = (CObject*)NEW_INSTANCE(CLS);
+	CLASS_ID CLS = pSettings->r_clsid(name, "class");
+	CObject* O = (CObject*)NEW_INSTANCE(CLS);
+	if (!O)
+	{
+		LogStackTrace("");
+		Msg("xrFactory_Create | failed to create %s by clsid %d", name, CLS);
+		return (0);
+	}
     O->cNameSect_set(name);
     O->Load(name);
     return O;
