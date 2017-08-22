@@ -318,6 +318,22 @@ void prefetch_sound	(LPCSTR name)
 	Level().PrefetchSound(name);
 }
 
+CScriptGameObject* get_view_entity_script()
+{
+	CGameObject* pGameObject = smart_cast<CGameObject*>(Level().CurrentViewEntity());
+	if (!pGameObject)
+		return (0);
+
+	return pGameObject->lua_game_object();
+}
+
+void set_view_entity_script(CScriptGameObject* go)
+{
+	CObject* o = smart_cast<CObject*>(&go->object());
+	if (o)
+		Level().SetViewEntity(o);
+}
+
 
 CClientSpawnManager	&get_client_spawn_manager()
 {
@@ -837,6 +853,8 @@ void CLevel::script_register(lua_State *L)
 		def("get_target_obj", &g_get_target_obj), //intentionally named to what is in xray extensions
 		def("get_target_dist", &g_get_target_dist),
 		def("get_target_element", &g_get_target_element), //Can get bone cursor is targetting
+		def("get_view_entity", &get_view_entity_script),
+		def("set_view_entity", &set_view_entity_script),
 		def("spawn_item", &spawn_section),
 		def("get_active_cam", &get_active_cam),
 		def("set_active_cam", &set_active_cam),

@@ -35,17 +35,13 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	if (!car)
 		return;
 
-	//PickupModeOff		();
-	m_holder=vehicle;
+	if(!vehicle->attach_Actor(this)){
+		return;
+	}
 
 	IRenderVisual *pVis = Visual();
 	IKinematicsAnimated* V		= smart_cast<IKinematicsAnimated*>(pVis); R_ASSERT(V);
 	IKinematics* pK = smart_cast<IKinematics*>(pVis);
-	
-	if(!m_holder->attach_Actor(this)){
-		m_holder=NULL;
-		return;
-	}
 	// temp play animation
 	
 	u16 anim_type					= car->DriverAnimationType();
@@ -58,6 +54,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 
 	character_physics_support		()->movement()->DestroyCharacter();
 	mstate_wishful					= 0;
+	m_holder = vehicle;
 	m_holderID = car->ID();
 
 	SetWeaponHideState				(INV_STATE_CAR, true);

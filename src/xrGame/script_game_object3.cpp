@@ -1263,11 +1263,11 @@ void CScriptGameObject::AttachVehicle(CScriptGameObject* veh, bool bForce)
 	CActor *actor = smart_cast<CActor*>(&object());
 	if (actor)
 	{
-		CHolderCustom* vehicle = veh->object().cast_holder_custom();
+		CHolderCustom* vehicle = smart_cast<CHolderCustom*>(&veh->object());
 		if (vehicle)
-		{
 			actor->use_HolderEx(vehicle, bForce);
-		}
+		else
+			ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError, "CGameObject : cannot be cast to CHolderCustom!");
 	}
 }
 

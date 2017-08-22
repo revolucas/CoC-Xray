@@ -206,7 +206,6 @@ void SHeliMovementState::SetDestPosition(Fvector* pos)
 	}
 }
 
-
 void SHeliMovementState::goPatrolByPatrolPath (LPCSTR path_name, int start_idx)
 {
 	if(need_to_del_path&&currPatrolPath){
