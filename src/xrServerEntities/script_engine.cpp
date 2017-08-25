@@ -269,6 +269,10 @@ int auto_load(lua_State *L)
     return			(1);
 }
 
+//Alun: Allow directory structuring for scripts
+typedef	xr_map<xr_string, xr_string>	script_list_type;
+static	script_list_type xray_scripts;
+
 void CScriptEngine::setup_auto_load()
 {
     luaL_newmetatable(lua(), "XRAY_AutoLoadMetaTable");
@@ -281,6 +285,25 @@ void CScriptEngine::setup_auto_load()
     lua_setmetatable(lua(), -2);
     //. ??????????
     // lua_settop							(lua(),-0);
+
+	//Alun: Allow directory structuring for scripts
+	xray_scripts.clear();
+
+	FS_FileSet fset;
+	FS.file_list(fset, "$game_scripts$", FS_ListFiles, "*.script");
+	FS_FileSetIt fit = fset.begin();
+	FS_FileSetIt fit_e = fset.end();
+
+	for (; fit != fit_e; ++fit)
+	{
+		string_path	fn1, fn2;
+		_splitpath((*fit).name.c_str(), 0, fn1, fn2, 0);
+
+		FS.update_path(fn1, "$game_scripts$", fn1);
+		strconcat(sizeof(fn1), fn1, fn1, fn2, ".script");
+
+		xray_scripts.insert(mk_pair(xr_string(fn2), xr_string(fn1)));
+	}
 }
 
 extern void export_classes(lua_State *L);
@@ -332,7 +355,7 @@ void CScriptEngine::init()
 
     bool								save = m_reload_modules;
     m_reload_modules = true;
-    process_file_if_exists("_G", false);
+    process_file_if_exists("_g", false);
     m_reload_modules = save;
 
     register_script_classes();
@@ -393,42 +416,26 @@ void CScriptEngine::load_common_scripts()
 
 void CScriptEngine::process_file_if_exists(LPCSTR file_name, bool warn_if_not_exist)
 {
-    u32						string_length = xr_strlen(file_name);
-    if (!warn_if_not_exist && no_file_exists(file_name, string_length))
-        return;
+	if (!*file_name)
+		return;
 
-    string_path				S, S1;
-    if (m_reload_modules || (*file_name && !namespace_loaded(file_name)))
-    {
-        FS.update_path(S, "$game_scripts$", strconcat(sizeof(S1), S1, file_name, ".script"));
-        if (!warn_if_not_exist && !FS.exist(S))
-        {
-#ifdef DEBUG
-#	ifndef XRSE_FACTORY_EXPORTS
-            if (psAI_Flags.test(aiNilObjectAccess))
-#	endif
-            {
-                print_stack			();
-                Msg					("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too",file_name,S);
-                m_stack_is_ready	= true;
-            }
-#else
-			if (strstr(Core.Params, "-dbgscript"))
-			{
-				print_stack();
-				Msg("* trying to access variable %s, which doesn't exist, or to load script %s, which doesn't exist too", file_name, S);
-			}
-#endif
-            add_no_file(file_name, string_length);
-            return;
-        }
-        //#ifndef MASTER_GOLD
-        if (strstr(Core.Params, "-dbg"))
-            Msg("* loading script %s", S1);
-        //#endif // MASTER_GOLD
-        m_reload_modules = false;
-        load_file_into_namespace(S, *file_name ? file_name : "_G");
-    }
+	if (!m_reload_modules && namespace_loaded(file_name))
+		return;
+	
+	script_list_type::iterator it = xray_scripts.find( xr_string(file_name) );
+	if (it != xray_scripts.end())
+	{
+		Msg("* loading script %s.script", file_name);
+		m_reload_modules = false;
+
+		load_file_into_namespace(it->second.c_str(), strcmp(file_name,"_g") == 0 ? "_G" : file_name);
+		return;
+	}
+
+	if (warn_if_not_exist)
+		Msg("Variable %s not found; No script by this name exists, either.", file_name);
+
+	return;
 }
 
 void CScriptEngine::process_file(LPCSTR file_name)
