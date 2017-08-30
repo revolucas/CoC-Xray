@@ -84,6 +84,20 @@ CScriptIniFile *create_ini_file	(LPCSTR ini_string)
 		)
 	);
 }
+
+CScriptIniFile *create_ini_file(LPCSTR ini_string,LPCSTR path)
+{
+	return			(
+		(CScriptIniFile*)
+		xr_new<CInifile>(
+		&IReader(
+		(void*)ini_string,
+		xr_strlen(ini_string)
+		),
+		path
+		)
+		);
+}
 #pragma warning(pop)
 
 #pragma optimize("s",on)
@@ -144,6 +158,7 @@ void CScriptIniFile::script_register(lua_State *L)
 #ifdef XRGAME_EXPORTS
 		def("game_ini",				&get_game_ini),
 #endif // XRGAME_EXPORTS
-		def("create_ini_file",		&create_ini_file,	adopt(result))
+		def("create_ini_file", (CScriptIniFile*(*)(LPCSTR))(&create_ini_file), adopt(result)),
+		def("create_ini_file", (CScriptIniFile*(*)(LPCSTR,LPCSTR))(&create_ini_file), adopt(result))
 	];
 }
