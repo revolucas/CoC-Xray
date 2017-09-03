@@ -44,39 +44,19 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 			}
 		
 			CGameObject* _GO		= smart_cast<CGameObject*>(Obj);
-			if (!IsGameTypeSingle() && !g_Alive())
-			{
-				Msg("! WARNING: dead player [%d][%s] can't take items [%d][%s]",
-					ID(), Name(), _GO->ID(), _GO->cNameSect().c_str());
-				break;
-			}
 			
 			if( inventory().CanTakeItem(smart_cast<CInventoryItem*>(_GO)) )
 			{
 				Obj->H_SetParent		(smart_cast<CObject*>(this));
-				
-#ifdef MP_LOGGING
-				string64 act;
-				xr_strcpy( act, (type == GE_TRADE_BUY)? "buys" : "takes" );
-				Msg("--- Actor [%d][%s]  %s  [%d][%s]", ID(), Name(), act, _GO->ID(), _GO->cNameSect().c_str());
-#endif // MP_LOGGING
-				
 				inventory().Take	(_GO, false, true);
-			
 				SelectBestWeapon(Obj);
 			}
 			else
 			{
-				if (IsGameTypeSingle())
-				{
-					NET_Packet		P;
-					u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
-					P.w_u16			(u16(Obj->ID()));
-					u_EventSend		(P);
-				} else
-				{
-					Msg("! ERROR: Actor [%d][%s]  tries to drop on take [%d][%s]", ID(), Name(), _GO->ID(), _GO->cNameSect().c_str());
-				}
+				NET_Packet		P;
+				u_EventGen		(P,GE_OWNERSHIP_REJECT,ID());
+				P.w_u16			(u16(Obj->ID()));
+				u_EventSend		(P);
 			}
 		}
 		break;
@@ -160,11 +140,6 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 			P.r_u32		(flags);
 			s32 ZoomRndSeed = P.r_s32();
 			s32 ShotRndSeed = P.r_s32();
-			if (!IsGameTypeSingle() && !g_Alive())
-			{
-//				Msg("! WARNING: dead player tries to rize inventory action");
-				break;
-			}
 									
 			if (flags & CMD_START)
 			{
@@ -198,13 +173,6 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
 			VERIFY2  ( !Obj->getDestroy(), make_string("GEG_PLAYER_ITEM_EAT(use): Object is destroying. object_id = [%d]", id).c_str() );
 			if ( Obj->getDestroy() ) {
 //				Msg                                ( "! GEG_PLAYER_ITEM_EAT(use): Object is destroying. object_id = [%d]", id );
-				break;
-			}
-
-			if (!IsGameTypeSingle() && !g_Alive())
-			{
-				Msg("! WARNING: dead player [%d][%s] can't use items [%d][%s]",
-					ID(), Name(), Obj->ID(), Obj->cNameSect().c_str());
 				break;
 			}
 

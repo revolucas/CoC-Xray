@@ -1,5 +1,6 @@
 #include "pch_script.h"
 #include "CustomOutfit.h"
+#include "ActorHelmet.h"
 
 using namespace luabind;
 
@@ -20,6 +21,9 @@ void CCustomOutfit::script_register(lua_State *L)
 			.def_readwrite("m_fBleedingRestoreSpeed", &CCustomOutfit::m_fBleedingRestoreSpeed)
 			.def_readonly("bIsHelmetAvaliable", &CCustomOutfit::bIsHelmetAvaliable)
 			.def("BonePassBullet", &CCustomOutfit::BonePassBullet)
-			.def("get_artefact_count", &CCustomOutfit::get_artefact_count)
+			.def("get_artefact_count", &CCustomOutfit::get_artefact_count),
+
+			class_<CHelmet, CGameObject>("CHelmet")
+			.def(constructor<>())
 		];
 }

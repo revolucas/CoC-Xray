@@ -292,23 +292,7 @@ void CActor::cam_Update(float dt, float fFOV)
 	on_weapon_shot_update();
 	float y_shift =0;
 	
-	if( GamePersistent().GameType() != eGameIDSingle && ik_cam_shift && character_physics_support() && character_physics_support()->ik_controller() )
-	{
-		y_shift = character_physics_support()->ik_controller()->Shift();
-		float cam_smooth_k = 1.f;
-		if(_abs(y_shift-current_ik_cam_shift)>ik_cam_shift_tolerance)
-		{
-
-			cam_smooth_k = 1.f - ik_cam_shift_speed * dt/0.01f;
-
-		}
-
-		if(_abs(y_shift)<ik_cam_shift_tolerance/2.f)
-			cam_smooth_k = 1.f - ik_cam_shift_speed * 1.f/0.01f * dt;
-		clamp( cam_smooth_k, 0.f, 1.f );
-		current_ik_cam_shift = cam_smooth_k * current_ik_cam_shift + y_shift * ( 1.f - cam_smooth_k );
-	} else
-		current_ik_cam_shift = 0;
+	current_ik_cam_shift = 0;
 
 	// Alex ADD: smooth crouch fix
 	float HeightInterpolationSpeed = 4.f;

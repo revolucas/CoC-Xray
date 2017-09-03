@@ -566,9 +566,8 @@ bool CUICellContainer::AddSimilar(CUICellItem* itm)
 		if (iitem->m_pInventory->ItemFromSlot(iitem->BaseSlot()) == iitem)
 			return false;
 
-		if (pSettings->line_exist(iitem->m_section_id, "dont_stack") && pSettings->r_bool(iitem->m_section_id, "dont_stack") == TRUE)
+		if (!iitem->CanStack())
 			return false;
-
 	}
 	//-Alundaio
 
@@ -591,6 +590,12 @@ CUICellItem* CUICellContainer::FindSimilar(CUICellItem* itm)
 #else
 		CUICellItem* i = (CUICellItem*)(*it);
 #endif
+		if (i == itm)
+			continue;
+
+		if (!i->EqualTo(itm))
+			continue;
+
 		//Alundaio: Don't stack equipped items
 		PIItem	iitem = (PIItem)i->m_pData;
 		if (iitem && iitem->m_pInventory)
@@ -598,17 +603,12 @@ CUICellItem* CUICellContainer::FindSimilar(CUICellItem* itm)
 			if (iitem->m_pInventory->ItemFromSlot(iitem->BaseSlot()) == iitem)
 				continue;
 
-			if (pSettings->line_exist(iitem->m_section_id, "dont_stack") && pSettings->r_bool(iitem->m_section_id, "dont_stack") == TRUE)
+			if (!iitem->CanStack())
 				continue;
-
 		}
 		//-Alundaio
 
-		if (i == itm)
-			continue;
-
-		if(i->EqualTo(itm))
-			return i;
+		return i;
 	}
 	return NULL;
 }

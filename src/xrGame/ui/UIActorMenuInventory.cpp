@@ -33,7 +33,7 @@
 #include "../player_hud.h"
 #include "../CustomDetector.h"
 #include "../PDA.h"
-
+#include "../ActorBackpack.h"
 #include "../actor_defs.h"
 
 using namespace luabind; //Alundaio
@@ -44,17 +44,16 @@ void CUIActorMenu::InitInventoryMode()
 {
 	m_pInventoryBagList->Show			(true);
 	m_pInventoryBeltList->Show			(true);
-	m_pInventoryOutfitList->Show		(true);
-	m_pInventoryHelmetList->Show		(true);
-	m_pInventoryDetectorList->Show		(true);
-	m_pInventoryPistolList->Show		(true);
-	m_pInventoryAutomaticList->Show		(true);
+
+	for (u8 i = 1; i <= m_slot_count; ++i)
+	{
+		if (m_pInvList[i])
+			m_pInvList[i]->Show(true);
+	}
+
 	m_pQuickSlot->Show					(true);
 	m_pTrashList->Show					(true);
 	m_RightDelimiter->Show				(false);
-	
-	m_pInventoryKnifeList->Show			(true);
-	m_pInventoryBinocList->Show			(true);
 
 	InitInventoryContents				(m_pInventoryBagList);
 
@@ -131,8 +130,6 @@ void CUIActorMenu::SendEvent_Item_Eat(PIItem pItem, u16 recipient)
 void CUIActorMenu::SendEvent_Item_Drop(PIItem pItem, u16 recipient)
 {
 	R_ASSERT(pItem->parent_id()==recipient);
-	if (!IsGameTypeSingle())
-		pItem->DenyTrade();
 	//pItem->SetDropManual			(TRUE);
 	NET_Packet					P;
 	pItem->object().u_EventGen	(P,GE_OWNERSHIP_REJECT,pItem->parent_id());
@@ -240,16 +237,9 @@ void CUIActorMenu::OnInventoryAction(PIItem pItem, u16 action_type)
 	CUIDragDropListEx* all_lists[] =
 	{
 		m_pInventoryBeltList,
-		m_pInventoryPistolList,
-		m_pInventoryAutomaticList,
-		m_pInventoryOutfitList,
-		m_pInventoryHelmetList,
-		m_pInventoryDetectorList,
 		m_pInventoryBagList,
 		m_pTradeActorBagList,
 		m_pTradeActorList,
-		m_pInventoryKnifeList,
-		m_pInventoryBinocList,
 		NULL
 	};
 
@@ -289,21 +279,33 @@ void CUIActorMenu::OnInventoryAction(PIItem pItem, u16 action_type)
 				{
 					CUIDragDropListEx*	curr = all_lists[i];
 					CUICellItem*		ci   = NULL;
-
 					if ( FindItemInList(curr, pItem, ci) )
 					{
 						if ( lst_to_add != curr )
-						{
 							RemoveItemFromList(curr, pItem);
-						}
 						else
-						{
 							b_already = true;
-						}
 						//break;
 					}
 					++i;
 				}
+
+				for (u8 i = 1; i <= m_slot_count; ++i)
+				{
+					CUIDragDropListEx*	curr = m_pInvList[i];
+					if (curr)
+					{
+						CUICellItem* ci = NULL;
+						if (FindItemInList(curr, pItem, ci))
+						{
+							if (lst_to_add != curr)
+								RemoveItemFromList(curr, pItem);
+							else
+								b_already = true;
+						}
+					}
+				}
+
 				CUICellItem*		ci   = NULL;
 				if(GetMenuMode()==mmDeadBodySearch && FindItemInList(m_pDeadBodyBagList, pItem, ci))
 					break;
@@ -339,13 +341,21 @@ void CUIActorMenu::OnInventoryAction(PIItem pItem, u16 action_type)
 					CUIDragDropListEx* curr = all_lists[i];
 					if(RemoveItemFromList(curr, pItem))
 					{
-#ifndef MASTER_GOLD
-						Msg("all ok. item [%d] removed from list", pItem->object_id());
-#endif // #ifndef MASTER_GOLD
 						break;
 					}
 					++i;
 				}
+
+				for (u8 i = 1; i <= m_slot_count; ++i)
+				{
+					CUIDragDropListEx*	curr = m_pInvList[i];
+					if (curr)
+					{
+						if (RemoveItemFromList(curr, pItem))
+							break;
+					}
+				}
+
 				if(m_pActorInvOwner)
 					m_pQuickSlot->ReloadReferences(m_pActorInvOwner);
 			}break;
@@ -393,26 +403,18 @@ void CUIActorMenu::DetachAddon(LPCSTR addon_name, PIItem itm)
 
 void CUIActorMenu::InitCellForSlot( u16 slot_idx )
 {
-	//VERIFY( KNIFE_SLOT <= slot_idx && slot_idx <= LAST_SLOT );
 	PIItem item	= m_pActorInvOwner->inventory().ItemFromSlot(slot_idx);
 	if ( !item )
-	{
 		return;
-	}
 
-	CUIDragDropListEx* curr_list	= GetSlotList( slot_idx );
+	CUIDragDropListEx* curr_list = GetSlotList( slot_idx );
+	if (!curr_list)
+		return;
+
 	CUICellItem* cell_item			= create_cell_item( item );
 	curr_list->SetItem( cell_item );
 	if ( m_currMenuMode == mmTrade && m_pPartnerInvOwner )
 		ColorizeItem( cell_item, !CanMoveToPartner( item ) );
-
-	//CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(item);
-	//if(outfit)
-	//	outfit->ReloadBonesProtection();
-
-	//CHelmet* helmet = smart_cast<CHelmet*>(item);
-	//if(helmet)
-	//	helmet->ReloadBonesProtection();
 }
 
 void CUIActorMenu::InitInventoryContents(CUIDragDropListEx* pBagList)
@@ -424,30 +426,16 @@ void CUIActorMenu::InitInventoryContents(CUIDragDropListEx* pBagList)
 
 	CUIDragDropListEx*			curr_list = NULL;
 	//Slots
-	InitCellForSlot				(INV_SLOT_2);
-	InitCellForSlot				(INV_SLOT_3);
-	InitCellForSlot				(OUTFIT_SLOT);
-	InitCellForSlot				(DETECTOR_SLOT);
-	InitCellForSlot				(GRENADE_SLOT);
-	InitCellForSlot				(HELMET_SLOT);
-	InitCellForSlot				(KNIFE_SLOT);
-	InitCellForSlot				(BINOCULAR_SLOT);
-	
-	//Alundaio
-	if (!m_pActorInvOwner->inventory().SlotIsPersistent(ARTEFACT_SLOT))
-		InitCellForSlot(ARTEFACT_SLOT);
-	if (!m_pActorInvOwner->inventory().SlotIsPersistent(PDA_SLOT))
-		InitCellForSlot(PDA_SLOT);
-	//if (!m_pActorInvOwner->inventory().SlotIsPersistent(TORCH_SLOT)) //Alundaio: TODO find out why this crash when you unequip
-	//	InitCellForSlot(TORCH_SLOT);
-	
-	//for custom slots that exist past LAST_SLOT
-	for (u16 i = LAST_SLOT+1; i <= m_pActorInvOwner->inventory().LastSlot(); ++i)
+	for (u8 i = 1; i <= m_slot_count; ++i)
 	{
-		if (!m_pActorInvOwner->inventory().SlotIsPersistent(i))
+		if (m_pInvList[i])
 			InitCellForSlot(i);
+		else
+		{
+			if (i != BOLT_SLOT && i != PDA_SLOT && i != TORCH_SLOT && !m_pActorInvOwner->inventory().SlotIsPersistent(i))
+				InitCellForSlot(i);
+		}
 	}
-	//-Alundaio
 
 	curr_list					= m_pInventoryBeltList;
 	TIItemContainer::iterator itb = m_pActorInvOwner->inventory().m_belt.begin();
@@ -558,7 +546,7 @@ bool CUIActorMenu::ToSlot(CUICellItem* itm, bool force_place, u16 slot_id)
 			if(pOutfit && !pOutfit->bIsHelmetAvaliable)
 			{
 				CUIDragDropListEx* helmet_list		= GetSlotList(HELMET_SLOT);
-				if(helmet_list->ItemsCount()==1)
+				if(helmet_list && helmet_list->ItemsCount()==1)
 				{
 					CUICellItem* helmet_cell		= helmet_list->GetItemIdx(0);
 					ToBag(helmet_cell, false);
@@ -814,45 +802,13 @@ CUIDragDropListEx* CUIActorMenu::GetSlotList(u16 slot_idx)
 	{
 		return NULL;
 	}
-	switch ( slot_idx )
-	{
-		case KNIFE_SLOT:
-			return m_pInventoryKnifeList;
-			break;
 
-		case BINOCULAR_SLOT:
-			return m_pInventoryBinocList;
-			break;
-			
-		case INV_SLOT_2:
-			return m_pInventoryPistolList;
-			break;
+	if (m_pInvList[slot_idx])
+		return m_pInvList[slot_idx];
 
-		case INV_SLOT_3:
-			return m_pInventoryAutomaticList;
-			break;
-
-		case OUTFIT_SLOT:
-			return m_pInventoryOutfitList;
-			break;
-
-		case HELMET_SLOT:
-			return m_pInventoryHelmetList;
-			break;
-
-		case DETECTOR_SLOT:
-			return m_pInventoryDetectorList;
-			break;
-
-		default:
-			if ( m_currMenuMode == mmTrade )
-			{
-				return m_pTradeActorBagList;
-			}
-			return m_pInventoryBagList;
-			break;
-	};
-	return NULL;
+	if ( m_currMenuMode == mmTrade )
+		return m_pTradeActorBagList;
+	return m_pInventoryBagList;
 }
 
 bool CUIActorMenu::TryUseItem( CUICellItem* cell_itm )
@@ -862,7 +818,7 @@ bool CUIActorMenu::TryUseItem( CUICellItem* cell_itm )
 		return false;
 	}
 	PIItem item	= (PIItem)cell_itm->m_pData;
-
+	
 	CBottleItem*	pBottleItem		= smart_cast<CBottleItem*>	(item);
 	CMedkit*		pMedkit			= smart_cast<CMedkit*>		(item);
 	CAntirad*		pAntirad		= smart_cast<CAntirad*>		(item);
@@ -1099,7 +1055,7 @@ void CUIActorMenu::PropertiesBoxForWeapon( CUICellItem* cell_item, PIItem item, 
 		{
 		}
 	}
-	if ( smart_cast<CWeaponMagazined*>(pWeapon) && IsGameTypeSingle() )
+	if ( smart_cast<CWeaponMagazined*>(pWeapon) )
 	{
 		bool b = ( pWeapon->GetAmmoElapsed() !=0 );
 		if ( !b )
@@ -1250,66 +1206,24 @@ void CUIActorMenu::PropertiesBoxForUsing( PIItem item, bool& b_show )
 		}
 	}
 
-	//1st Custom Use action
-	LPCSTR functor_name = READ_IF_EXISTS(pSettings, r_string, GO->cNameSect(), "use1_functor", 0);
-	if (functor_name)
+	//Custom Use action
+	shared_str functor_field;
+	LPCSTR functor_name = NULL;
+	for (u8 i = 1; i <= 4; ++i)
 	{
-		luabind::functor<LPCSTR> funct1;
-		if (ai().script_engine().functor(functor_name, funct1))
+		functor_field.printf("use%d_functor", i);
+		functor_name = READ_IF_EXISTS(pSettings, r_string, GO->cNameSect(), functor_field.c_str(), 0);
+		if (functor_name)
 		{
-			act_str = funct1(GO->lua_game_object());
-			if (act_str)
+			luabind::functor<LPCSTR> funct;
+			if (ai().script_engine().functor(functor_name, funct))
 			{
-				m_UIPropertiesBox->AddItem(act_str, NULL, INVENTORY_EAT2_ACTION);
-				b_show = true;				
-			}
-		}
-	}
-
-	//2nd Custom Use action
-	functor_name = READ_IF_EXISTS(pSettings, r_string, GO->cNameSect(), "use2_functor", 0);
-	if (functor_name)
-	{
-		luabind::functor<LPCSTR> funct1;
-		if (ai().script_engine().functor(functor_name, funct1))
-		{
-			act_str = funct1(GO->lua_game_object());
-			if (act_str)
-			{
-				m_UIPropertiesBox->AddItem(act_str, NULL, INVENTORY_EAT3_ACTION);
-				b_show = true;				
-			}
-		}
-	}
-
-	//3rd Custom Use action
-	functor_name = READ_IF_EXISTS(pSettings, r_string, GO->cNameSect(), "use3_functor", 0);
-	if (functor_name)
-	{
-		luabind::functor<LPCSTR> funct1;
-		if (ai().script_engine().functor(functor_name, funct1))
-		{
-			act_str = funct1(GO->lua_game_object());
-			if (act_str)
-			{
-				m_UIPropertiesBox->AddItem(act_str, NULL, INVENTORY_EAT4_ACTION);
-				b_show = true;				
-			}
-		}
-	}
-
-	//4th Custom Use action
-	functor_name = READ_IF_EXISTS(pSettings, r_string, GO->cNameSect(), "use4_functor", 0);
-	if (functor_name)
-	{
-		luabind::functor<LPCSTR> funct1;
-		if (ai().script_engine().functor(functor_name, funct1))
-		{
-			act_str = funct1(GO->lua_game_object());
-			if (act_str)
-			{
-				m_UIPropertiesBox->AddItem(act_str, NULL, INVENTORY_EAT5_ACTION);
-				b_show = true;				
+				act_str = funct(GO->lua_game_object());
+				if (act_str)
+				{
+					m_UIPropertiesBox->AddItem(act_str, NULL, INVENTORY_EAT2_ACTION+i-1);
+					b_show = true;
+				}
 			}
 		}
 	}

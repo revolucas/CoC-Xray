@@ -76,24 +76,15 @@ void CUIPdaWnd::Init()
 	m_btn_close				= UIHelper::Create3tButton( uiXml, "close_button", this );
 	m_hint_wnd				= UIHelper::CreateHint( uiXml, "hint_wnd" );
 
+	pUITaskWnd					= xr_new<CUITaskWnd>();
+	pUITaskWnd->hint_wnd		= m_hint_wnd;
+	pUITaskWnd->Init			();
 
-	if ( IsGameTypeSingle() )
-	{
-		pUITaskWnd					= xr_new<CUITaskWnd>();
-		pUITaskWnd->hint_wnd		= m_hint_wnd;
-		pUITaskWnd->Init			();
+	pUIRankingWnd					= xr_new<CUIRankingWnd>();
+	pUIRankingWnd->Init				();
 
-//-		pUIFactionWarWnd				= xr_new<CUIFactionWarWnd>();
-//-		pUIFactionWarWnd->hint_wnd		= m_hint_wnd;
-//-		pUIFactionWarWnd->Init			();
-
-		pUIRankingWnd					= xr_new<CUIRankingWnd>();
-		pUIRankingWnd->Init				();
-
-		pUILogsWnd						= xr_new<CUILogsWnd>();
-		pUILogsWnd->Init				();
-
-	}
+	pUILogsWnd						= xr_new<CUILogsWnd>();
+	pUILogsWnd->Init				();
 
 	UITabControl					= xr_new<CUITabControl>();
 	UITabControl->SetAutoDelete		(true);

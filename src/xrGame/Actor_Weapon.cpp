@@ -121,58 +121,7 @@ static	u16 BestWeaponSlots [] = {
 };
 void CActor::SelectBestWeapon(CObject* O)
 {
-	if (!O) return;
-	if ( IsGameTypeSingle() ) return;
-	//if (Level().CurrentControlEntity() != this) return;
-	//if (OnClient()) return;
-	//-------------------------------------------------
-	CWeapon* pWeapon			= smart_cast<CWeapon*>(O);
-	CGrenade* pGrenade			= smart_cast<CGrenade*>(O);
-	CArtefact* pArtefact		= smart_cast<CArtefact*>(O);
-	CInventoryItem*	pIItem		= smart_cast<CInventoryItem*> (O);
-	bool NeedToSelectBestWeapon = false;
-
-	if (pArtefact && pArtefact->H_Parent()) //just take an artefact
-		return;
-	
-	if ((pWeapon || pGrenade || pArtefact) && pIItem)
-	{
-		NeedToSelectBestWeapon = true;
-		if ((GameID() == eGameIDArtefactHunt) || (GameID() == eGameIDCaptureTheArtefact)) //only for test...
-		{
-			if (pIItem->BaseSlot() == INV_SLOT_2 || pIItem->BaseSlot() == INV_SLOT_3)
-			{
-				CInventoryItem* pIItemInSlot = inventory().ItemFromSlot(pIItem->BaseSlot());
-				if (pIItemInSlot != NULL && pIItemInSlot != pIItem)				
-					NeedToSelectBestWeapon = false;
-			}
-		}
-	}
-	if (!NeedToSelectBestWeapon) return;
-	//-------------------------------------------------
-	for (int i=0; i<4; i++)
-	{
-		if (inventory().ItemFromSlot(BestWeaponSlots[i]) )
-		{
-			if (inventory().GetActiveSlot() != BestWeaponSlots[i])
-			{
-				PIItem best_item = inventory().ItemFromSlot(BestWeaponSlots[i]);
-				if (best_item && best_item->can_kill())
-				{
-#ifdef DEBUG
-					Msg("--- Selecting best weapon [%d], Frame[%d]", BestWeaponSlots[i], Device.dwFrame);
-#endif // #ifdef DEBUG
-					inventory().Activate(BestWeaponSlots[i]);
-				} else
-				{
-#ifdef DEBUG
-					Msg("--- Weapon is not best...");
-#endif // #ifdef DEBUG
-				}
-			}
-			return;
-		};
-	};
+	return;
 }
 
 #define ENEMY_HIT_SPOT	"mp_hit_sector_location"

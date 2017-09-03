@@ -89,17 +89,6 @@ void CUIInventoryWnd::Init()
 	AttachChild							(&UIProgressBack);
 	xml_init.InitStatic					(uiXml, "progress_background", 0, &UIProgressBack);
 
-	if (GameID() != eGameIDSingle){
-		AttachChild						(&UIProgressBack_rank);
-		xml_init.InitStatic				(uiXml, "progress_back_rank", 0, &UIProgressBack_rank);
-
-		UIProgressBack_rank.AttachChild	(&UIProgressBarRank);
-		xml_init.InitProgressBar		(uiXml, "progress_bar_rank", 0, &UIProgressBarRank);
-		UIProgressBarRank.SetProgressPos(100);
-
-	}
-	
-
 	UIProgressBack.AttachChild (&UIProgressBarHealth);
 	xml_init.InitProgressBar (uiXml, "progress_bar_health", 0, &UIProgressBarHealth);
 	
@@ -118,19 +107,6 @@ void CUIInventoryWnd::Init()
 	//Элементы автоматического добавления
 	xml_init.InitAutoStatic				(uiXml, "auto_static", this);
 
-
-	if (!IsGameTypeSingle())
-	{
-		UIRankFrame = xr_new<CUIStatic> (); 
-		UIRankFrame->SetAutoDelete		(true);
-		UIRank = xr_new<CUIStatic>		(); 
-		UIRank->SetAutoDelete			(true);
-
-		CUIXmlInit::InitStatic			(uiXml, "rank", 0, UIRankFrame);
-		CUIXmlInit::InitStatic			(uiXml, "rank:pic", 0, UIRank);
-		AttachChild						(UIRankFrame);
-		UIRankFrame->AttachChild		(UIRank);		
-	}
 
 	m_pUIBagList						= xr_new<CUIDragDropListEx>(); UIBagWnd.AttachChild(m_pUIBagList); m_pUIBagList->SetAutoDelete(true);
 	xml_init.InitDragDropListEx			(uiXml, "dragdrop_bag", 0, m_pUIBagList);
@@ -260,16 +236,8 @@ void CUIInventoryWnd::Update()
 		CInventoryOwner* pOurInvOwner	= smart_cast<CInventoryOwner*>(pEntityAlive);
 		u32 _money						= 0;
 
-		if (GameID() != eGameIDSingle){
-			game_PlayerState* ps = Game().GetPlayerByGameID(pEntityAlive->ID());
-			if (ps){
-				UIProgressBarRank.SetProgressPos(ps->experience_D*100);
-				_money							= ps->money_for_round;
-			}
-		}else
-		{
-			_money							= pOurInvOwner->get_money();
-		}
+		_money							= pOurInvOwner->get_money();
+
 		// update money
 		string64						sMoney;
 		sprintf_s							(sMoney,"%d RU", _money);
@@ -289,36 +257,6 @@ void CUIInventoryWnd::Show()
 { 
 	InitInventory			();
 	inherited::Show			();
-
-	if (!IsGameTypeSingle())
-	{
-		CActor *pActor = smart_cast<CActor*>(Level().CurrentEntity());
-		if(!pActor) return;
-
-		pActor->SetWeaponHideState(INV_STATE_INV_WND, true);
-
-		//rank icon		
-		int team = Game().local_player->team;
-		int rank = Game().local_player->rank;
-		string256 _path;	
-		
-		u32	gameid = GameID();
-		if ((gameid == eGameIDTeamDeathmatch) || (gameid == eGameIDArtefactHunt))
-		{
-			if (1==team)
-		        sprintf_s(_path, "ui_hud_status_green_0%d", rank+1);
-			else
-				sprintf_s(_path, "ui_hud_status_blue_0%d", rank+1);
-		} else
-		{
-			if (team == 0)
-				sprintf_s(_path, "ui_hud_status_green_0%d", rank+1);
-			else
-				sprintf_s(_path, "ui_hud_status_blue_0%d", rank+1);
-		}
-
-		UIRank->InitTexture(_path);
-	}
 
 	SendInfoToActor						("ui_inventory");
 
@@ -341,14 +279,6 @@ void CUIInventoryWnd::Hide()
 	{
 		pActor->inventory().Activate(m_iCurrentActiveSlot);
 		m_iCurrentActiveSlot = NO_ACTIVE_SLOT;
-	}
-
-	if (!IsGameTypeSingle())
-	{
-		CActor *pActor		= smart_cast<CActor*>(Level().CurrentEntity());
-		if(!pActor)			return;
-
-		pActor->SetWeaponHideState(INV_STATE_INV_WND, false);
 	}
 }
 

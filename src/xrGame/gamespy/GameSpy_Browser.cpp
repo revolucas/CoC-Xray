@@ -13,7 +13,6 @@
 #include "../string_table.h"
 
 void __cdecl SBCallback(ServerBrowser sb, SBCallbackReason reason, SBServer server, void *instance);
-EGameIDs ParseStringToGameType(LPCSTR str);
 
 CGameSpy_Browser::CGameSpy_Browser()
 #ifdef PROFILE_CRITICAL_SECTIONS
@@ -359,7 +358,7 @@ void	CGameSpy_Browser::ReadServerInfo	(ServerInfo* pServerInfo, void* pServer)
 	pServerInfo->m_GameType = (u8)xrGS_SBServerGetIntValueA(pServer, m_pQR2->xrGS_RegisteredKey(GAMETYPE_NAME_KEY), 0);
 	if (pServerInfo->m_GameType == 0)
 	{
-		pServerInfo->m_GameType = ParseStringToGameType(pServerInfo->m_ServerGameType);
+		pServerInfo->m_GameType = eGameIDSingle;
 	}
 	xr_sprintf(pServerInfo->m_ServerVersion, "%s", xrGS_SBServerGetStringValueA(pServer, m_pQR2->xrGS_RegisteredKey(GAMEVER_KEY), "--"));
 

@@ -883,6 +883,7 @@
     <ClInclude Include="ActivatingCharCollisionDelay.h" />
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorAnimation.h" />
+    <ClInclude Include="ActorBackpack.h" />
     <ClInclude Include="ActorCondition.h" />
     <ClInclude Include="ActorEffector.h" />
     <ClInclude Include="ActorHelmet.h" />
@@ -1490,7 +1491,6 @@
     <ClInclude Include="entity_alive.h" />
     <ClInclude Include="entity_alive_inline.h" />
     <ClInclude Include="event_conditions_collection.h" />
-    <ClInclude Include="ExoOutfit.h" />
     <CustomBuild Include="Explosive.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -1720,7 +1720,6 @@
     <ClInclude Include="memory_space_impl.h" />
     <ClInclude Include="MercuryBall.h" />
     <ClInclude Include="Message_Filter.h" />
-    <ClInclude Include="MilitaryOutfit.h" />
     <ClInclude Include="Mincer.h" />
     <ClInclude Include="Missile.h" />
     <ClInclude Include="mixed_delegate.h" />
@@ -1911,7 +1910,6 @@
     <ClInclude Include="safe_map_iterator_inline.h" />
     <ClInclude Include="saved_game_wrapper.h" />
     <ClInclude Include="saved_game_wrapper_inline.h" />
-    <ClInclude Include="ScientificOutfit.h" />
     <ClInclude Include="Scope.h" />
     <ClInclude Include="screenshots_common.h" />
     <ClInclude Include="screenshots_writer.h" />
@@ -2061,7 +2059,6 @@
     <ClInclude Include="sprinter_stopper.h" />
     <ClInclude Include="squad_hierarchy_holder.h" />
     <ClInclude Include="squad_hierarchy_holder_inline.h" />
-    <ClInclude Include="StalkerOutfit.h" />
     <ClInclude Include="stalker_alife_actions.h" />
     <ClInclude Include="stalker_alife_planner.h" />
     <ClInclude Include="stalker_alife_task_actions.h" />
@@ -2604,6 +2601,7 @@
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="ActorAnimation.cpp" />
+    <ClCompile Include="ActorBackpack.cpp" />
     <ClCompile Include="ActorCameras.cpp" />
     <ClCompile Include="ActorCondition.cpp">
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
@@ -3215,7 +3213,6 @@
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
     <ClCompile Include="event_conditions_collection.cpp" />
-    <ClCompile Include="ExoOutfit.cpp" />
     <ClCompile Include="Explosive.cpp" />
     <ClCompile Include="ExplosiveItem.cpp" />
     <ClCompile Include="ExplosiveRocket.cpp" />
@@ -3567,7 +3564,6 @@
     </ClCompile>
     <ClCompile Include="MercuryBall.cpp" />
     <ClCompile Include="Message_Filter.cpp" />
-    <ClCompile Include="MilitaryOutfit.cpp" />
     <ClCompile Include="Mincer.cpp" />
     <ClCompile Include="mincer_script.cpp">
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
@@ -3786,7 +3782,6 @@
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="ScientificOutfit.cpp" />
     <ClCompile Include="Scope.cpp">
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
@@ -4100,10 +4095,6 @@
     <ClCompile Include="spectator_camera_first_eye.cpp" />
     <ClCompile Include="sprinter_stopper.cpp" />
     <ClCompile Include="squad_hierarchy_holder.cpp" />
-    <ClCompile Include="StalkerOutfit.cpp">
-      <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
-      <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>
-    </ClCompile>
     <ClCompile Include="stalker_alife_actions.cpp">
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile>$(IntDir)$(ProjectName)_script.pch</PrecompiledHeaderOutputFile>

@@ -61,8 +61,6 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	VERIFY		(u16(-1) != l_cartridge.bullet_material_idx);
 	//-------------------------------------------------------------	
 	bool is_tracer	= m_bHasTracers && !!l_cartridge.m_flags.test(CCartridge::cfTracer);
-	if ( is_tracer && !IsGameTypeSingle() )
-		is_tracer	= is_tracer	/*&& (m_magazine.size() % 3 == 0)*/ && !IsSilencerAttached();
 
 	l_cartridge.m_flags.set	(CCartridge::cfTracer, is_tracer );
 	if (m_u8TracerColorID != u8(-1))
@@ -76,24 +74,6 @@ void CWeapon::FireTrace		(const Fvector& P, const Fvector& D)
 	
 	float fire_disp = 0.f;
 	CActor* tmp_actor = NULL;
-	if (!IsGameTypeSingle())
-	{
-		tmp_actor = smart_cast<CActor*>(Level().CurrentControlEntity());
-		if (tmp_actor)
-		{
-			CEntity::SEntityState state;
-			tmp_actor->g_State(state);
-			if (m_first_bullet_controller.is_bullet_first(state.fVelocity))
-			{
-				fire_disp = m_first_bullet_controller.get_fire_dispertion();
-				m_first_bullet_controller.make_shot();
-			}
-		}
-		game_cl_mp*	tmp_mp_game = smart_cast<game_cl_mp*>(&Game());
-		VERIFY(tmp_mp_game);
-		if (tmp_mp_game->get_reward_generator())
-			tmp_mp_game->get_reward_generator()->OnWeapon_Fire(H_Parent()->ID(), ID());
-	}
 	if (fsimilar(fire_disp, 0.f))
 	{
 		//CActor* tmp_actor = smart_cast<CActor*>(Level().CurrentControlEntity());

@@ -60,6 +60,7 @@
 #include "./xrServerEntities/inventory_space.h"
 #include "ai_space.h"
 #include "script_engine.h"
+#include "ActorBackpack.h"
 
 using namespace luabind;
 //-Alundaio
@@ -277,7 +278,7 @@ void CScriptGameObject::IterateInventoryBox(luabind::functor<bool> functor, luab
     }
 }
 
-void CScriptGameObject::MarkItemDropped(CScriptGameObject *item)
+void CScriptGameObject::MarkItemDropped(CScriptGameObject *item,bool flag)
 {
     CInventoryOwner			*inventory_owner = smart_cast<CInventoryOwner*>(&object());
     if (!inventory_owner)
@@ -293,7 +294,7 @@ void CScriptGameObject::MarkItemDropped(CScriptGameObject *item)
         return;
     }
 
-    inventory_item->SetDropManual(TRUE);
+    inventory_item->SetDropManual(flag?TRUE:FALSE);
 }
 
 bool CScriptGameObject::MarkedDropped(CScriptGameObject *item)
@@ -1806,38 +1807,58 @@ void CScriptGameObject::SetActorMaxWalkWeight(float max_walk_weight)
 float CScriptGameObject::GetAdditionalMaxWeight() const
 {
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&object());
-	if(!outfit) {
+	CBackpack* pBackpack = smart_cast<CBackpack*>(&object());
+	if(!outfit && !pBackpack) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomOutfit : cannot access class member GetAdditionalMaxWeight!");
-		return			(false);
+		return (false);
 	}
-	return				(outfit->m_additional_weight2);
+	
+	if (outfit)
+		return (outfit->m_additional_weight2);
+	
+	return (pBackpack->m_additional_weight2);
 }
 float CScriptGameObject::GetAdditionalMaxWalkWeight() const
 {
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&object());
-	if(!outfit) {
+	CBackpack* pBackpack = smart_cast<CBackpack*>(&object());
+	if(!outfit && !pBackpack) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomOutfit : cannot access class member GetAdditionalMaxWalkWeight!");
 		return			(false);
 	}
-	return				(outfit->m_additional_weight);
+	if (outfit)
+		return (outfit->m_additional_weight);
+
+	return (pBackpack->m_additional_weight);
 }
 void CScriptGameObject::SetAdditionalMaxWeight(float add_max_weight)
 {
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&object());
-	if(!outfit) {
+	CBackpack* pBackpack = smart_cast<CBackpack*>(&object());
+	if(!outfit && !pBackpack) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomOutfit : cannot access class member SetAdditionalMaxWeight!");
 		return;
 	}
-	outfit->m_additional_weight2 = add_max_weight;
+	if (outfit)
+		outfit->m_additional_weight2 = add_max_weight;
+	
+	if (pBackpack)
+		pBackpack->m_additional_weight2 = add_max_weight;
 }
 void CScriptGameObject::SetAdditionalMaxWalkWeight(float add_max_walk_weight)
 {
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&object());
-	if(!outfit) {
+	CBackpack* pBackpack = smart_cast<CBackpack*>(&object());
+	if(!outfit && !pBackpack) {
 		ai().script_engine().script_log			(ScriptStorage::eLuaMessageTypeError,"CCustomOutfit : cannot access class member SetAdditionalMaxWalkWeight!");
 		return;
 	}
-	outfit->m_additional_weight = add_max_walk_weight;
+	
+	if (outfit)
+		outfit->m_additional_weight = add_max_walk_weight;
+	
+	if (pBackpack)
+		pBackpack->m_additional_weight = add_max_walk_weight;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
 // получить суммарный вес инвентаря

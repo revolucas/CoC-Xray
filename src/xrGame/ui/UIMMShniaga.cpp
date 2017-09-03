@@ -79,15 +79,11 @@ void CUIMMShniaga::InitShniaga(CUIXml& xml_doc, LPCSTR path)
 		CreateList			(m_buttons_new,			xml_doc, "menu_new_game");
 	}
 	else {
-		if (GameID() == eGameIDSingle) {
-			VERIFY			(Actor());
-			if (g_actor && !Actor()->g_Alive())
-				CreateList	(m_buttons, xml_doc, "menu_main_single_dead");
-			else
-				CreateList	(m_buttons, xml_doc, "menu_main_single");
-		}
+		VERIFY			(Actor());
+		if (g_actor && !Actor()->g_Alive())
+			CreateList	(m_buttons, xml_doc, "menu_main_single_dead");
 		else
-			CreateList		(m_buttons, xml_doc, "menu_main_mm");
+			CreateList	(m_buttons, xml_doc, "menu_main_single");
 	}
 	CreateList			(m_buttons_new_network, xml_doc, "menu_network_game");
 

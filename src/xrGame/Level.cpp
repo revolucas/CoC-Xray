@@ -439,8 +439,6 @@ void CLevel::ProcessGameEvents()
             }
             case M_STATISTIC_UPDATE:
             {
-                if (GameID() != eGameIDSingle)
-                    Game().m_WeaponUsageStatistic->OnUpdateRequest(&P);
                 break;
             }
             case M_FILE_TRANSFER:
@@ -462,8 +460,6 @@ void CLevel::ProcessGameEvents()
             }
         }
     }
-    if (OnServer() && GameID() != eGameIDSingle)
-        Game().m_WeaponUsageStatistic->Send_Check_Respond();
 }
 
 #ifdef DEBUG_MEMORY_MANAGER
@@ -517,10 +513,7 @@ void CLevel::OnFrame()
 #endif
     Fvector	temp_vector;
     m_feel_deny.feel_touch_update(temp_vector, 0.f);
-    if (GameID() != eGameIDSingle)
-        psDeviceFlags.set(rsDisableObjectsAsCrows, true);
-    else
-        psDeviceFlags.set(rsDisableObjectsAsCrows, false);
+    psDeviceFlags.set(rsDisableObjectsAsCrows, false);
     // commit events from bullet manager from prev-frame
     Device.Statistic->TEST0.Begin();
     BulletManager().CommitEvents();
@@ -528,13 +521,6 @@ void CLevel::OnFrame()
     // Client receive
     if (net_isDisconnected())
     {
-        if (OnClient() && GameID() != eGameIDSingle)
-        {
-#ifdef DEBUG
-            Msg("--- I'm disconnected, so clear all objects...");
-#endif
-            ClearAllObjects();
-        }
         Engine.Event.Defer("kernel:disconnect");
         return;
     }
@@ -553,7 +539,7 @@ void CLevel::OnFrame()
             Device.seqParallel.push_back(fastdelegate::FastDelegate0<>(m_map_manager, &CMapManager::Update));
         else
             MapManager().Update();
-        if (IsGameTypeSingle() && Device.dwPrecacheFrame == 0)
+        if (Device.dwPrecacheFrame == 0)
         {
             // XXX nitrocaster: was enabled in x-ray 1.5; to be restored or removed
             //if (g_mt_config.test(mtMap))
@@ -750,12 +736,6 @@ void CLevel::OnRender()
             CTeamBaseZone* team_base_zone = smart_cast<CTeamBaseZone*>(_O);
             if (team_base_zone)
                 team_base_zone->OnRender();
-            if (GameID() != eGameIDSingle)
-            {
-                CInventoryItem* pIItem = smart_cast<CInventoryItem*>(_O);
-                if (pIItem)
-                    pIItem->OnRender();
-            }
             if (dbg_net_Draw_Flags.test(dbg_draw_skeleton)) //draw skeleton
             {
                 CGameObject* pGO = smart_cast<CGameObject*>	(_O);
@@ -990,22 +970,7 @@ bool CLevel::InterpolationDisabled()
 
 void CLevel::PhisStepsCallback(u32 Time0, u32 Time1)
 {
-    if (!Level().game)
-        return;
-    if (GameID() == eGameIDSingle)
-        return;
-    //#pragma todo("Oles to all: highly inefficient and slow!!!")
-    //fixed (Andy)
-    /*
-    for (xr_vector<CObject*>::iterator O=Level().Objects.objects.begin(); O!=Level().Objects.objects.end(); ++O)
-    {
-    if( smart_cast<CActor*>((*O)){
-    CActor* pActor = smart_cast<CActor*>(*O);
-    if (!pActor || pActor->Remote()) continue;
-    pActor->UpdatePosStack(Time0, Time1);
-    }
-    };
-    */
+	return;
 }
 
 void CLevel::SetNumCrSteps(u32 NumSteps)

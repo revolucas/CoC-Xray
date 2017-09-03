@@ -55,27 +55,115 @@
 		<text align="r" font="graffiti22"/>
 	</partner_money_static>
 
-	<binoc_slot_highlight x="389" y="17" width="65" height="48" stretch="1">
-		<texture>ui_inGame2_weapon_highlighter</texture>
-	</binoc_slot_highlight>
-	<inv_slot2_highlight x="389" y="95" width="65" height="275" stretch="1">
-		<texture>ui_inGame2_weapon_highlighter</texture>
-	</inv_slot2_highlight>
-	<knife_slot_highlight x="568" y="17" width="65" height="48" stretch="1">
-		<texture>ui_inGame2_weapon_highlighter</texture>
-	</knife_slot_highlight>
-	<inv_slot3_highlight x="568" y="95" width="65" height="275" stretch="1">
-		<texture>ui_inGame2_weapon_highlighter</texture>
-	</inv_slot3_highlight>
-	<helmet_slot_highlight x="472" y="17" width="76" height="98" stretch="1">
-		<texture>ui_inGame2_helmet_highlighter</texture>
-	</helmet_slot_highlight>
-	<outfit_slot_highlight x="472" y="142" width="76" height="161" stretch="1">
-		<texture>ui_inGame2_armor_highlighter</texture>
-	</outfit_slot_highlight>
-	<detector_slot_highlight x="472" y="330" width="76" height="48" stretch="1">
-		<texture>ui_inGame2_detector_highlighter</texture>
-	</detector_slot_highlight>
+	<!--NEW DYNAMIC SLOTS (Goes by slot order, must have tag for all slots, leave blank if unused. If slot_persistent = false in system.ltx and left blank it will show equipped in inventory bag
+	; slot_dragdrop and slot_highlight are mandatory if used, progress can be absent)-->
+	<inventory_slot_wnd>
+		<slot> <!--1 KNIFE -->
+			<slot_dragdrop x="384" y="328" width="85" height="55" cell_width="33" cell_height="41" rows_num="1" cols_num="2"
+			custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
+			<slot_highlight x="387" y="330" width="74" height="48" stretch="1">
+				<texture>ui_inGame2_detector_highlighter</texture>
+			</slot_highlight>
+			<slot_progress x="398" y="378" width="47" height="5" horz="1" min="0" max="1" pos="0">
+				<progress>
+					<texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+				</progress>
+				<min_color r="196" g="18" b="18"/>
+				<middle_color r="255" g="255" b="118"/>
+				<max_color r="107" g="207" b="119"/>
+			</slot_progress>
+		</slot>
+		<slot> <!--2 Pistol -->
+			<slot_dragdrop x="384" y="14" width="74" height="314" cell_width="33" cell_height="41" rows_num="6" cols_num="2"
+			custom_placement="0" vertical_placement="1" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
+			<slot_highlight x="389" y="17" width="65" height="297" stretch="1">
+				<texture>ui_inGame2_weapon_highlighter</texture>
+			</slot_highlight>
+			<slot_progress x="398" y="309" width="47" height="5" horz="1" min="0" max="1" pos="0">
+				<progress stretch="1">
+					<texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+				</progress>
+				<min_color r="196" g="18" b="18"/>
+				<middle_color r="255" g="255" b="118"/>
+				<max_color r="107" g="207" b="119"/>
+			</slot_progress>
+		</slot>
+		<slot> <!--3 Automatic -->
+			<slot_dragdrop x="563" y="14" width="74" height="314" cell_width="33" cell_height="41" rows_num="6" cols_num="2" 
+			custom_placement="0" vertical_placement="1" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" />
+			<slot_highlight x="568" y="17" width="65" height="297" stretch="1">
+				<texture>ui_inGame2_weapon_highlighter</texture>
+			</slot_highlight>
+			<slot_progress x="578" y="309" width="47" height="5" horz="1" min="0" max="1" pos="0">
+				<progress stretch="1">
+					<texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+				</progress>
+				<min_color r="196" g="18" b="18"/>
+				<middle_color r="255" g="255" b="118"/>
+				<max_color r="107" g="207" b="119"/>
+			</slot_progress>
+		</slot>
+		<slot><!--4 Grenade --></slot>
+		<slot><!--5 Binocular --></slot> 
+		<slot><!--6 Bolt --></slot> 
+		<slot><!--7 Outfit -->
+			<slot_dragdrop x="469" y="109" width="85" height="178" cell_width="33" cell_height="41" rows_num="3" cols_num="2"
+			custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
+			<slot_highlight x="472" y="114" width="78" height="161" stretch="1">
+				<texture>ui_inGame2_armor_highlighter</texture>
+			</slot_highlight>
+			<slot_progress x="488" y="281" width="47" height="5" horz="1" min="0" max="1" pos="0">
+				<progress stretch="1">
+					<texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+				</progress>
+				<min_color r="196" g="18" b="18"/>
+				<middle_color r="255" g="255" b="118"/>
+				<max_color r="107" g="207" b="119"/>
+			</slot_progress>
+		</slot> 
+		<slot><!--8 PDA --></slot> 
+		<slot><!--9 Detector -->
+			<slot_dragdrop x="563" y="328" width="85" height="55" cell_width="33" cell_height="41" rows_num="1" cols_num="2"
+			custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
+			<slot_highlight x="566" y="330" width="74" height="48" stretch="1">
+				<texture>ui_inGame2_detector_highlighter</texture>
+			</slot_highlight>
+			<slot_progress x="578" y="378" width="47" height="5" horz="1" min="0" max="1" pos="0">
+				<progress>
+					<texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+				</progress>
+				<min_color r="196" g="18" b="18"/>
+				<middle_color r="255" g="255" b="118"/>
+				<max_color r="107" g="207" b="119"/>
+			</slot_progress>
+		</slot> 
+		<slot><!--10 Torch --></slot> 
+		<slot><!--11 Artefact --></slot>
+		<slot><!--12 Helmet -->
+			<slot_dragdrop x="469" y="10" width="85" height="88" cell_width="33" cell_height="41" rows_num="2" cols_num="2"
+			custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" />
+			<slot_highlight x="472" y="14" width="78" height="73" stretch="1">
+				<texture>ui_inGame2_helmet_highlighter</texture>
+			</slot_highlight>
+			<slot_progress x="488" y="91" width="47" height="5" horz="1" min="0" max="1" pos="0">
+				<progress stretch="1">
+					<texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
+				</progress>
+				<min_color r="196" g="18" b="18"/>
+				<middle_color r="255" g="255" b="118"/>
+				<max_color r="107" g="207" b="119"/>
+			</slot_progress>
+		</slot>
+		<slot><!--13 Backpack -->
+			<slot_dragdrop x="469" y="299" width="85" height="85" cell_width="33" cell_height="41" rows_num="2" cols_num="2"
+			custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
+			<slot_highlight x="472" y="300" width="78" height="85" stretch="1">
+				<texture>ui_inGame2_helmet_highlighter</texture>
+			</slot_highlight>
+		</slot>
+	</inventory_slot_wnd>
+	<!--NEW DYNAMIC SLOTS END-->
+	
 	<quick_slot_highlight x="387" y="398" width="52" height="59" dx="64" stretch="1">
 		<texture>ui_inGame2_quick_item_highlighter</texture>
 	</quick_slot_highlight>
@@ -96,67 +184,7 @@
 		<text align="c" font="letterica16">quick_use_str_4</text>
 	</quick_slot4_text>
 
-    <progess_bar_weapon1 x="398" y="378" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress stretch="1">
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_weapon1>
-    <progess_bar_weapon2 x="578" y="378" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress stretch="1">
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_weapon2>
-	
-		<!-- New slots -->
-	<progess_bar_knife x="398" y="373" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress>
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_knife>
-	<progess_bar_detector x="481" y="373" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress>
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_detector>
-	<progess_bar_binoc x="578" y="373" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress>
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_binoc>
-	
-    <progess_bar_outfit x="488" y="309" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress stretch="1">
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_outfit>
-    <progess_bar_helmet x="488" y="118" width="47" height="5" horz="1" min="0" max="1" pos="0">
-        <progress stretch="1">
-            <texture r="142" g="149" b="149">ui_inGame2_inventory_status_bar</texture>
-        </progress>
-		<min_color r="196" g="18" b="18"/>
-		<middle_color r="255" g="255" b="118"/>
-		<max_color r="107" g="207" b="119"/>
-    </progess_bar_helmet>
-
-	<actor_weight_caption x="750" y="736" width="57" height="16">
+   	<actor_weight_caption x="750" y="736" width="57" height="16">
 		<text align="r" font="letterica16" color="ui_3">ui_total_weight</text>
 	</actor_weight_caption>
 	<actor_weight x="807" y="736" width="35" height="16">
@@ -218,41 +246,6 @@
 	<dragdrop_belt x="390" y="480" width="240" height="41"
 		cell_width="33" cell_height="41" rows_num="1" cols_num="5"
 		cell_sp_x="19" cell_sp_y="0" a="0"/>
-
-	<dragdrop_outfit x="469" y="137" width="85" height="178"
-		cell_width="33" cell_height="41" rows_num="3" cols_num="2"
-		custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c"
-		vc_horiz_align="c"/>
-
-	<dragdrop_helmet x="469" y="14" width="85" height="110"
-		cell_width="33" cell_height="41" rows_num="2" cols_num="2"
-		custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c"
-		vc_horiz_align="c" />
-
-	<dragdrop_detector x="469" y="328" width="85" height="55"
-		cell_width="33" cell_height="41" rows_num="1" cols_num="2"
-		custom_placement="0" a="0" virtual_cells="1" vc_vert_align="c"
-		vc_horiz_align="c"/>
-
-	<dragdrop_binoc x="384" y="14" width="74" height="53"
-		cell_width="33" cell_height="41" rows_num="6" cols_num="2"
-		custom_placement="0" vertical_placement="1" a="0"
-		virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
-
-	<dragdrop_pistol x="384" y="90" width="74" height="280"
-		cell_width="33" cell_height="41" rows_num="6" cols_num="2"
-		custom_placement="0" vertical_placement="1" a="0"
-		virtual_cells="1" vc_vert_align="c" vc_horiz_align="c"/>
-
-	<dragdrop_knife x="563" y="14" width="74" height="53"
-		cell_width="33" cell_height="41" rows_num="6" cols_num="2"
-		custom_placement="0" vertical_placement="1" a="0"
-		virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" />
-
-	<dragdrop_automatic x="563" y="90" width="74" height="280"
-		cell_width="33" cell_height="41" rows_num="6" cols_num="2"
-		custom_placement="0" vertical_placement="1" a="0"
-		virtual_cells="1" vc_vert_align="c" vc_horiz_align="c" />
 
 	<dragdrop_actor_trade x="662" y="114" width="250" height="164"
 		cell_width="33" cell_height="41" rows_num="4" cols_num="7"

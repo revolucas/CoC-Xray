@@ -291,6 +291,14 @@ void CALifeSimulator__release					(CALifeSimulator *self, CSE_Abstract *object, 
 		return;
 	}
 
+	// awesome hack, for everyone only
+	CObject* obj = Level().Objects.net_Find(object->ID);
+	if (!obj)
+		return;
+
+	if (obj->getDestroy())
+		return;
+
 	// awful hack, for stohe only
 	NET_Packet							packet;
 	packet.w_begin						(M_EVENT);

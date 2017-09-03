@@ -500,14 +500,7 @@ void CShootingObject::FireBullet(const Fvector& pos,
 	float l_fHitPower = 0.0f;
 	if (ParentIsActor())//если из оружия стреляет актёр(игрок)
 	{
-		if (GameID() == eGameIDSingle)
-		{
-			l_fHitPower			= fvHitPower[g_SingleGameDifficulty];
-		}
-		else
-		{
-			l_fHitPower			= fvHitPower[egdMaster];
-		}
+		l_fHitPower			= fvHitPower[g_SingleGameDifficulty];
 	}
 	else
 	{

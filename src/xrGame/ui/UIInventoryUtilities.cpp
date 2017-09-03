@@ -518,8 +518,6 @@ LPCSTR InventoryUtilities::GetGoodwillAsText(CHARACTER_GOODWILL goodwill)
 // (для tutorial)
 void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
 {
-	if (GameID() != eGameIDSingle) return;
-	
 	CActor* actor = smart_cast<CActor*>(Level().CurrentEntity());
 	if(actor)
 	{
@@ -529,7 +527,6 @@ void InventoryUtilities::SendInfoToActor(LPCSTR info_id)
 
 void InventoryUtilities::SendInfoToLuaScripts(shared_str info)
 {
-	if (GameID() != eGameIDSingle) return;
 	if ( info == shared_str("ui_talk_show") )
 	{
 		int mode = 10; // now Menu is Talk Dialog (show)

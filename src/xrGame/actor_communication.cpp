@@ -150,8 +150,6 @@ void CActor::StartTalk (CInventoryOwner* talk_partner)
 
 void CActor::NewPdaContact		(CInventoryOwner* pInvOwner)
 {	
-	if(!IsGameTypeSingle()) return;
-
 	bool b_alive = !!(smart_cast<CEntityAlive*>(pInvOwner))->g_Alive();
 	CurrentGameUI()->UIMainIngameWnd->AnimateContacts(b_alive);
 

@@ -138,147 +138,12 @@ BOOL CSE_ALifeInventoryItem::Net_Relevant()
 
 void CSE_ALifeInventoryItem::UPDATE_Write	(NET_Packet &tNetPacket)
 {
-	if (!m_u8NumItems) {
-		tNetPacket.w_u8				(0);
-		return;
-	}
-
-	mask_num_items					num_items;
-	num_items.mask					= 0;
-	num_items.num_items				= m_u8NumItems;
-
-	R_ASSERT2						(
-		num_items.num_items < (u8(1) << 5),
-		make_string("%d",num_items.num_items)
-		);
-
-	if (State.enabled)									num_items.mask |= inventory_item_state_enabled;
-	if (fis_zero(State.angular_vel.square_magnitude()))	num_items.mask |= inventory_item_angular_null;
-	if (fis_zero(State.linear_vel.square_magnitude()))	num_items.mask |= inventory_item_linear_null;
-	//if (anim_use)										num_items.mask |= animated;
-
-	tNetPacket.w_u8					(num_items.common);
-
-	/*if(check(num_items.mask,animated))
-	{
-		tNetPacket.w_float				(m_blend_timeCurrent);
-	}*/
-
-	{
-		tNetPacket.w_vec3				(State.force);
-		tNetPacket.w_vec3				(State.torque);
-
-		tNetPacket.w_vec3				(State.position);
-
-		tNetPacket.w_float			(State.quaternion.x);
-		tNetPacket.w_float			(State.quaternion.y);
-		tNetPacket.w_float			(State.quaternion.z);
-		tNetPacket.w_float			(State.quaternion.w);	
-
-		if (!check(num_items.mask,inventory_item_angular_null)) {
-			tNetPacket.w_float		(State.angular_vel.x);
-			tNetPacket.w_float		(State.angular_vel.y);
-			tNetPacket.w_float		(State.angular_vel.z);
-		}
-
-		if (!check(num_items.mask,inventory_item_linear_null)) {
-			tNetPacket.w_float		(State.linear_vel.x);
-			tNetPacket.w_float		(State.linear_vel.y);
-			tNetPacket.w_float		(State.linear_vel.z);
-		}
-
-	}
-	tNetPacket.w_u8(1);	// not freezed - doesn't mean anything...
+	tNetPacket.w_u8(0);
 };
 
 void CSE_ALifeInventoryItem::UPDATE_Read	(NET_Packet &tNetPacket)
 {
-	tNetPacket.r_u8					(m_u8NumItems);
-	if (!m_u8NumItems) {
-		//Msg("--- Object [%d] has no sync items", this->cast_abstract()->ID);
-		return;
-	}
-
-	//Alundaio: Bug workaround
-	if (tNetPacket.r_elapsed() < 52)
-	{
-		tNetPacket.r_advance(tNetPacket.r_elapsed());
-		return;
-	}
-	
-	mask_num_items					num_items;
-	num_items.common				= m_u8NumItems;
-	m_u8NumItems					= num_items.num_items;
-
-	R_ASSERT2						(
-		m_u8NumItems < (u8(1) << 5),
-		make_string("%d",m_u8NumItems)
-		);
-	
-	/*if (check(num_items.mask,animated))
-	{
-		tNetPacket.r_float(m_blend_timeCurrent);
-		anim_use=true;
-	}
-	else
-	{
-	anim_use=false;
-	}*/
-
-	{
-		tNetPacket.r_vec3				(State.force);
-		tNetPacket.r_vec3				(State.torque);
-
-		tNetPacket.r_vec3				(State.position);
-		base()->o_Position.set			(State.position); //this is very important because many functions use this o_Position..
-
-		tNetPacket.r_float			(State.quaternion.x);
-		tNetPacket.r_float			(State.quaternion.y);
-		tNetPacket.r_float			(State.quaternion.z);
-		tNetPacket.r_float			(State.quaternion.w);	
-
-		State.enabled					= check(num_items.mask,inventory_item_state_enabled);
-
-		if (!check(num_items.mask,inventory_item_angular_null)) {
-			tNetPacket.r_float		(State.angular_vel.x);
-			tNetPacket.r_float		(State.angular_vel.y);
-			tNetPacket.r_float		(State.angular_vel.z);
-		}
-		else
-			State.angular_vel.set		(0.f,0.f,0.f);
-
-		if (!check(num_items.mask,inventory_item_linear_null)) {
-			tNetPacket.r_float		(State.linear_vel.x);
-			tNetPacket.r_float		(State.linear_vel.y);
-			tNetPacket.r_float		(State.linear_vel.z);
-		}
-		else
-			State.linear_vel.set		(0.f,0.f,0.f);
-
-		/*if (check(num_items.mask,animated))
-		{
-			anim_use=true;
-		}*/
-	}
-	prev_freezed = freezed;
-	if (tNetPacket.r_eof())		// in case spawn + update 
-	{
-		freezed = false;
-		return;
-	}
-	if (tNetPacket.r_u8())
-	{
-		freezed = false;
-	}
-	else {
-		if (!freezed)
-#ifdef XRGAME_EXPORTS
-			m_freeze_time	= Device.dwTimeGlobal;
-#else
-			m_freeze_time	= 0;
-#endif
-		freezed = true;
-	}
+	tNetPacket.r_u8(m_u8NumItems);
 };
 
 #ifndef XRGAME_EXPORTS
@@ -422,6 +287,52 @@ void CSE_ALifeItem::OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, Cli
 //	R_ASSERT					(!m_physics_disabled);
 	m_physics_disabled			= true;
 }
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemEx
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemEx::CSE_ALifeItemEx		(LPCSTR caSection) : CSE_ALifeItem(caSection)
+{
+}
+
+CSE_ALifeItemEx::~CSE_ALifeItemEx		()
+{
+}
+
+BOOL	CSE_ALifeItemEx::Net_Relevant			()
+{
+	return inherited::Net_Relevant();
+}
+
+void CSE_ALifeItemEx::STATE_Read			(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read	(tNetPacket,size);
+}
+
+void CSE_ALifeItemEx::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemEx::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+	if (tNetPacket.r_elapsed() > 0)
+		tNetPacket.r_float_q8		(m_fCondition,0.0f,1.0f);
+}
+
+void CSE_ALifeItemEx::UPDATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w_float_q8		(m_fCondition,0.0f,1.0f);
+}
+
+#ifndef XRGAME_EXPORTS
+void CSE_ALifeItemEx::FillProps			(LPCSTR pref, PropItemVec& values)
+{
+	inherited::FillProps			(pref,	 values);
+}
+#endif // #ifndef XRGAME_EXPORTS
 
 ////////////////////////////////////////////////////////////////////////////
 // CSE_ALifeItemTorch
@@ -930,7 +841,7 @@ void CSE_ALifeItemDetector::FillProps		(LPCSTR pref, PropItemVec& items)
 #endif // #ifndef XRGAME_EXPORTS
 
 ////////////////////////////////////////////////////////////////////////////
-// CSE_ALifeItemDetector
+// CSE_ALifeItemArtefact
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemArtefact::CSE_ALifeItemArtefact(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
@@ -970,6 +881,56 @@ void CSE_ALifeItemArtefact::FillProps		(LPCSTR pref, PropItemVec& items)
 #endif // #ifndef XRGAME_EXPORTS
 
 BOOL CSE_ALifeItemArtefact::Net_Relevant	()
+{
+	if (base()->ID_Parent == u16(-1))
+		return TRUE;
+
+	return FALSE;
+}
+
+////////////////////////////////////////////////////////////////////////////
+// CSE_ALifeItemArtefactEx
+////////////////////////////////////////////////////////////////////////////
+CSE_ALifeItemArtefactEx::CSE_ALifeItemArtefactEx(LPCSTR caSection) : CSE_ALifeItemArtefact(caSection)
+{
+}
+
+CSE_ALifeItemArtefactEx::~CSE_ALifeItemArtefactEx()
+{
+}
+
+void CSE_ALifeItemArtefactEx::STATE_Read		(NET_Packet	&tNetPacket, u16 size)
+{
+	inherited::STATE_Read		(tNetPacket,size);
+}
+
+void CSE_ALifeItemArtefactEx::STATE_Write		(NET_Packet	&tNetPacket)
+{
+	inherited::STATE_Write		(tNetPacket);
+}
+
+void CSE_ALifeItemArtefactEx::UPDATE_Read		(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Read		(tNetPacket);
+	if (tNetPacket.r_elapsed() > 0)
+		tNetPacket.r_float_q8(m_fCondition,0.0f,1.0f);
+}
+
+void CSE_ALifeItemArtefactEx::UPDATE_Write	(NET_Packet	&tNetPacket)
+{
+	inherited::UPDATE_Write		(tNetPacket);
+	tNetPacket.w_float_q8			(m_fCondition,0.0f,1.0f);
+}
+
+#ifndef XRGAME_EXPORTS
+void CSE_ALifeItemArtefactEx::FillProps		(LPCSTR pref, PropItemVec& items)
+{
+	inherited::FillProps			(pref,items);
+	PHelper().CreateFloat			(items, PrepareKey(pref, *s_name, "Anomaly value:"), &m_fAnomalyValue, 0.f, 200.f);
+}
+#endif // #ifndef XRGAME_EXPORTS
+
+BOOL CSE_ALifeItemArtefactEx::Net_Relevant	()
 {
 	if (base()->ID_Parent == u16(-1))
 		return TRUE;

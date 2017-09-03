@@ -119,39 +119,29 @@ BOOL CInventoryOwner::net_Spawn(CSE_Abstract* DC)
     if (!pThis) return FALSE;
     CSE_Abstract* E = (CSE_Abstract*) (DC);
 
-    if (IsGameTypeSingle())
-    {
-        CSE_ALifeTraderAbstract* pTrader = NULL;
-        if (E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
-        if (!pTrader) return FALSE;
+	CSE_ALifeTraderAbstract* pTrader = NULL;
+	if (E) pTrader = smart_cast<CSE_ALifeTraderAbstract*>(E);
+	if (!pTrader) return FALSE;
 
-        R_ASSERT(pTrader->character_profile().size());
+	R_ASSERT(pTrader->character_profile().size());
 
-        //синхронизируем параметры персонажа с серверным объектом
-        CharacterInfo().Init(pTrader);
+	//синхронизируем параметры персонажа с серверным объектом
+	CharacterInfo().Init(pTrader);
 
-        //-------------------------------------
-        m_known_info_registry->registry().init(E->ID);
-        //-------------------------------------
+	//-------------------------------------
+	m_known_info_registry->registry().init(E->ID);
+	//-------------------------------------
 
-        CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
-        if (dialog_manager && !dialog_manager->GetStartDialog().size())
-        {
-            dialog_manager->SetStartDialog(CharacterInfo().StartDialog());
-            dialog_manager->SetDefaultStartDialog(CharacterInfo().StartDialog());
-        }
-        m_game_name = pTrader->m_character_name;
+	CAI_PhraseDialogManager* dialog_manager = smart_cast<CAI_PhraseDialogManager*>(this);
+	if (dialog_manager && !dialog_manager->GetStartDialog().size())
+	{
+		dialog_manager->SetStartDialog(CharacterInfo().StartDialog());
+		dialog_manager->SetDefaultStartDialog(CharacterInfo().StartDialog());
+	}
+	m_game_name = pTrader->m_character_name;
 
-        m_deadbody_can_take = pTrader->m_deadbody_can_take;
-        m_deadbody_closed = pTrader->m_deadbody_closed;
-    }
-    else
-    {
-        CharacterInfo().m_SpecificCharacter.Load("mp_actor");
-        CharacterInfo().InitSpecificCharacter("mp_actor");
-        CharacterInfo().m_SpecificCharacter.data()->m_sGameName = (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
-        m_game_name = (E->name_replace()[0]) ? E->name_replace() : *pThis->cName();
-    }
+	m_deadbody_can_take = pTrader->m_deadbody_can_take;
+	m_deadbody_closed = pTrader->m_deadbody_closed;
 
     if (!pThis->Local())  return TRUE;
 
@@ -340,6 +330,7 @@ float CInventoryOwner::GetWeaponAccuracy() const
     return 0.f;
 }
 
+#include "ActorBackpack.h"
 //максимальный переносимы вес
 float  CInventoryOwner::MaxCarryWeight() const
 {
@@ -349,6 +340,10 @@ float  CInventoryOwner::MaxCarryWeight() const
     if (outfit)
         ret += outfit->m_additional_weight2;
 
+	CBackpack* pBackpack = smart_cast<CBackpack*>(inventory().ItemFromSlot(BACKPACK_SLOT));
+	if (pBackpack)
+		ret += pBackpack->m_additional_weight2;
+	
     return ret;
 }
 
@@ -361,7 +356,7 @@ void CInventoryOwner::spawn_supplies()
     if (use_bolts())
         Level().spawn_item("bolt", game_object->Position(), game_object->ai_location().level_vertex_id(), game_object->ID());
 
-    if (!ai().get_alife() && IsGameTypeSingle())
+    if (!ai().get_alife())
     {
         CSE_Abstract						*abstract = Level().spawn_item("device_pda", game_object->Position(), game_object->ai_location().level_vertex_id(), game_object->ID(), true);
         CSE_ALifeItemPDA					*pda = smart_cast<CSE_ALifeItemPDA*>(abstract);

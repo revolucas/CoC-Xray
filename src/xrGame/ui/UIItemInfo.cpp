@@ -182,8 +182,6 @@ void CUIItemInfo::InitItemInfo(Fvector2 pos, Fvector2 size, LPCSTR xml_name)
     InitItemInfo			(xml_name);
 }
 
-bool	IsGameTypeSingle();
-
 void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem, u32 item_price, LPCSTR trade_tip)
 {
 	if(!pCellItem)
@@ -235,7 +233,7 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 			UIWeight->SetWndPos	(pos);
 		}
 	}
-	if ( UICost && IsGameTypeSingle() && item_price!=u32(-1) )
+	if ( UICost && item_price!=u32(-1) )
 	{
 		xr_sprintf				(str, "%d RU", item_price);// will be owerwritten in multiplayer
 		UICost->SetText		(str);
@@ -256,7 +254,7 @@ void CUIItemInfo::InitItem(CUICellItem* pCellItem, CInventoryItem* pCompareItem,
 //		IBuyWnd* buy_menu = gs_mp->pCurBuyMenu->GetItemPrice();
 //		GetItemPrice();
 //	}
-	if ( UITradeTip && IsGameTypeSingle())
+	if ( UITradeTip)
 	{
 		pos.y = UITradeTip->GetWndPos().y;
 		if ( UIWeight && m_complex_desc )

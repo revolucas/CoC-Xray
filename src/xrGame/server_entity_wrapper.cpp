@@ -69,7 +69,7 @@ void CServerEntityWrapper::load				(IReader &stream)
 
 	string64				s_name;
 	net_packet.r_stringZ	(s_name);
-	
+
 	m_object				= F_entity_Create(s_name);
 
 	R_ASSERT3				(m_object,"Can't create entity.",s_name);

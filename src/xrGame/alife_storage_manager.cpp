@@ -224,6 +224,6 @@ void CALifeStorageManager::save	(NET_Packet &net_packet)
 
 void CALifeStorageManager::prepare_objects_for_save	()
 {
-	Level().ClientSend			();
+	Level().ClientSend			(true);
 	Level().ClientSave			();
 }

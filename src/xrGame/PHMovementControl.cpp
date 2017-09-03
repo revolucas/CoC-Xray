@@ -108,11 +108,10 @@ CPHMovementControl::~CPHMovementControl(void)
 
 static ALife::EHitType	 DefineCollisionHitType	( u16 material_idx )	
 {
-	if(GMLib.GetMaterialByIdx( material_idx )->Flags.test(SGameMtl::flInjurious)&&IsGameTypeSingle())
+	if(GMLib.GetMaterialByIdx( material_idx )->Flags.test(SGameMtl::flInjurious))
 		return ALife::eHitTypeRadiation;
 	else									
 		return ALife::eHitTypeStrike;
-//	return (GameID() == eGameIDSingle) ? ALife::eHitTypeStrike : ALife::eHitTypePhysicStrike;
 }//
 
 
@@ -1021,7 +1020,7 @@ void	CPHMovementControl::AllocateCharacterObject(CharacterType type)
 {
 	switch(type)
 	{
-		case actor:		m_character = create_actor_character( IsGameTypeSingle() )	;	break;
+		case actor:		m_character = create_actor_character( true )	;	break;
 		//case actor:	m_character = xr_new<CPHActorCharacter>	()					;	break;
 		//case ai:		m_character = xr_new<CPHAICharacter>	()					;	break;
 		case ai:		m_character = create_ai_character()							;	break;

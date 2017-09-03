@@ -117,7 +117,7 @@
 #	include "F1.h"
 #	include "RGD5.h"
 #	include "Scope.h"
-#	include "StalkerOutfit.h"
+#	include "CustomOutfit.h"
 #	include "Torch.h"
 #	include "WeaponAK74.h"
 #	include "WeaponBinoculars.h"

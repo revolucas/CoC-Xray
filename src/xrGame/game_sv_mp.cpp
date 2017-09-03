@@ -428,8 +428,6 @@ bool game_sv_mp::CheckPlayerMapName(ClientID const & clientID, NET_Packet & P)
 	return true;
 }
 
-LPCSTR GameTypeToString(EGameIDs gt, bool bShort);
-
 void game_sv_mp::ReconnectPlayer(ClientID const & clientID)
 {
 #ifdef DEBUG
@@ -438,7 +436,7 @@ void game_sv_mp::ReconnectPlayer(ClientID const & clientID)
 	NET_Packet			P;
 	P.w_begin			(M_CHANGE_LEVEL_GAME);
 	P.w_stringZ			(Level().name().c_str());
-	P.w_stringZ			(GameTypeToString(Type(),true));
+	P.w_stringZ			("single");
 	m_server->SendTo(clientID, P, net_flags(TRUE, TRUE));
 }
 

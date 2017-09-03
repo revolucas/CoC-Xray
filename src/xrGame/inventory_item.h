@@ -81,6 +81,7 @@ protected:
 								FInInterpolate		=(1<<10),
 								FIsQuestItem		=(1<<11),
 								FIsHelperItem		=(1<<12),
+								FCanStack			=(1<<13),
 	};
 
 	Flags16						m_flags;
@@ -101,7 +102,7 @@ public:
 	
 	virtual bool				Useful				() const;									// !!! Переопределить. (см. в Inventory.cpp)
 	virtual bool				IsUsingCondition() const { return ( m_flags.test( FUsingCondition ) > 0 ); };
-
+	virtual bool				CanStack() const { return (m_flags.test(FCanStack) > 0); };
 	virtual bool				Attach				(PIItem pIItem, bool b_send_event) {return false;}
 	virtual bool				Detach				(PIItem pIItem) {return false;}
 	//при детаче спаунится новая вещь при заданно названии секции

@@ -49,8 +49,6 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	{
 	case kWPN_FIRE:
 		{
-			if( (mstate_wishful & mcLookout) && !IsGameTypeSingle() ) return;
-
 			u16 slot = inventory().GetActiveSlot();
 			if(inventory().ActiveItem() && (slot==INV_SLOT_3 || slot==INV_SLOT_2 || slot==KNIFE_SLOT) )
 				mstate_wishful &=~mcSprint;
@@ -172,13 +170,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
 				if(itm)
 				{
-					if (IsGameTypeSingle())
-					{
-						inventory().Eat				(itm);
-					} else
-					{
-						inventory().ClientEat		(itm);
-					}
+					inventory().Eat				(itm);
 					
 					StaticDrawableWrapper* _s		= CurrentGameUI()->AddCustomStatic("item_used", true);
 					string1024					str;
@@ -344,7 +336,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 		return b;
 	}else{
 		bool b = false;
-		CGameObject* holderGO			= smart_cast<CGameObject*>(holder);
+		//CGameObject* holderGO			= smart_cast<CGameObject*>(holder);
 		if(smart_cast<CCar*>(holder))
 			b = use_Vehicle(holder);
 		else
@@ -412,25 +404,21 @@ void CActor::ActorUse()
 
 			VERIFY(pEntityAliveWeLookingAt);
 
-			if (IsGameTypeSingle())
-			{			
-
-				if(pEntityAliveWeLookingAt->g_Alive())
+			if(pEntityAliveWeLookingAt->g_Alive())
+			{
+				TryToTalk();
+			}else
+			{
+				//только если находимся в режиме single
+				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
+				if ( pGameSP )
 				{
-					TryToTalk();
-				}else
-				{
-					//только если находимся в режиме single
-					CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
-					if ( pGameSP )
+					if ( !m_pPersonWeLookingAt->deadbody_closed_status() )
 					{
-						if ( !m_pPersonWeLookingAt->deadbody_closed_status() )
-						{
-							if(pEntityAliveWeLookingAt->AlreadyDie() && 
-								pEntityAliveWeLookingAt->GetLevelDeathTime()+3000 < Device.dwTimeGlobal)
-								// 99.9% dead
-								pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
-						}
+						if(pEntityAliveWeLookingAt->AlreadyDie() && 
+							pEntityAliveWeLookingAt->GetLevelDeathTime()+3000 < Device.dwTimeGlobal)
+							// 99.9% dead
+							pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
 					}
 				}
 			}

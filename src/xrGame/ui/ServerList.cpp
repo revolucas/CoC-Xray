@@ -13,7 +13,6 @@
 #include "../GameSpy/GameSpy_Browser.h"
 
 
-LPCSTR GameTypeToString(EGameIDs gt, bool bShort);
 CGameSpy_Browser* g_gs_browser = NULL;
 
 CServerList::CServerList()
@@ -700,7 +699,7 @@ void CServerList::SrvInfo2LstSrvInfo(const ServerInfo* pServerInfo)
 	address							+= itoa(pServerInfo->m_Port, port, 10);
 	m_itemInfo.info.address			= address.c_str();
 	m_itemInfo.info.map				= pServerInfo->m_SessionName;
-	m_itemInfo.info.game			= GameTypeToString( (EGameIDs)pServerInfo->m_GameType, true);
+	m_itemInfo.info.game			= "single";
 	m_itemInfo.info.players.printf	("%d/%d", pServerInfo->m_ServerNumPlayers, pServerInfo->m_ServerMaxPlayers);
 	m_itemInfo.info.ping.printf		("%d", pServerInfo->m_Ping);
 	m_itemInfo.info.version			= pServerInfo->m_ServerVersion;

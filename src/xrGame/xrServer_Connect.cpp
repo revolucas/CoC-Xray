@@ -24,9 +24,6 @@ LPCSTR xrServer::get_map_download_url(LPCSTR level_name, LPCSTR level_version)
 	CInifile* level_ini = pApp->GetArchiveHeader(level_name, level_version);
 	if (!level_ini)
 	{
-		if(!IsGameTypeSingle())
-			Msg("! Warning: level [%s][%s] has not header ltx", level_name, level_version);
-
 		return ret_url;
 	}
 
@@ -141,18 +138,8 @@ void xrServer::AttachNewClient			(IClient* CL)
 
 void xrServer::RequestClientDigest(IClient* CL)
 {
-	if (IsGameTypeSingle() || (CL == GetServerClient()))
-	{
-		Check_BuildVersion_Success(CL);	
-		return;
-	}
-	xrClientData* tmp_client	= smart_cast<xrClientData*>(CL);
-	VERIFY						(tmp_client);
-	PerformSecretKeysSync		(tmp_client);
-
-	NET_Packet P;
-	P.w_begin					(M_SV_DIGEST);
-	SendTo						(CL->ID, P);
+	Check_BuildVersion_Success(CL);	
+	return;
 }
 #define NET_BANNED_STR	"Player banned by server!"
 void xrServer::ProcessClientDigest(xrClientData* xrCL, NET_Packet* P)

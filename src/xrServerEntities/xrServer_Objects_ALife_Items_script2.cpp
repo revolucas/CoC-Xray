@@ -13,6 +13,17 @@
 using namespace luabind;
 
 #pragma optimize("s",on)
+void CSE_ALifeItemEx::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemEx,
+			"cse_alife_item_ex",
+			CSE_ALifeItem
+		)
+	];
+}
+
 void CSE_ALifeItemPDA::script_register(lua_State *L)
 {
 	module(L)[

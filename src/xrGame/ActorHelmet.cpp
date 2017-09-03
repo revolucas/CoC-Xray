@@ -55,7 +55,7 @@ void CHelmet::Load(LPCSTR section)
 	m_fPowerRestoreSpeed			= READ_IF_EXISTS(pSettings, r_float, section, "power_restore_speed",     0.0f );
 	m_fBleedingRestoreSpeed			= READ_IF_EXISTS(pSettings, r_float, section, "bleeding_restore_speed",  0.0f );
 	m_fPowerLoss					= READ_IF_EXISTS(pSettings, r_float, section, "power_loss",    1.0f );
-	clamp							( m_fPowerLoss, 0.0f, 1.0f );
+	clamp							( m_fPowerLoss, EPS, 1.0f );
 
 	m_BonesProtectionSect			= READ_IF_EXISTS(pSettings, r_string, section, "bones_koeff_protection",  "" );
 	m_fShowNearestEnemiesDistance	= READ_IF_EXISTS(pSettings, r_float, section, "nearest_enemies_show_dist",  0.0f );
@@ -67,8 +67,7 @@ void CHelmet::Load(LPCSTR section)
 void CHelmet::ReloadBonesProtection()
 {
 	CObject* parent = H_Parent();
-	if(IsGameTypeSingle())
-		parent = smart_cast<CObject*>(Level().CurrentViewEntity());
+	parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
 
 	if(parent && parent->Visual() && m_BonesProtectionSect.size())
 		m_boneProtection->reload( m_BonesProtectionSect, smart_cast<IKinematics*>(parent->Visual()));
@@ -76,9 +75,7 @@ void CHelmet::ReloadBonesProtection()
 
 BOOL CHelmet::net_Spawn(CSE_Abstract* DC)
 {
-	if(IsGameTypeSingle())
-		ReloadBonesProtection();
-
+	ReloadBonesProtection();
 	BOOL res = inherited::net_Spawn(DC);
 	return					(res);
 }
@@ -135,6 +132,7 @@ void CHelmet::OnMoveToRuck(const SInvItemPlace& previous_place)
 
 void CHelmet::Hit(float hit_power, ALife::EHitType hit_type)
 {
+	if (IsUsingCondition() == false) return;
 	hit_power *= GetHitImmunity(hit_type);
 	ChangeCondition(-hit_power);
 }
@@ -205,8 +203,7 @@ bool CHelmet::install_upgrade_impl( LPCSTR section, bool test )
 void CHelmet::AddBonesProtection(LPCSTR bones_section)
 {
 	CObject* parent = H_Parent();
-	if(IsGameTypeSingle())
-		parent = smart_cast<CObject*>(Level().CurrentViewEntity());
+	parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
 
 	if ( parent && parent->Visual() && m_BonesProtectionSect.size() )
 		m_boneProtection->add(bones_section, smart_cast<IKinematics*>( parent->Visual() ) );
@@ -218,26 +215,11 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 	if(hit_type == ALife::eHitTypeFireWound)
 	{
 		float ba = GetBoneArmor(element);
-		if(ba<0.0f)
+		if(ba <= 0.0f)
 			return NewHitPower;
 
 		float BoneArmor = ba*GetCondition();
-		if(/*!fis_zero(ba, EPS) && */(ap > BoneArmor))
-		{
-			//пуля пробила бронь
-			if(!IsGameTypeSingle())
-			{
-				float hit_fraction = (ap - BoneArmor) / ap;
-				if(hit_fraction < m_boneProtection->m_fHitFracActor)
-					hit_fraction = m_boneProtection->m_fHitFracActor;
-
-				NewHitPower *= hit_fraction;
-				NewHitPower *= m_boneProtection->getBoneProtection(element);
-			}
-
-			VERIFY(NewHitPower>=0.0f);
-		}
-		else
+		if (ap <= BoneArmor)
 		{
 			//пуля НЕ пробила бронь
 			NewHitPower *= m_boneProtection->m_fHitFracActor;

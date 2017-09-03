@@ -140,10 +140,7 @@ void CUIMapWnd::Init(LPCSTR xml_name, LPCSTR start_from)
 
 	// initialize local maps
 	xr_string sect_name;
-	if( IsGameTypeSingle() )
-		sect_name = "level_maps_single";
-	else
-		sect_name = "level_maps_mp";
+	sect_name = "level_maps_single";
 
 	if (pGameIni->section_exist(sect_name.c_str()))
 	{

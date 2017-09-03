@@ -143,3 +143,14 @@ void CSE_ALifeItemArtefact::script_register(lua_State *L)
 		)
 	];
 }
+
+void CSE_ALifeItemArtefactEx::script_register(lua_State *L)
+{
+	module(L)[
+		luabind_class_item1(
+			CSE_ALifeItemArtefactEx,
+			"cse_alife_item_artefact_ex",
+			CSE_ALifeItemArtefact
+		)
+	];
+}

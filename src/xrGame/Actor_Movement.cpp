@@ -290,7 +290,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 		}//(mstate_real&mcAnyMove)
 	}//peOnGround || peAtWall
 
-	if(IsGameTypeSingle() && cam_eff_factor>EPS)
+	if(cam_eff_factor>EPS)
 	{
 	LPCSTR state_anm				= NULL;
 
@@ -636,14 +636,18 @@ float CActor::MaxWalkWeight() const
 	return max_w;
 }
 #include "artefact.h"
+#include "ActorBackpack.h"
 float CActor::get_additional_weight() const
 {
 	float res = 0.0f ;
+	
 	CCustomOutfit* outfit	= GetOutfit();
 	if ( outfit )
-	{
 		res				+= outfit->m_additional_weight;
-	}
+
+	CBackpack* pBackpack = smart_cast<CBackpack*>(inventory().ItemFromSlot(BACKPACK_SLOT));
+	if (pBackpack)
+		res += pBackpack->m_additional_weight;
 
 	for(TIItemContainer::const_iterator it = inventory().m_belt.begin(); 
 		inventory().m_belt.end() != it; ++it) 

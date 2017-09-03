@@ -6,8 +6,6 @@
 #include "../xrCore/stream_reader.h"
 #include "object_broker.h"
 
-LPCSTR GameTypeToString(EGameIDs gt, bool bShort);
-
 u32 const demo_player_info::demo_info_max_size = DEMOSTRING_MAX_SIZE + 80;
 /*
 void stream_read_demostring(CStreamReader* stream, shared_str & dest_result, u32 max_size)
@@ -154,7 +152,7 @@ void demo_info::load_from_game()
 	m_map_version	= Level().version();
 	game_cl_mp*		tmp_game = smart_cast<game_cl_mp*>(&Game());
 	R_ASSERT2		(tmp_game, "client game not present");
-	m_game_type		= GameTypeToString(tmp_game->Type(), true);
+	m_game_type		= "single";
 	string32		tmp_score_dest;
 	m_game_score	= tmp_game->GetGameScore(tmp_score_dest);
 	if (tmp_game->local_player && (xr_strlen(tmp_game->local_player->getName()) > 0))

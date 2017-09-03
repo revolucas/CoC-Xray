@@ -22,8 +22,6 @@
 #include "account_manager_console.h"
 #include "gamespy/GameSpy_GP.h"
 
-EGameIDs	ParseStringToGameType	(LPCSTR str);
-LPCSTR		GameTypeToString		(EGameIDs gt, bool bShort);
 LPCSTR		AddHyphens				(LPCSTR c);
 LPCSTR		DelHyphens				(LPCSTR c);
 
@@ -1329,15 +1327,7 @@ public:
 			GameType, sizeof(GameType)
 		);
 
-		EGameIDs GameTypeID = ParseStringToGameType(GameType);
-		if(GameTypeID==eGameIDNoGame)
-		{
-			Msg ("! Unknown gametype - %s", GameType);
-			return;
-		};
-		//-----------------------------------------
-
-		const SGameTypeMaps& M		= gMapListHelper.GetMapListFor(GameTypeID);
+		const SGameTypeMaps& M		= gMapListHelper.GetMapListFor(eGameIDSingle);
 		u32 cnt						= M.m_map_names.size();
 		bool bMapFound				= false;
 		for(u32 i=0; i<cnt; ++i)
@@ -1399,7 +1389,7 @@ public:
 		{
 			EGameIDs type = Level().Server->game->Type();
 			TStatus  str;
-			xr_sprintf( str, sizeof(str), "%s  (current game type)  [dm,tdm,ah,cta]", GameTypeToString( type, true ) );
+			xr_sprintf( str, sizeof(str), "%s  (current game type)  [dm,tdm,ah,cta]", "single" );
 			tips.push_back( str );
 		}
 		IConsole_Command::fill_tips( tips, mode );

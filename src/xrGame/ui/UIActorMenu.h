@@ -93,11 +93,6 @@ protected:
 	CUICharacterInfo*			m_PartnerCharacterInfo;
 
 	CUIDragDropListEx*			m_pInventoryBeltList;
-	CUIDragDropListEx*			m_pInventoryPistolList;
-	CUIDragDropListEx*			m_pInventoryAutomaticList;
-	CUIDragDropListEx*			m_pInventoryOutfitList;
-	CUIDragDropListEx*			m_pInventoryHelmetList;
-	CUIDragDropListEx*			m_pInventoryDetectorList;
 	CUIDragDropListEx*			m_pInventoryBagList;
 
 	CUIDragDropListEx*			m_pTradeActorBagList;
@@ -107,20 +102,15 @@ protected:
 	CUIDragDropListEx*			m_pDeadBodyBagList;
 	CUIDragDropListEx*			m_pTrashList;
 	
-	CUIDragDropListEx*			m_pInventoryKnifeList;
-	CUIDragDropListEx*			m_pInventoryBinocList;
-
 	enum						{e_af_count = 5};
 	CUIStatic*					m_belt_list_over[e_af_count];
 	CUIStatic*					m_HelmetOver;
 
-	CUIStatic*					m_InvSlot2Highlight;
-	CUIStatic*					m_InvSlot3Highlight;
-	CUIStatic*					m_HelmetSlotHighlight;
-	CUIStatic*					m_OutfitSlotHighlight;
-	CUIStatic*					m_DetectorSlotHighlight;
-	CUIStatic*					m_KnifeSlotHighlight;
-	CUIStatic*					m_BinocSlotHighlight;
+	u8							m_slot_count;
+	CUIStatic*					m_pInvSlotHighlight[LAST_SLOT + 1];
+	CUIProgressBar*				m_pInvSlotProgress[LAST_SLOT + 1];
+	CUIDragDropListEx*			m_pInvList[LAST_SLOT + 1];
+
 	CUIStatic*					m_QuickSlotsHighlight[4];
 	CUIStatic*					m_ArtefactSlotsHighlight[e_af_count];
 
@@ -143,13 +133,6 @@ protected:
 	CUITextWnd*					m_QuickSlot3;
 	CUITextWnd*					m_QuickSlot4;
 	
-	CUIProgressBar*				m_WeaponSlot1_progress;
-	CUIProgressBar*				m_WeaponSlot2_progress;
-	CUIProgressBar*				m_KnifeSlot_progress;
-	CUIProgressBar*				m_BinocularSlot_progress;
-	CUIProgressBar*				m_DetectorSlot_progress;
-	CUIProgressBar*				m_Helmet_progress;
-	CUIProgressBar*				m_Outfit_progress;
 	// bottom ---------------------------------
 	CUIStatic*					m_ActorBottomInfo;
 	CUITextWnd*					m_ActorWeight;

@@ -70,9 +70,6 @@ void SBoneProtections::reload(const shared_str& bone_sect, IKinematics* kinemati
 
 void SBoneProtections::add(const shared_str& bone_sect, IKinematics* kinematics)
 {
-	if(!IsGameTypeSingle())
-		return;
-
 	VERIFY(kinematics);
 	m_fHitFracNpc += READ_IF_EXISTS(pSettings, r_float, bone_sect.c_str(), "hit_fraction_npc", 0.0f);
 

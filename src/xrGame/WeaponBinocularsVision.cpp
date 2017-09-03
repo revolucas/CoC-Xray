@@ -120,15 +120,7 @@ void SBinocVisibleObj::Update()
 			u32 clr	= subst_alpha(m_lt.GetTextureColor(),255);
 
 			//-----------------------------------------------------
-			CActor* pActor = NULL;
-			if (IsGameTypeSingle()) pActor = Actor();
-			else
-			{
-				if (Level().CurrentViewEntity())
-				{
-					pActor = smart_cast<CActor*> (Level().CurrentViewEntity());
-				}
-			}
+			CActor* pActor = Actor();
 			if (pActor) 
 			{
 				//-----------------------------------------------------
@@ -138,29 +130,14 @@ void SBinocVisibleObj::Update()
 				CBaseMonster	*monster			= smart_cast<CBaseMonster*>(m_object);
 
 				if(our_inv_owner && others_inv_owner && !monster){
-					if (IsGameTypeSingle())
+					switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
 					{
-						switch(RELATION_REGISTRY().GetRelationType(others_inv_owner, our_inv_owner))
-						{
-						case ALife::eRelationTypeEnemy:
-							clr = C_ON_ENEMY; break;
-						case ALife::eRelationTypeNeutral:
-							clr = C_ON_NEUTRAL; break;
-						case ALife::eRelationTypeFriend:
-							clr = C_ON_FRIEND; break;
-						}
-					}
-					else
-					{
-						CEntityAlive* our_ealive		= smart_cast<CEntityAlive*>(pActor);
-						CEntityAlive* others_ealive		= smart_cast<CEntityAlive*>(m_object);
-						if (our_ealive && others_ealive)
-						{
-							if (Game().IsEnemy(our_ealive, others_ealive))
-								clr = C_ON_ENEMY;
-							else
-								clr = C_ON_FRIEND;
-						}
+					case ALife::eRelationTypeEnemy:
+						clr = C_ON_ENEMY; break;
+					case ALife::eRelationTypeNeutral:
+						clr = C_ON_NEUTRAL; break;
+					case ALife::eRelationTypeFriend:
+						clr = C_ON_FRIEND; break;
 					}
 				}
 			}
@@ -196,15 +173,7 @@ void CBinocularsVision::Update()
 	if (g_dedicated_server)
 		return;
 	//-----------------------------------------------------
-	const CActor* pActor = NULL;
-	if (IsGameTypeSingle()) pActor = Actor();
-	else
-	{
-		if (Level().CurrentViewEntity())
-		{
-			pActor = smart_cast<const CActor*> (Level().CurrentViewEntity());
-		}
-	}
+	const CActor* pActor = Actor();
 	if (!pActor) return;
 	//-----------------------------------------------------
 	const CVisualMemoryManager::VISIBLES& vVisibles = pActor->memory().visual().objects();

@@ -17,6 +17,7 @@ enum{
 	TORCH_SLOT,		// torch
 	ARTEFACT_SLOT,	// artefact
 	HELMET_SLOT,
+	BACKPACK_SLOT,
 	//Alundaio: More slots for custom uses
 #ifdef MORE_INVENTORY_SLOTS
 	CUSTOM_SLOT_1,
@@ -26,7 +27,7 @@ enum{
 	CUSTOM_SLOT_5,
 	LAST_SLOT = CUSTOM_SLOT_5
 #else
-	LAST_SLOT = HELMET_SLOT
+	LAST_SLOT = BACKPACK_SLOT
 #endif
 	//-Alundaio
 };

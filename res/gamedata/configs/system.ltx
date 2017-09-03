@@ -102,48 +102,55 @@ files =  npc_profile
 specific_characters_files = character_desc_general, character_desc_zaton, character_desc_pripyat, character_desc_jupiter, character_desc_underpass
 
 
+;New in CoC: You can have as many slots as you want, simply create slot_active_* and slot_persistent_* for it in sequential order
+;Set slot_persistent_* = false to treat actor inventory as a 'slot'. Setting highlight_equipped = true in the item section will highlight equipped items in inventory
 [inventory]
-take_dist   	= 2
-max_weight    	= 50
-max_ruck    	= 56
-max_belt    	= 5 ;16
-slots_count   	= 12 ; count +1 (zero)
+take_dist                                = 2	                                       ; not used at all
+max_weight                               = 30
+max_ruck                                 = 56
+max_belt                                 = 5	                                       ;16
 
-slot_persistent_1   = true   ;knife
-slot_active_1       = true
+slot_persistent_1                        = false	                                       ;knife
+slot_active_1                            = true
 
-slot_persistent_2   = false  ;pistol
-slot_active_2       = true
+slot_persistent_2                        = false	                                       ;pistol
+slot_active_2                            = true
 
-slot_persistent_3   = false  ;automatic
-slot_active_3       = true
+slot_persistent_3                        = false	                                       ;automatic
+slot_active_3                            = true
 
-slot_persistent_4   = true   ;grenades
-slot_active_4       = true
+slot_persistent_4                        = false	                                       ;grenades
+slot_active_4                            = true
 
-slot_persistent_5   = true   ;binocular
-slot_active_5       = true
+slot_persistent_5                        = false	                                       ;binocular
+slot_active_5                            = true
 
-slot_persistent_6   = true   ;bolt
-slot_active_6       = true
+slot_persistent_6                        = true	                                       ;bolt
+slot_active_6                            = true
 
-slot_persistent_7   = false  ;outfit
-slot_active_7       = false
+slot_persistent_7                        = false	                                       ;outfit
+slot_active_7                            = false
 
-slot_persistent_8   = true   ;pda
-slot_active_8       = false
+slot_persistent_8                        = true	                                       ;pda
+slot_active_8                            = false
 
-slot_persistent_9   = true   ;detector
-slot_active_9       = false
+slot_persistent_9                        = true	                                       ;detector
+slot_active_9                            = false
 
-slot_persistent_10  = true  ;torch
-slot_active_10      = false
+slot_persistent_10                       = true	                                       ;torch
+slot_active_10                           = false
 
-slot_persistent_11  = false ;artefact
-slot_active_11      = true
+slot_persistent_11                       = false	                                       ;artefact
+slot_active_11                           = true
 
-slot_persistent_12  = false ;helmet
-slot_active_12      = false
+slot_persistent_12                       = false	                                       ;helmet
+slot_active_12                           = false
+
+slot_persistent_13                       = false	                                       ;backpack
+slot_active_13                           = false
+
+slot_persistent_14                       = true	                                       ;script animation
+slot_active_14                           = true
 
 
 [lights_hanging_lamp]
