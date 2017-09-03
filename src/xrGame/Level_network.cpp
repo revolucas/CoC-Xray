@@ -178,14 +178,17 @@ void CLevel::ClientSend(bool bForce)
 		return;
 
 	u32 start = 0;
-	while (start < Objects.o_count())
+	NET_Packet P;
+
+	while (1)
 	{
-		NET_Packet P;
 		P.w_begin(M_UPDATE);
 		start = Objects.net_Export(&P, start, max_objects_size);
 
 		if (P.B.count > 2)
 			Send(P, net_flags(FALSE));
+		else 
+			break;
 	}
 }
 

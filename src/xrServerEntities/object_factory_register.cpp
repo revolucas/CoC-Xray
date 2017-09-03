@@ -285,7 +285,7 @@ void CObjectFactory::register_classes	()
 	ADD(CZudaArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_ZUDA					,"art_zuda");
 	ADD(CThornArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_THORN					,"art_thorn");
 	ADD(CFadedBall				,CSE_ALifeItemArtefact			,CLSID_AF_FADED_BALL			,"art_faded_ball");
-	ADD(CElectricBall			,CSE_ALifeItemArtefactEx		,CLSID_AF_ELECTRIC_BALL			,"art_electric_ball");
+	ADD(CElectricBall			,CSE_ALifeItemArtefact			,CLSID_AF_ELECTRIC_BALL			,"art_electric_ball");
 	ADD(CRustyHairArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_RUSTY_HAIR			,"art_rusty_hair");
 	ADD(CGalantineArtefact		,CSE_ALifeItemArtefact			,CLSID_AF_GALANTINE				,"art_galantine");
 	ADD(CGraviArtefact			,CSE_ALifeItemArtefact			,CLSID_AF_GRAVI					,"art_gravi");
@@ -333,11 +333,11 @@ void CObjectFactory::register_classes	()
 #ifndef NO_SINGLE
 	ADD(CBolt					,CSE_ALifeItemBolt				,CLSID_IITEM_BOLT				,"obj_bolt");
 #endif // #ifndef NO_SINGLE
-	ADD(CMedkit					,CSE_ALifeItemEx				,CLSID_IITEM_MEDKIT				,"obj_medkit");
-	ADD(CMedkit					,CSE_ALifeItemEx				,CLSID_IITEM_BANDAGE			,"obj_bandage");
-	ADD(CAntirad				,CSE_ALifeItemEx				,CLSID_IITEM_ANTIRAD			,"obj_antirad");
-	ADD(CFoodItem				,CSE_ALifeItemEx				,CLSID_IITEM_FOOD				,"obj_food");
-	ADD(CBottleItem				,CSE_ALifeItemEx				,CLSID_IITEM_BOTTLE				,"obj_bottle");
+	ADD(CMedkit					,CSE_ALifeItem					,CLSID_IITEM_MEDKIT				,"obj_medkit");
+	ADD(CMedkit					,CSE_ALifeItem					,CLSID_IITEM_BANDAGE			,"obj_bandage");
+	ADD(CAntirad				,CSE_ALifeItem					,CLSID_IITEM_ANTIRAD			,"obj_antirad");
+	ADD(CFoodItem				,CSE_ALifeItem					,CLSID_IITEM_FOOD				,"obj_food");
+	ADD(CBottleItem				,CSE_ALifeItem					,CLSID_IITEM_BOTTLE				,"obj_bottle");
 	ADD(CExplosiveItem			,CSE_ALifeItemExplosive			,CLSID_IITEM_EXPLOSIVE			,"obj_explosive");
 	
 	//Info Document
@@ -346,8 +346,8 @@ void CObjectFactory::register_classes	()
 
 	//Equipment outfit
 	ADD(CCustomOutfit			,CSE_ALifeItemCustomOutfit		,CLSID_EQUIPMENT_STALKER		,"equ_stalker");
-	ADD(CHelmet					,CSE_ALifeItemEx				,CLSID_EQUIPMENT_HELMET			,"helmet");
-	ADD(CBackpack				,CSE_ALifeItemEx				,CLSID_EQUIPMENT_BACKPACK		,"equ_backpack");
+	ADD(CHelmet					,CSE_ALifeItem					,CLSID_EQUIPMENT_HELMET			,"helmet");
+	ADD(CBackpack				,CSE_ALifeItem					,CLSID_EQUIPMENT_BACKPACK		,"equ_backpack");
 	
 	// Grenades
 	ADD(CF1						,CSE_ALifeItemGrenade			,CLSID_GRENADE_F1				,"wpn_grenade_f1");

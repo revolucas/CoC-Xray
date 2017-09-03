@@ -120,6 +120,7 @@ CSE_ALifeDynamicObject *CALifeObjectRegistry::get_object		(IReader &file_stream)
 	file_stream.r			(tNetPacket.B.data,tNetPacket.B.count);
 	tNetPacket.r_begin		(u_id);
 	R_ASSERT2				(M_UPDATE==u_id,"Invalid packet ID (!= M_UPDATE)");
+
 	tpALifeDynamicObject->UPDATE_Read(tNetPacket);
 
 	return					(tpALifeDynamicObject);

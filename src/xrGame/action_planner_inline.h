@@ -82,7 +82,7 @@ void CPlanner::update()
 	}
 #endif
 	//Alundaio: debug action
-	bool bDbgAct = strstr(Core.Params, "-dbgact") != NULL;
+	bool bDbgAct = Core.ParamFlags.test(Core.dbgact) == 1;
 
 #ifdef LOG_ACTION
 	if (m_failed)

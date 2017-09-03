@@ -75,16 +75,16 @@ void CServerEntityWrapper::load				(IReader &stream)
 	R_ASSERT3				(m_object,"Can't create entity.",s_name);
 	m_object->Spawn_Read	(net_packet);
 	
+	//Update
 	chunk					= stream.open_chunk(1);
-	
 	net_packet.B.count		= chunk->r_u16();
 	chunk->r				(net_packet.B.data,net_packet.B.count);
-	
 	chunk->close			();
 
 	net_packet.r_begin		(ID);
 	R_ASSERT2				(M_UPDATE == ID,"Invalid packet ID (!= M_UPDATE)!");
 	m_object->UPDATE_Read	(net_packet);
+
 }
 
 void CServerEntityWrapper::save_update		(IWriter &stream)

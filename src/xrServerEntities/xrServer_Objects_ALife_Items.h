@@ -104,14 +104,6 @@ SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItem)
 #define script_type_list save_type_list(CSE_ALifeItem)
 
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemEx,CSE_ALifeItem)
-									CSE_ALifeItemEx	(LPCSTR caSection);
-	virtual							~CSE_ALifeItemEx	();
-	virtual BOOL					Net_Relevant			();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_ALifeItemEx)
-#define script_type_list save_type_list(CSE_ALifeItemEx)
-
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemTorch,CSE_ALifeItem)
 //флаги
 	enum EStats{
@@ -273,15 +265,6 @@ SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefact,CSE_ALifeItem)
 SERVER_ENTITY_DECLARE_END
 add_to_type_list(CSE_ALifeItemArtefact)
 #define script_type_list save_type_list(CSE_ALifeItemArtefact)
-
-SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemArtefactEx,CSE_ALifeItemArtefact)
-	float							m_fAnomalyValue;
-									CSE_ALifeItemArtefactEx	(LPCSTR caSection);
-	virtual							~CSE_ALifeItemArtefactEx	();
-	virtual BOOL					Net_Relevant			();
-SERVER_ENTITY_DECLARE_END
-add_to_type_list(CSE_ALifeItemArtefactEx)
-#define script_type_list save_type_list(CSE_ALifeItemArtefactEx)
 
 SERVER_ENTITY_DECLARE_BEGIN(CSE_ALifeItemPDA,CSE_ALifeItem)
 	u16								m_original_owner;
