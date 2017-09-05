@@ -343,7 +343,7 @@ void CAI_Stalker::Hit(SHit* pHDS)
 		luabind::functor<bool>	funct;
 		if (ai().script_engine().functor("_G.CAI_Stalker__BeforeHitCallback", funct))
 		{
-			if (!funct(smart_cast<CGameObject*>(this->lua_game_object()), &tLuaHit, HDS.boneID))
+			if (!funct(this->lua_game_object(), &tLuaHit, HDS.boneID))
 				return;
 		}
 
