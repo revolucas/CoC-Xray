@@ -39,6 +39,12 @@ function CActor__BeforeHitCallback(actor,shit,bone_id)
 	return true
 end
 
+-- called in ai_stalker_fire.cpp CAI_Stalker::Hit()
+-- returning false will ignore the hit completely
+function CAI_Stalker__BeforeHitCallback(npc,shit,bone_id)
+	return true
+end
+
 -- called in CSE_ALifeDynamicObject::on_unregister()
 -- good place to remove ids from persistent tables
 function CSE_ALifeDynamicObject_on_unregister(id)

@@ -86,3 +86,17 @@ void CBackpack::Hit(float hit_power, ALife::EHitType hit_type)
 	hit_power *= GetHitImmunity(hit_type);
 	ChangeCondition(-hit_power);
 }
+
+bool CBackpack::install_upgrade_impl(LPCSTR section, bool test)
+{
+	bool result = inherited::install_upgrade_impl(section, test);
+
+	result |= process_if_exists(section, "power_restore_speed", &CInifile::r_float, m_fPowerRestoreSpeed, test);
+	result |= process_if_exists(section, "power_loss", &CInifile::r_float, m_fPowerLoss, test);
+	clamp(m_fPowerLoss, 0.0f, 1.0f);
+
+	result |= process_if_exists(section, "additional_inventory_weight", &CInifile::r_float, m_additional_weight, test);
+	result |= process_if_exists(section, "additional_inventory_weight2", &CInifile::r_float, m_additional_weight2, test);
+
+	return result;
+}

@@ -53,6 +53,11 @@
 
 #include "../../trajectories.h"
 
+//Alun
+#include "script_hit.h"
+#include "../../xrServerEntities/script_engine.h" 
+//-Alun
+
 using namespace StalkerSpace;
 using namespace luabind;
 
@@ -327,6 +332,28 @@ void CAI_Stalker::Hit(SHit* pHDS)
 
 	if ( g_Alive() && ( !m_hit_callback || m_hit_callback( &HDS ) ) )
 	{
+		CScriptHit tLuaHit;
+
+		tLuaHit.m_fPower = HDS.power;
+		tLuaHit.m_fImpulse = HDS.impulse;
+		tLuaHit.m_tDirection = HDS.direction();
+		tLuaHit.m_tHitType = HDS.hit_type;
+		tLuaHit.m_tpDraftsman = smart_cast<const CGameObject*>(HDS.who)->lua_game_object();
+
+		luabind::functor<bool>	funct;
+		if (ai().script_engine().functor("_G.CAI_Stalker__BeforeHitCallback", funct))
+		{
+			if (!funct(smart_cast<CGameObject*>(this->lua_game_object()), &tLuaHit, HDS.boneID))
+				return;
+		}
+
+		HDS.power = tLuaHit.m_fPower;
+		HDS.impulse = tLuaHit.m_fImpulse;
+		HDS.dir = tLuaHit.m_tDirection;
+		HDS.hit_type = (ALife::EHitType)(tLuaHit.m_tHitType);
+		//HDS.who = smart_cast<CObject*>(tLuaHit.m_tpDraftsman->object());
+		//HDS.whoID = tLuaHit.m_tpDraftsman->ID();
+
 		float const damage_factor	= invulnerable() ? 0.f : 100.f;
 		memory().hit().add			( damage_factor*HDS.damage(), HDS.direction(), HDS.who, HDS.boneID );
 	}

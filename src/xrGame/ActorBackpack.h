@@ -17,7 +17,6 @@ public:
 	virtual void			OnMoveToRuck(const SInvItemPlace& previous_place);
 	virtual void			OnH_A_Chield();
 
-public:
 	float					m_additional_weight;
 	float					m_additional_weight2;
 	float					m_fPowerRestoreSpeed;
@@ -26,4 +25,7 @@ public:
 	virtual BOOL			net_Spawn(CSE_Abstract* DC);
 	virtual void			net_Export(NET_Packet& P);
 	virtual void			net_Import(NET_Packet& P);
+
+protected:
+	virtual bool			install_upgrade_impl(LPCSTR section, bool test);
 };

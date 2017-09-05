@@ -58,3 +58,8 @@ function CUIActorMenu_CanMoveToPartner(obj,itm,actor_weight,partner_weight,item_
 	--printf("%s [%s actor_weight=%s partner_weight=%s item_weight=%s partner_total_weight=%s partner_max_carry_weight=%s]",obj:name(),itm:name(),actor_weight,partner_weight,item_weight,partner_total_weight,partner_max_carry_weight)
 	return true
 end
+
+-- called from engine during donation. return false to refuse or return true to donate
+function CUIActorMenu_DonateCurrentItem(obj,itm)
+	return true
+end

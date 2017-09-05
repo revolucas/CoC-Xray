@@ -103,6 +103,7 @@ void CUIInventoryUpgradeWnd::Init()
 	LoadSchemes( uiXml );
 }
 
+#include "ActorBackpack.h"
 void CUIInventoryUpgradeWnd::InitInventory( CInventoryItem* item, bool can_upgrade )
 {
 	m_inv_item = item;
@@ -115,7 +116,7 @@ void CUIInventoryUpgradeWnd::InitInventory( CInventoryItem* item, bool can_upgra
 		if(smart_cast<CWeaponRPG7*>(item))
 			m_item->SetShader(InventoryUtilities::GetOutfitUpgradeIconsShader());
 	}
-	else if(smart_cast<CCustomOutfit*>(item) || smart_cast<CHelmet*>(item))
+	else if(smart_cast<CCustomOutfit*>(item) || smart_cast<CHelmet*>(item) || smart_cast<CBackpack*>(item))
 	{
 		is_shader = true;
 		m_item->SetShader(InventoryUtilities::GetOutfitUpgradeIconsShader());

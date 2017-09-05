@@ -308,6 +308,11 @@ void CALifeSimulator__release					(CALifeSimulator *self, CSE_Abstract *object, 
 	Level().Send						(packet,net_flags(TRUE,TRUE));
 }
 
+void CALifeSimulator__release2(CALifeSimulator *self, CSE_Abstract *object)
+{
+	CALifeSimulator__release(self, object, false);
+}
+
 LPCSTR get_level_name							(const CALifeSimulator *self, int level_id)
 {
 	LPCSTR								result = *ai().game_graph().header().level((GameGraph::_LEVEL_ID)level_id).name();
@@ -449,6 +454,7 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("create",					&CALifeSimulator__spawn_item3)
 			.def("create_ammo",				&CALifeSimulator__spawn_ammo)
 			.def("release",					&CALifeSimulator__release)
+			.def("release",					&CALifeSimulator__release2)
 			.def("spawn_id",				&CALifeSimulator__spawn_id)
 			.def("actor",					&get_actor)
 			.def("has_info",				&has_info)

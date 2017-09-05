@@ -973,9 +973,10 @@ void CActor::UpdateCL()
 
 
     if (g_Alive())
+	{
         PickupModeUpdate();
-
-    PickupModeUpdate_COD();
+		PickupModeUpdate_COD();
+	}
 
     SetZoomAimingMode(false);
     CWeapon* pWeapon = smart_cast<CWeapon*>(inventory().ActiveItem());
@@ -1312,9 +1313,8 @@ void CActor::shedule_Update(u32 DT)
 
     if (!input_external_handler_installed() && RQ.O && RQ.O->getVisible() && RQ.range < 2.0f)
     {
-        m_pObjectWeLookingAt = smart_cast<CGameObject*>(RQ.O);
-
-        CGameObject						*game_object = smart_cast<CGameObject*>(RQ.O);
+        CGameObject* game_object = smart_cast<CGameObject*>(RQ.O);
+		m_pObjectWeLookingAt = game_object;
         m_pUsableObject = smart_cast<CUsableScriptObject*>(game_object);
         m_pInvBoxWeLookingAt = smart_cast<CInventoryBox*>(game_object);
         m_pPersonWeLookingAt = smart_cast<CInventoryOwner*>(game_object);

@@ -282,7 +282,7 @@ void CWeaponStatMgun::Action				(u16 id, u32 flags)
 	}
 }
 
-void CWeaponStatMgun::SetParam			(int id, Fvector2 val)
+void CWeaponStatMgun::SetParam(int id, Fvector2 val)
 {
 	inheritedHolder::SetParam(id, val);
 	switch (id){
@@ -292,23 +292,31 @@ void CWeaponStatMgun::SetParam			(int id, Fvector2 val)
 	}
 }
 
-bool CWeaponStatMgun::attach_Actor		(CGameObject* actor)
+bool CWeaponStatMgun::attach_Actor(CGameObject* actor)
 {
 	if (Owner())
 		return false;
 
 	actor->setVisible(0);
 
-	inheritedHolder::attach_Actor	(actor);
-	SetBoneCallbacks				();
-	FireEnd							();
+	inheritedHolder::attach_Actor(actor);
+	SetBoneCallbacks();
+	FireEnd();
 	return true;
 }
 
-void CWeaponStatMgun::detach_Actor		()
+void CWeaponStatMgun::detach_Actor()
 {
 	Owner()->setVisible(1);
-	inheritedHolder::detach_Actor	();
-	ResetBoneCallbacks				();
-	FireEnd							();
+	inheritedHolder::detach_Actor();
+	ResetBoneCallbacks();
+	FireEnd();
+}
+
+Fvector CWeaponStatMgun::ExitPosition()
+{ 
+	Fvector pos; pos.set(0.f, 0.f, 0.f);
+	pos.sub(camera->Direction()).normalize();
+	pos.y = 0.f;
+	return Fvector(XFORM().c).add(pos);
 }
