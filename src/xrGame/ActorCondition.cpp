@@ -709,7 +709,7 @@ void CActorCondition::BoostChemicalBurnProtection(const float value)
 
 void CActorCondition::UpdateTutorialThresholds()
 {
-	string256						cb_name;
+/* 	string256						cb_name;
 	static float _cPowerThr			= pSettings->r_float("tutorial_conditions_thresholds","power");
 	static float _cPowerMaxThr		= pSettings->r_float("tutorial_conditions_thresholds","max_power");
 	static float _cBleeding			= pSettings->r_float("tutorial_conditions_thresholds","bleeding");
@@ -776,7 +776,7 @@ void CActorCondition::UpdateTutorialThresholds()
 		luabind::functor<LPCSTR>			fl;
 		R_ASSERT							(ai().script_engine().functor<LPCSTR>(cb_name,fl));
 		fl									();
-	}
+	} */
 }
 
 bool CActorCondition::DisableSprint(SHit* pHDS)

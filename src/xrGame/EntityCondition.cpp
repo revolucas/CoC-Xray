@@ -405,8 +405,6 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 	m_pWho = pHDS->who;
 	m_iWhoID = (NULL != pHDS->who) ? pHDS->who->ID() : 0;
 
-	bool const is_special_hit_2_self		=	(pHDS->who == m_object) && (pHDS->boneID == BI_NONE);
-
 	bool bAddWound = pHDS->add_wound;
 	
 	float hit_power_org = pHDS->damage();
@@ -493,11 +491,6 @@ CWound* CEntityCondition::ConditionHit(SHit* pHDS)
 		}break;
 	}
 
-	if (bDebug && !is_special_hit_2_self ) 
-	{
-		Msg("%s hitted in %s with %f[%f]", m_object->Name(), 
-			smart_cast<IKinematics*>(m_object->Visual())->LL_BoneName_dbg(pHDS->boneID), m_fHealthLost*100.0f, hit_power_org);
-	}
 	//раны добавляются только живому
 	if( bAddWound && GetHealth()>0 )
 	{

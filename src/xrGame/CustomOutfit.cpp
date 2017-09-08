@@ -164,6 +164,14 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 			NewHitPower *= m_boneProtection->m_fHitFracActor;
 			add_wound = false; 	//раны нет
 		}
+		else
+		{
+			float d_hit_power = (ap - BoneArmor) / ap;
+			if (d_hit_power < m_boneProtection->m_fHitFracActor)
+				d_hit_power = m_boneProtection->m_fHitFracActor;
+
+			hit_power *= d_hit_power;
+		}
 	}
 	else
 	{
