@@ -940,13 +940,6 @@ void CActor::UpdateCL()
 {
     if (g_Alive() && Level().CurrentViewEntity() == this)
     {
-		//Alun: Switch back to third-person if was forced
-		if (bLook_cam_fp_zoom && cam_active == eacFirstEye)
-		{
-			cam_Set(eacLookAt);
-			bLook_cam_fp_zoom = false;
-		}
-
         if (CurrentGameUI() && NULL == CurrentGameUI()->TopInputReceiver())
         {
             int dik = get_action_dik(kUSE, 0);
@@ -1015,6 +1008,15 @@ void CActor::UpdateCL()
 				bLook_cam_fp_zoom = true;
 			}
 		}
+		else 
+		{
+			//Alun: Switch back to third-person if was forced
+			if (bLook_cam_fp_zoom && cam_active == eacFirstEye)
+			{
+				cam_Set(eacLookAt);
+				bLook_cam_fp_zoom = false;
+			}
+		}
 
         if (Level().CurrentEntity() && this->ID() == Level().CurrentEntity()->ID())
         {
@@ -1046,6 +1048,13 @@ void CActor::UpdateCL()
         {
             HUD().SetCrosshairDisp(0.f);
             HUD().ShowCrosshair(false);
+			
+			//Alun: Switch back to third-person if was forced
+			if (bLook_cam_fp_zoom && cam_active == eacFirstEye)
+			{
+				cam_Set(eacLookAt);
+				bLook_cam_fp_zoom = false;
+			}
         }
     }
 
