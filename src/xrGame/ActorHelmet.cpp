@@ -225,7 +225,7 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 		{
 			//пуля НЕ пробила бронь
 			NewHitPower *= m_boneProtection->m_fHitFracActor;
-			add_wound = false; 	//раны нет
+			//add_wound = false; 	//раны нет
 		}
 		else 
 		{

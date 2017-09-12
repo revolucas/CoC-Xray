@@ -872,8 +872,14 @@ bool CActorCondition::ApplyBooster(const SBooster& B, const shared_str& sect)
 		}
 
 		BOOSTER_MAP::iterator it = m_booster_influences.find(B.m_type);
-		if(it!=m_booster_influences.end())
+		if (it != m_booster_influences.end())
+		{
+			if (B.fBoostValue*B.fBoostTime < (*it).second.fBoostValue*(*it).second.fBoostTime)
+			{
+				return true;
+			}
 			DisableBoostParameters((*it).second);
+		}
 
 		m_booster_influences[B.m_type] = B;
 		BoostParameters(B);

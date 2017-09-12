@@ -124,6 +124,9 @@ void CUIHudStatesWnd::InitFromXml( CUIXml& xml, LPCSTR path )
 	m_ui_weapon_third_ammo		= UIHelper::CreateTextWnd(xml, "static_third_ammo", this);		
 	//-Alundaio
 
+	m_ui_weapon_ammo_color_active = CUIXmlInit::GetColor(xml, "active_ammo_color", 0, color_rgba(238, 155, 23, 255));
+	m_ui_weapon_ammo_color_inactive = CUIXmlInit::GetColor(xml, "inactive_ammo_color", 0, color_rgba(238, 155, 23, 150));
+
 	m_fire_mode					= UIHelper::CreateTextWnd( xml, "static_fire_mode", this );
 	m_ui_grenade				= UIHelper::CreateTextWnd( xml, "static_grenade", this );
 	
@@ -341,25 +344,25 @@ void CUIHudStatesWnd::UpdateActiveItemInfo( CActor* actor )
 		
 		m_ui_grenade->SetText	( m_item_info.grenade.c_str() );
 
-		m_ui_weapon_fmj_ammo->SetTextColor(color_rgba(238, 155, 23, 150));
-		m_ui_weapon_ap_ammo->SetTextColor(color_rgba(238, 155, 23, 150));
-		m_ui_weapon_third_ammo->SetTextColor(color_rgba(238, 155, 23, 150));
+		m_ui_weapon_fmj_ammo->SetTextColor(m_ui_weapon_ammo_color_inactive);
+		m_ui_weapon_ap_ammo->SetTextColor(m_ui_weapon_ammo_color_inactive);
+		m_ui_weapon_third_ammo->SetTextColor(m_ui_weapon_ammo_color_inactive);
 
 		CWeaponMagazinedWGrenade* wpn = smart_cast<CWeaponMagazinedWGrenade*>(item);
 		if(wpn && wpn->m_bGrenadeMode)
-			m_ui_grenade->SetTextColor(color_rgba(238,155,23,255));
+			m_ui_grenade->SetTextColor(m_ui_weapon_ammo_color_active);
 		else
-			m_ui_grenade->SetTextColor(color_rgba(238, 155, 23, 150));
+			m_ui_grenade->SetTextColor(m_ui_weapon_ammo_color_inactive);
 
 		CWeaponMagazined* wpnm = smart_cast<CWeaponMagazined*>(item);
 		if (wpnm)
 		{
 			if (wpnm->m_ammoType == 0)
-				m_ui_weapon_fmj_ammo->SetTextColor(color_rgba(238, 155, 23, 255));
+				m_ui_weapon_fmj_ammo->SetTextColor(m_ui_weapon_ammo_color_active);
 			else if (wpnm->m_ammoType == 1)
-				m_ui_weapon_ap_ammo->SetTextColor(color_rgba(238, 155, 23, 255));
+				m_ui_weapon_ap_ammo->SetTextColor(m_ui_weapon_ammo_color_active);
 			else if (wpnm->m_ammoType == 2)
-				m_ui_weapon_third_ammo->SetTextColor(color_rgba(238, 155, 23, 255));
+				m_ui_weapon_third_ammo->SetTextColor(m_ui_weapon_ammo_color_active);
 		}
 		//-Alundaio
 	}
