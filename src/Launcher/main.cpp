@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	// combine the rest of the arguments into a single string
 	std::string command_line;
 	for (int i = 1; i < argc; i++)
-		command_line += argv[i];
+		command_line += i==argc?argv[i] + ' ':argv[i];
 
 	// additional information
 	STARTUPINFOA si;
@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 		NULL,                   // Process handle not inheritable
 		NULL,                   // Thread handle not inheritable
 		FALSE,                  // Set handle inheritance to FALSE
-		CREATE_NEW_CONSOLE,     // Opens file in a separate console
+		DETACHED_PROCESS,
 		NULL,           // Use parent's environment block
 		NULL,           // Use parent's starting directory 
 		&si,            // Pointer to STARTUPINFO structure
