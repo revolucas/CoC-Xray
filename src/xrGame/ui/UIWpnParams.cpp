@@ -182,6 +182,10 @@ void CUIWpnParams::SetInfo( CInventoryItem* slot_wpn, CInventoryItem& cur_wpn )
 		m_textDamage_inc.SetText("");
 		m_textHandling_inc.SetText("");
 		m_textRPM_inc.SetText("");
+		m_textAccuracy_inc_shadow.SetText("");
+		m_textDamage_inc_shadow.SetText("");
+		m_textHandling_inc_shadow.SetText("");
+		m_textRPM_inc_shadow.SetText("");
 	}
 	
 	m_progressAccuracy.SetTwoPos( cur_accur,  slot_accur );
