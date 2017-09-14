@@ -853,6 +853,8 @@ public:
 			void				SetRestrictionType(u8 typ);
 
 			//Weapon
+			void				Weapon_SetCurrentScope(u8 type);
+			u8					Weapon_GetCurrentScope();
 			void				Weapon_AddonAttach(CScriptGameObject* item);
 			void				Weapon_AddonDetach(LPCSTR item_section);
 			bool				HasAmmoType(u8 type);
