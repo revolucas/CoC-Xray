@@ -174,21 +174,36 @@ void CLevel::net_Stop		()
 
 void CLevel::ClientSend(bool bForce)
 {
-	if (!bForce && Device.dwFrame % 3 != 0) //Update every 3 frames
-		return;
+	static u32 cur_index = 0;
 
-	u32 start = 0;
-	NET_Packet P;
+	if (bForce)
+		cur_index = 0;
 
-	while (1)
+	u32 object_count = Objects.o_count();
+	u32 position;
+	for (u32 start = cur_index; start < (bForce ? object_count : cur_index+20); start++)
 	{
-		P.w_begin(M_UPDATE);
-		start = Objects.net_Export(&P, start, max_objects_size);
+		CObject	*pO = Objects.o_get_by_iterator(cur_index);
 
-		if (P.B.count > 2)
+		cur_index++;
+		if (cur_index >= object_count)
+			cur_index = 0;
+
+		if (pO && !pO->getDestroy() && pO->net_Relevant())
+		{
+			NET_Packet P;
+			P.w_begin(M_UPDATE);
+
+			P.w_u16(u16(pO->ID()));
+			P.w_chunk_open8(position);
+
+			pO->net_Export(P);
+
+			P.w_chunk_close8(position);
+			if (max_objects_size >= (NET_PacketSizeLimit - P.w_tell()))
+				continue;
 			Send(P, net_flags(FALSE));
-		else 
-			break;
+		}
 	}
 }
 
@@ -225,18 +240,26 @@ u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 max_object_siz
 
 void CLevel::ClientSave	()
 {
-	NET_Packet		P;
-	u32				start	= 0;
+	u32 position;
+	for (u32 start = 0; start < Objects.o_count(); start++) 
+	{
+		CObject	*pO = Objects.o_get_by_iterator(start);
+		CGameObject *pGO = smart_cast<CGameObject*>(pO);
 
-	for (;;) {
-		P.w_begin	(M_SAVE_PACKET);
-		
-		start		= Objects_net_Save(&P, start, max_objects_size_in_save);
+		if (pGO && !pGO->getDestroy() && pGO->net_SaveRelevant())
+		{
+			NET_Packet P;
+			P.w_begin(M_SAVE_PACKET);
 
-		if (P.B.count>2)
-			Send	(P, net_flags(FALSE));
-		else
-			break;
+			P.w_u16(u16(pGO->ID()));
+			P.w_chunk_open16(position);
+
+			pGO->net_Save(P);
+			P.w_chunk_close16(position);
+			if (max_objects_size >= (NET_PacketSizeLimit - P.w_tell()))
+				continue;
+			Send(P, net_flags(FALSE));
+		}
 	}
 }
 
