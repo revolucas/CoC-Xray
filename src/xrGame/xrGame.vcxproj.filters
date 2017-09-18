@@ -2494,6 +2494,9 @@
     <Filter Include="UI\Common\PDA\Encylopedia">
       <UniqueIdentifier>{73dc453e-a9d1-4200-83b7-3564dbf9fc80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI\Common\PDA\PDA Spot">
+      <UniqueIdentifier>{08911c1c-863f-4ed8-815c-f5ad41b3dfe6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="mt_config.h">
@@ -7375,6 +7378,9 @@
     <ClInclude Include="ActorBackpack.h">
       <Filter>Core\Client\Objects\items &amp; weapons\Outfit</Filter>
     </ClInclude>
+    <ClInclude Include="ui\UIPdaSpot.h">
+      <Filter>UI\Common\PDA\PDA Spot</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="damage_manager.cpp">
@@ -11054,6 +11060,9 @@
     </ClCompile>
     <ClCompile Include="ActorBackpack.cpp">
       <Filter>Core\Client\Objects\items &amp; weapons\Outfit</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\UIPdaSpot.cpp">
+      <Filter>UI\Common\PDA\PDA Spot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

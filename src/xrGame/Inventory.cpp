@@ -100,6 +100,8 @@ CInventory::CInventory()
 	
 	InitPriorityGroupsForQSwitch				();
 	m_next_item_iteration_time					= 0;
+
+	m_change_after_deactivate = false;
 }
 
 
@@ -307,7 +309,16 @@ bool CInventory::DropItem(CGameObject *pObj, bool just_before_destroy, bool dont
 		if (Level().CurrentViewEntity() == pActor_owner)
 			CurrentGameUI()->OnInventoryAction(pIItem, GE_OWNERSHIP_REJECT);
 	};
-	pObj->H_SetParent(0, dont_create_shell);
+	if (smart_cast<CWeapon*>(pObj))
+	{
+		Fvector dir = Actor()->Direction();
+		dir.y = sin(-45.f * PI / 180.f);
+		dir.normalize();
+		smart_cast<CWeapon*>(pObj)->SetActivationSpeedOverride(dir.mul(7));
+		pObj->H_SetParent(nullptr, dont_create_shell);
+	}
+	else
+		pObj->H_SetParent(nullptr, dont_create_shell);
 	return							true;
 }
 
@@ -681,7 +692,6 @@ void CInventory::ActiveWeapon( u16 slot )
 		return;
 	}
 	Activate(slot);
-	return;
 }
 
 void CInventory::Update() 
@@ -712,6 +722,9 @@ void CInventory::Update()
 					return;
 				}
 			}
+
+			if (m_change_after_deactivate)
+				ActivateNextGrenage();
 			
 			if (GetNextActiveSlot() != NO_ACTIVE_SLOT)
 			{
@@ -731,8 +744,8 @@ void CInventory::Update()
 			
 			m_iActiveSlot			= GetNextActiveSlot();
 		}
-		if((GetNextActiveSlot()!=NO_ACTIVE_SLOT) && ActiveItem() && ActiveItem()->cast_hud_item()->IsHidden())
-				ActiveItem()->ActivateItem();
+		else if((GetNextActiveSlot()!=NO_ACTIVE_SLOT) && ActiveItem() && ActiveItem()->cast_hud_item()->IsHidden())
+			ActiveItem()->ActivateItem();
 	}
 	UpdateDropTasks	();
 }

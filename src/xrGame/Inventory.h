@@ -67,6 +67,9 @@ public:
 
 
 	void					Activate			(u16 slot, /*EActivationReason reason=eGeneral, */bool bForce=false);
+	void					ActivateDeffered();
+	PIItem					GetNextActiveGrenade();
+	bool					ActivateNextGrenage();
 	
 	static u32 const		qs_priorities_count = 5;
 	PIItem					GetNextItemInActiveSlot		(u8 const priority_value, bool ignore_ammo);
@@ -177,6 +180,8 @@ protected:
 	u32					m_dwModifyFrame;
 
 	bool				m_drop_last_frame;
+
+	bool				m_change_after_deactivate;
 
 	void				SendActionEvent		(u16 cmd, u32 flags);
 

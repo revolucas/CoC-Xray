@@ -68,7 +68,7 @@ void CTraderAnimation::set_sound(LPCSTR sound, LPCSTR anim)
 
 	m_sound				= xr_new<ref_sound>();
 	m_sound->create		(sound,st_Effect,SOUND_TYPE_WORLD);
-	m_sound->play		(NULL, sm_2D);
+	m_sound->play		(m_trader);
 }
 
 void CTraderAnimation::remove_sound()
@@ -87,11 +87,16 @@ void CTraderAnimation::remove_sound()
 //////////////////////////////////////////////////////////////////////////
 void CTraderAnimation::update_frame()
 {
-	if (m_sound && !m_sound->_feedback()) {
-		m_trader->callback	(GameObject::eTraderSoundEnd)();
-		remove_sound		();
+	if (m_sound)
+	{
+		if (m_sound->_feedback())
+			m_sound->set_position(m_trader->Position());
+		else
+		{
+			m_trader->callback(GameObject::eTraderSoundEnd)();
+			remove_sound();
+		}
 	}
-
 	
 	if (!m_motion_global) {
 		m_trader->callback(GameObject::eTraderGlobalAnimationRequest)();
