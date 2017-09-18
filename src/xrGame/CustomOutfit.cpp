@@ -118,8 +118,7 @@ void CCustomOutfit::Load(LPCSTR section)
 
 void CCustomOutfit::ReloadBonesProtection()
 {
-	CObject* parent = H_Parent();
-	parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
+	CObject* parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
 
 	if(parent && parent->Visual() && m_BonesProtectionSect.size())
 		m_boneProtection->reload( m_BonesProtectionSect, smart_cast<IKinematics*>(parent->Visual()));

@@ -32,6 +32,7 @@
 #include "CharacterPhysicsSupport.h"
 #include "car_memory.h"
 #include "../xrphysics/IPHWorld.h"
+#include "../xrPhysics/IActivationShape.h"
 BONE_P_MAP CCar::bone_map=BONE_P_MAP();
 
 //extern CPHWorld*	ph_world;
@@ -158,6 +159,7 @@ BOOL	CCar::net_Spawn				(CSE_Abstract* DC)
 	InitDebug();
 #endif
 	CSE_Abstract					*e = (CSE_Abstract*)(DC);
+
 	CSE_ALifeCar					*co=smart_cast<CSE_ALifeCar*>(e);
 	BOOL							R = inherited::net_Spawn(DC);
 
@@ -211,7 +213,7 @@ void CCar::SpawnInitPhysics	(CSE_Abstract	*D)
 	CreateSkeleton					(D);//creates m_pPhysicsShell & fill in bone_map
 	IKinematics *K					=smart_cast<IKinematics*>(Visual());
 	K->CalculateBones_Invalidate();//this need to call callbacks
-	K->CalculateBones	(TRUE);
+	K->CalculateBones(TRUE);
 	Init							();//inits m_driving_wheels,m_steering_wheels,m_breaking_wheels values using recieved in ParceDefinitions & from bone_map
 	//PPhysicsShell()->add_ObjectContactCallback(ActorObstacleCallback);
 	SetDefaultNetState				(so);
@@ -330,47 +332,43 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 			i->second.RestoreNetState(*ii);
 		}
 	}
-/*
-	//as later may kill diable/enable state save it;
+
+	//Alun
+	//TODO: Is this correct?
 	bool enable = PPhysicsShell()->isEnabled();
-/////////////////////////////////////////////////////////////////////////
+
 	Fmatrix restored_form;
-	PPhysicsShell()->GetGlobalTransformDynamic(&restored_form);
-/////////////////////////////////////////////////////////////////////
+	m_pPhysicsShell->GetGlobalTransformDynamic(&restored_form);
+
 	Fmatrix inv ,replace,sof;
 	sof.setXYZ(co->o_Angle.x,co->o_Angle.y,co->o_Angle.z);
 	sof.c.set(co->o_Position);
 	inv.set(restored_form);
 	inv.invert();
 	replace.mul(sof,inv);
-////////////////////////////////////////////////////////////////////
-	{
-		
-		PKinematics(Visual())->CalculateBones_Invalidate();
-		PKinematics(Visual())->CalculateBones();
-		PPhysicsShell()->DisableCollision();
-		CPHActivationShape activation_shape;//Fvector start_box;m_PhysicMovementControl.Box().getsize(start_box);
 
-		Fvector center;Center(center);
-		Fvector obj_size;BoundingBox().getsize(obj_size);
-		get_box(PPhysicsShell(),restored_form,obj_size,center);
-		replace.transform(center);
-		activation_shape.Create(center,obj_size,this);
-		activation_shape.set_rotation(sof);
-		activation_shape.Activate(obj_size,1,1.f,M_PI/8.f);
-		Fvector dd;
-		dd.sub(activation_shape.Position(),center);
-		activation_shape.Destroy();
-		sof.c.add(dd);
-		PPhysicsShell()->EnableCollision();
-	}
-////////////////////////////////////////////////////////////////////
+	PKinematics(Visual())->CalculateBones_Invalidate();
+	PKinematics(Visual())->CalculateBones(TRUE);
+	m_pPhysicsShell->DisableCollision();
+
+	Fvector center; Center(center);
+	Fvector obj_size; BoundingBox().getsize(obj_size);
+	get_box(m_pPhysicsShell, restored_form, obj_size, center);
+	replace.transform(center);
+
+	Fvector out_pos, dd;
+	ActivateShapePhysShellHolder(this, sof, obj_size, center, out_pos);
+
+	dd.sub(out_pos,center);
+	sof.c.add(dd);
+	m_pPhysicsShell->EnableCollision();
+
 	replace.mul(sof,inv);
-	PPhysicsShell()->TransformPosition(replace);
-	if(enable)PPhysicsShell()->Enable();
-	else PPhysicsShell()->Disable();
-	PPhysicsShell()->GetGlobalTransformDynamic(&XFORM());
-	*/
+	m_pPhysicsShell->TransformPosition(replace, mh_clear);
+	if (enable)m_pPhysicsShell->Enable();
+	else m_pPhysicsShell->Disable();
+	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
+	//-Alun
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {
@@ -446,20 +444,15 @@ void CCar::UpdateCL				( )
 
  void CCar::VisualUpdate(float fov)
 {
-	m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
-	Fvector lin_vel;
-	m_pPhysicsShell->get_LinearVel(lin_vel);
-	// Sound
-	Fvector		C,V;
-	Center		(C);
-	V.set		(lin_vel);
+	if (m_pPhysicsShell)
+		m_pPhysicsShell->InterpolateGlobalTransform(&XFORM());
 
 	m_car_sound->Update();
 	if(Owner())
 	{
 		
-		if(m_pPhysicsShell->isEnabled())
+		if (m_pPhysicsShell && m_pPhysicsShell->isEnabled())
 		{
 			Owner()->XFORM().mul_43	(XFORM(),m_sits_transforms[0]);
 		}
@@ -725,8 +718,6 @@ bool CCar::Exit(const Fvector& pos,const Fvector& dir)
 
 void CCar::ParseDefinitions()
 {
-	 
-	
 	bone_map.clear();
 
 	IKinematics* pKinematics=smart_cast<IKinematics*>(Visual());
@@ -815,14 +806,11 @@ void CCar::ParseDefinitions()
 	m_lights.Init(this);
 	m_lights.ParseDefinitions();
 
-
-	
 	if(ini->section_exist("animations"))
 	{
 		m_driver_anim_type=ini->r_u16("animations","driver_animation_type");
 	}
 
-	
 	if(ini->section_exist("doors"))
 	{
 		m_doors_torque_factor=ini->r_u16("doors","open_torque_factor");
@@ -833,30 +821,24 @@ void CCar::ParseDefinitions()
 
 void CCar::CreateSkeleton(CSE_Abstract	*po)
 {
+	if (m_pPhysicsShell)
+		return;
 
-	if (!Visual()) return;
+	if (!Visual()) 
+		return;
 	IRenderVisual *pVis = Visual();
 	IKinematics* pK = smart_cast<IKinematics*>(pVis);
 	IKinematicsAnimated* pKA = smart_cast<IKinematicsAnimated*>(pVis);
 	if(pKA)
 	{
-		pKA->PlayCycle		("idle");
-		pK->CalculateBones	(TRUE);
+		pKA->PlayCycle("idle");
+		pK->CalculateBones(TRUE);
 	}
 	phys_shell_verify_object_model ( *this );
-	//Alundaio: p_build_shell
-	/*
-	#pragma todo(" replace below by P_build_Shell or call inherited")
-	m_pPhysicsShell		= P_create_Shell();
-	m_pPhysicsShell->build_FromKinematics(pK,&bone_map);
-	m_pPhysicsShell->set_PhysicsRefObject(this);
-	m_pPhysicsShell->mXFORM.set(XFORM());
-	m_pPhysicsShell->Activate(true);
-	m_pPhysicsShell->SetAirResistance(0.f,0.f);
-	*/
 	m_pPhysicsShell = P_build_Shell(this, false, &bone_map);
-	//-Alundaio
-	m_pPhysicsShell->SetPrefereExactIntegration();
+	BONE_P_PAIR_IT i = bone_map.begin(), e = bone_map.end();
+	if (i != e)
+		m_pPhysicsShell->SetPrefereExactIntegration();
 
 	ApplySpawnIniToPhysicShell(&po->spawn_ini(),m_pPhysicsShell,false);
 	ApplySpawnIniToPhysicShell(pK->LL_UserData(),m_pPhysicsShell,false);
@@ -875,7 +857,7 @@ void CCar::Init()
 
 	if(ini->section_exist("air_resistance"))
 	{
-		PPhysicsShell()->SetAirResistance(default_k_l*ini->r_float("air_resistance","linear_factor"),default_k_w*ini->r_float("air_resistance","angular_factor"));
+		m_pPhysicsShell->SetAirResistance(default_k_l*ini->r_float("air_resistance", "linear_factor"), default_k_w*ini->r_float("air_resistance", "angular_factor"));
 	}
 	if(ini->line_exist("car_definition","steer"))
 	{
@@ -1369,7 +1351,7 @@ void CCar::PhTune(float step)
 	
 
 
-	for(u16 i=PPhysicsShell()->get_ElementsNumber();i!=0;i--)	
+	for (u16 i = m_pPhysicsShell->get_ElementsNumber(); i != 0; i--)
 	{
 		CPhysicsElement* e=PPhysicsShell()->get_ElementByStoreOrder(i-1);
 		if(e->isActive()&&e->isEnabled())

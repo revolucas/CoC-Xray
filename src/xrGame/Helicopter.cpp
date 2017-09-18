@@ -569,7 +569,7 @@ void CHelicopter::detach_Actor()
 		Owner()->setVisible(1);
 	CHolderCustom::detach_Actor();
 	PPhysicsShell()->remove_ObjectContactCallback(ActorObstacleCallback);
-	PPhysicsShell()->EnableCollision();
+	PPhysicsShell()->DisableCollision();
 	processing_deactivate();
 }
 
@@ -581,6 +581,7 @@ bool CHelicopter::attach_Actor(CGameObject* actor)
 	Owner()->setVisible(0);
 	PPhysicsShell()->Enable();
 	PPhysicsShell()->add_ObjectContactCallback(ActorObstacleCallback);
+	PPhysicsShell()->EnableCollision();
 	processing_activate();
 	OnCameraChange(eacLookAt);
 	return true;

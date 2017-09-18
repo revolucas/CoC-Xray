@@ -183,11 +183,12 @@ void CLevel::ClientSend(bool bForce)
 	u32 position;
 	for (u32 start = cur_index; start < (bForce ? object_count : cur_index+20); start++)
 	{
+		if (cur_index >= object_count)
+			cur_index = 0;
+
 		CObject	*pO = Objects.o_get_by_iterator(cur_index);
 
 		cur_index++;
-		if (cur_index >= object_count)
-			cur_index = 0;
 
 		if (pO && !pO->getDestroy() && pO->net_Relevant())
 		{

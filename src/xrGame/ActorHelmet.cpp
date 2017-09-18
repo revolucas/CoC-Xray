@@ -66,8 +66,7 @@ void CHelmet::Load(LPCSTR section)
 
 void CHelmet::ReloadBonesProtection()
 {
-	CObject* parent = H_Parent();
-	parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
+	CObject* parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
 
 	if(parent && parent->Visual() && m_BonesProtectionSect.size())
 		m_boneProtection->reload( m_BonesProtectionSect, smart_cast<IKinematics*>(parent->Visual()));
@@ -204,8 +203,7 @@ bool CHelmet::install_upgrade_impl( LPCSTR section, bool test )
 
 void CHelmet::AddBonesProtection(LPCSTR bones_section)
 {
-	CObject* parent = H_Parent();
-	parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
+	CObject* parent = smart_cast<CObject*>(Level().CurrentViewEntity()); //TODO: FIX THIS OR NPC Can't wear outfit without resetting actor 
 
 	if ( parent && parent->Visual() && m_BonesProtectionSect.size() )
 		m_boneProtection->add(bones_section, smart_cast<IKinematics*>( parent->Visual() ) );
