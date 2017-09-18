@@ -35,13 +35,13 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
     {
 #ifdef XRCORE_STATIC
         _clear87();
+#ifdef _M_IX86
         _control87(_PC_53, MCW_PC);
+#endif
         _control87(_RC_CHOP, MCW_RC);
         _control87(_RC_NEAR, MCW_RC);
         _control87(_MCW_EM, MCW_EM);
 #endif
-        // Init COM so we can use CoCreateInstance
-        // HRESULT co_res =
         Params = xr_strdup(GetCommandLine());
         xr_strlwr(Params);
 
@@ -73,8 +73,10 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
 		if (strstr(Params, "-fpslock240"))
 			ParamFlags.set(ParamFlag::fpslock240, TRUE);
 
+		// Init COM so we can use CoCreateInstance
+        // HRESULT co_res =
         //if (!strstr(Params, "-editor"))
-        //    CoInitializeEx(NULL, COINIT_MULTITHREADED);
+        //   CoInitializeEx(NULL, COINIT_MULTITHREADED);
 
         string_path fn, dr, di;
 
@@ -197,7 +199,9 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvRese
     case DLL_PROCESS_ATTACH:
     {
         _clear87();
+#ifdef _M_IX86
         _control87(_PC_53, MCW_PC);
+#endif
         _control87(_RC_CHOP, MCW_RC);
         _control87(_RC_NEAR, MCW_RC);
         _control87(_MCW_EM, MCW_EM);
@@ -205,8 +209,8 @@ BOOL WINAPI DllMain(HINSTANCE hinstDLL, DWORD ul_reason_for_call, LPVOID lpvRese
         //. LogFile.reserve (256);
     break;
     case DLL_THREAD_ATTACH:
-       // if (!strstr(GetCommandLine(), "-editor"))
-       //     CoInitializeEx(NULL, COINIT_MULTITHREADED);
+      // if (!strstr(GetCommandLine(), "-editor"))
+      //     CoInitializeEx(NULL, COINIT_MULTITHREADED);
         timeBeginPeriod(1);
         break;
     case DLL_THREAD_DETACH:
