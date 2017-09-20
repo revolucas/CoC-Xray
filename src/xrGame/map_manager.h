@@ -1,8 +1,8 @@
 #pragma once
 #include "object_interfaces.h"
 #include "map_location_defs.h"
-#include "../../xrServerEntities/script_space_forward.h"
-#include "../../xrServerEntities/script_export_space.h"
+#include "script_space_forward.h"
+#include "script_export_space.h"
 
 class CMapLocationWrapper;
 class CInventoryOwner;
@@ -38,11 +38,11 @@ public:
 	void					Destroy						(CMapLocation*);
 
 	//for security
-	CMapLocation*			AddMapLocation_script(LPCSTR spot_type, u16 id) {AddMapLocation(spot_type, id);};
-	CMapLocation*			AddUserLocation_script(LPCSTR spot_type, LPCSTR level_name, Fvector position){ AddUserLocation(spot_type, level_name, position); };
+	CMapLocation*			AddMapLocation_script(LPCSTR spot_type, u16 id) {return AddMapLocation(spot_type, id);};
+	CMapLocation*			AddUserLocation_script(LPCSTR spot_type, LPCSTR level_name, Fvector position){ return AddUserLocation(spot_type, level_name, position); };
 	void					RemoveMapLocation_script(LPCSTR spot_type, u16 id){	RemoveMapLocation(spot_type, id);};
-	bool					HasMapLocation_script(LPCSTR spot_type, u16 id){HasMapLocation(spot_type, id);};
-	CMapLocation*			GetMapLocation_script(LPCSTR spot_type, u16 id){ GetMapLocation(spot_type, id); };
+	bool					HasMapLocation_script(LPCSTR spot_type, u16 id){return HasMapLocation(spot_type, id);};
+	CMapLocation*			GetMapLocation_script(LPCSTR spot_type, u16 id){return GetMapLocation(spot_type, id); };
 	void					MapLocationsForEach(LPCSTR spot_type, u16 id,const luabind::functor<bool> &functor);
 	void					AllLocationsForEach(const luabind::functor<bool> &functor);
 

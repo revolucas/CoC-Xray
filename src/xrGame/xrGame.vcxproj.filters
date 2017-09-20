@@ -9198,6 +9198,9 @@
     <ClCompile Include="map_manager.cpp">
       <Filter>Core\Client\Objects\tasks_info_dialogs\map</Filter>
     </ClCompile>
+    <ClCompile Include="map_manager_script.cpp">
+      <Filter>Core\Client\Objects\tasks_info_dialogs\map</Filter>
+    </ClCompile>
     <ClCompile Include="Inventory.cpp">
       <Filter>Core\Client\Objects\inventory</Filter>
     </ClCompile>

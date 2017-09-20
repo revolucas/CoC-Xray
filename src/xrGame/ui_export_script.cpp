@@ -3,6 +3,7 @@
 #include "script_ui_registrator.h"
 #include "MainMenu.h"
 
+#include "map_manager.h"
 #include "UIGameCustom.h"
 #include "UI/UIScriptWnd.h"
 #include "UI/UIButton.h"
@@ -28,6 +29,7 @@ CMainMenu*	MainMenu();
 #pragma optimize("s",on)
 void UIRegistrator::script_register(lua_State *L)
 {
+	CMapManager::script_register(L);
 	CUIWindow::script_register(L);
 	CUIStatic::script_register(L);
 	CUIButton::script_register(L);

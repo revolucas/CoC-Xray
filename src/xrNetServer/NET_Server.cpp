@@ -302,21 +302,12 @@ IPureServer::EConnect IPureServer::Connect(LPCSTR options, GameDescriptionData &
 if(!psNET_direct_connect)
 {
 	//---------------------------
-#ifdef DEBUG
-	string1024 tmp;
-#endif // DEBUG
-//	HRESULT CoInitializeExRes = CoInitializeEx(NULL, 0);	
-//	if (CoInitializeExRes != S_OK && CoInitializeExRes != S_FALSE)
-//	{
-//		DXTRACE_ERR(tmp, CoInitializeExRes);
-//		CHK_DX(CoInitializeExRes);
-//	};	
-	//---------------------------
     // Create the IDirectPlay8Client object.
 	HRESULT CoCreateInstanceRes = CoCreateInstance	(CLSID_DirectPlay8Server, NULL, CLSCTX_INPROC_SERVER, IID_IDirectPlay8Server, (LPVOID*) &NET);
 	//---------------------------	
 	if (CoCreateInstanceRes != S_OK)
 	{
+		const wchar_t* tmp;
 		DXTRACE_ERR(tmp, CoCreateInstanceRes );
 		CHK_DX(CoCreateInstanceRes );
 	}	
