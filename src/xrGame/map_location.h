@@ -118,11 +118,11 @@ public:
 	virtual void			load							(IReader &stream);
 
 	shared_str				m_owner_task_id;
+	LPCSTR					GetOwnerTaskID(){ return m_owner_task_id.c_str(); };
 
 #ifdef DEBUG
 	virtual void			Dump							(){};
 #endif
-
 };
 
 class CRelationMapLocation :public CMapLocation

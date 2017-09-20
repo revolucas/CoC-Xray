@@ -33,15 +33,9 @@ void CUIPdaSpot::Init(u16 spot_id, LPCSTR level_name, Fvector pos, bool main_wnd
 	m_levelName = level_name;
 	m_position = pos;
 	if (!m_mainWnd)
-	{
-		m_btn_ok->TextItemControl()->SetText(CStringTable().translate("ui_inv_ok").c_str());
 		m_spotID = spot_id;
-	}
 	else
-	{
-		m_btn_ok->TextItemControl()->SetText(CStringTable().translate("add_spot_btn_hint").c_str());
 		m_spotID = u16(-1);
-	}
 
 	if (!m_mainWnd)
 	{
@@ -73,8 +67,7 @@ void CUIPdaSpot::InitControls()
 
 void CUIPdaSpot::OnAdd(CUIWindow* ui, void* d)
 {
-	u16 id = 0;
-	CMapLocation* ml = Level().MapManager().AddUserLocation(m_spotType, m_levelName, m_position, &id);
+	CMapLocation* ml = Level().MapManager().AddUserLocation(m_spotType, m_levelName, m_position);
 	ml->SetHint(m_editBox->GetText());
 	ml->SetSerializable(true);
 

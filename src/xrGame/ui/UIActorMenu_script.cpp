@@ -238,7 +238,7 @@ void CUIActorMenu::HighlightSectionInSlot(LPCSTR section, u8 type, u16 slot_id)
 }
 
 
-void CUIActorMenu::HighlightForEachInSlot(luabind::functor<bool> functor, u8 type, u16 slot_id)
+void CUIActorMenu::HighlightForEachInSlot(const luabind::functor<bool> &functor, u8 type, u16 slot_id)
 {
 	if (!functor)
 		return;

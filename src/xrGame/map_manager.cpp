@@ -56,7 +56,6 @@ void SLocationKey::load(IReader &stream)
 
 	if (bUserDefined)
 	{
-		Msg("qweasdd: SLocationKey::load -> creating user spot!");
 		Level().Server->PerformIDgen(object_id);
 		location = xr_new<CMapLocation>(*spot_type, object_id, true);
 	}
@@ -70,6 +69,8 @@ void SLocationKey::load(IReader &stream)
 
 void SLocationKey::destroy()
 {
+	if (location && location->IsUserDefined())
+		Level().Server->FreeID(object_id,0);
 	delete_data(location);
 }
 
@@ -121,16 +122,13 @@ CMapLocation* CMapManager::AddMapLocation(const shared_str& spot_type, u16 id)
 	return l;
 }
 
-CMapLocation* CMapManager::AddUserLocation(const shared_str& spot_type, const shared_str& level_name, Fvector position, u16 *id)
+CMapLocation* CMapManager::AddUserLocation(const shared_str& spot_type, const shared_str& level_name, Fvector position)
 {
-	Msg("map_manager:AddUserLocation START!");
 	u16 _id = Level().Server->PerformIDgen(0xffff);
-	(*id) = _id;
-	CMapLocation* l = xr_new<CMapLocation>(spot_type.c_str(), *id, true);
+	CMapLocation* l = xr_new<CMapLocation>(spot_type.c_str(), _id, true);
 	l->InitUserSpot(level_name, position);
 	Locations().push_back(SLocationKey(spot_type, _id));
 	Locations().back().location = l;
-	Msg("map_manager:AddUserLocation FINISH!");
 	return l;
 }
 
@@ -311,3 +309,76 @@ void CMapManager::Dump						()
 	Msg("end of map_locations dump");
 }
 #endif
+
+using namespace luabind;
+void CMapManager::MapLocationsForEach(LPCSTR spot_type, u16 id, const luabind::functor<bool> &functor)
+{
+	xr_vector<CMapLocation*> res;
+	Level().MapManager().GetMapLocations(spot_type, id, res);
+	xr_vector<CMapLocation*>::iterator it = res.begin();
+	xr_vector<CMapLocation*>::iterator it_e = res.end();
+	for (; it != it_e; ++it)
+	{
+		CMapLocation* ml = *it;
+		if (functor(ml) == true)
+			return;
+	}
+}
+
+void CMapManager::AllLocationsForEach(const luabind::functor<bool> &functor)
+{
+	Locations_it it = Locations().begin();
+	Locations_it it_e = Locations().end();
+
+	for (; it != it_e; ++it)
+	{
+		if (functor((*it).location) == true)
+			return;
+	}
+}
+
+#include "map_location.h"
+
+#pragma optimize("s",on)
+void CMapManager::script_register(lua_State *L)
+{
+	module(L)
+		[
+			class_<CMapManager>("CMapManager")
+			.def(constructor<>())
+			.def("AddMapLocation", &CMapManager::AddMapLocation_script)
+			.def("AddUserLocation", &CMapManager::AddUserLocation_script)
+			.def("RemoveMapLocation", &CMapManager::RemoveMapLocation_script)
+			.def("HasMapLocation", &CMapManager::HasMapLocation_script)
+			.def("GetMapLocation", &CMapManager::GetMapLocation_script)
+			.def("RemoveMapLocationByObjectID", &CMapManager::RemoveMapLocationByObjectID)
+			.def("RemoveMapLocation", (void (CMapManager::*)(CMapLocation*))&CMapManager::RemoveMapLocation)
+			.def("RemoveMapLocation", &CMapManager::RemoveMapLocation_script)
+			.def("DisableAllPointers", &CMapManager::DisableAllPointers)
+			.def("MapLocationsForEach", &CMapManager::MapLocationsForEach)
+			.def("AllLocationsForEach", &CMapManager::AllLocationsForEach),
+
+			class_<CMapLocation>("CMapLocation")
+			//.def(constructor<>())
+			.def("HintEnabled", &CMapLocation::HintEnabled)
+			.def("GetHint", &CMapLocation::GetHint)
+			.def("SetHint", &CMapLocation::SetHint)
+			.def("PointerEnabled", &CMapLocation::PointerEnabled)
+			.def("EnablePointer", &CMapLocation::EnablePointer)
+			.def("DisablePointer", &CMapLocation::DisablePointer)
+			.def("GetType", &CMapLocation::GetType)
+			.def("SpotSize", &CMapLocation::SpotSize)
+			.def("IsUserDefined", &CMapLocation::IsUserDefined)
+			.def("SetUserDefinedFlag", &CMapLocation::SetUserDefinedFlag)
+			.def("HighlightSpot", &CMapLocation::HighlightSpot)
+			.def("Collidable", &CMapLocation::Collidable)
+			.def("SpotEnabled", &CMapLocation::SpotEnabled)
+			.def("EnableSpot", &CMapLocation::EnableSpot)
+			.def("DisableSpot", &CMapLocation::DisableSpot)
+			.def("GetLevelName", &CMapLocation::GetLevelName)
+			.def("GetPosition", &CMapLocation::GetPosition)
+			.def("ObjectID", &CMapLocation::ObjectID)
+			.def("GetLastPosition", &CMapLocation::GetLastPosition)
+			.def("GetOwnerTaskID", &CMapLocation::GetOwnerTaskID)
+		];
+}

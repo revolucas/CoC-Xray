@@ -51,7 +51,6 @@ CMapLocation::CMapLocation(LPCSTR type, u16 object_id, bool is_user_loc)
 
 	if (is_user_loc)
 	{
-		Msg("qweasdd: CMapLocation user spot init: type = %s", type);
 		m_flags.set(eUserDefined, TRUE);
 	}
 
