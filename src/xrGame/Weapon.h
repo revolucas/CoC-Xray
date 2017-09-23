@@ -523,8 +523,8 @@ protected:
 
     //дл€ сталкеров, чтоб они знали эффективные границы использовани€
     //оружи€
-    float					m_fMinRadius;
-    float					m_fMaxRadius;
+    //float					m_fMinRadius;
+    //float					m_fMaxRadius;
 
 protected:
     //дл€ второго ствола

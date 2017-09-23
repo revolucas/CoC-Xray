@@ -4,14 +4,12 @@
 
 int main(int argc, char* argv[])
 {
-	std::string argv_str(argv[0]);
-	std::string workingDir = argv_str.substr(0, argv_str.find_last_of("\\"));
-	std::string pathToExe = workingDir + "\\bin\\xrEngine.exe";
+	std::string pathToExe = "bin\\xrEngine.exe";
 
 	// combine the rest of the arguments into a single string
-	std::string command_line;
-	for (int i = 1; i < argc; i++)
-		command_line += i==argc?argv[i] + ' ':argv[i];
+	std::string command_line = "";
+	for (int i = 0; i < argc; i++)
+		command_line += std::string(argv[i]) + ' ';
 
 	// additional information
 	STARTUPINFOA si;

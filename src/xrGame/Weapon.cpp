@@ -379,8 +379,8 @@ void CWeapon::Load(LPCSTR section)
     if (pSettings->line_exist(section, "single_handed"))
         m_bIsSingleHanded = !!pSettings->r_bool(section, "single_handed");
     //
-    m_fMinRadius = pSettings->r_float(section, "min_radius");
-    m_fMaxRadius = pSettings->r_float(section, "max_radius");
+    //m_fMinRadius = pSettings->r_float(section, "min_radius");
+    //m_fMaxRadius = pSettings->r_float(section, "max_radius");
 
     // информация о возможных апгрейдах и их визуализации в инвентаре
     m_eScopeStatus = (ALife::EWeaponAddonStatus)pSettings->r_s32(section, "scope_status");

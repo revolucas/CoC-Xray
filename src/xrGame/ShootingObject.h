@@ -113,8 +113,8 @@ public:
 protected:
 	//для сталкеров, чтоб они знали эффективные границы использования 
 	//оружия
-	float					m_fMinRadius;
-	float					m_fMaxRadius;
+	//float					m_fMinRadius;
+	//float					m_fMaxRadius;
 
 protected:
 	Fcolor					light_base_color;
