@@ -912,7 +912,9 @@ void CActor::g_Physics(Fvector& _accel, float jump, float dt)
         }
     }
 }
+
 float g_fov = 55.0f;
+float g_scope_fov = 75.0f;
 
 float CActor::currentFOV()
 {
@@ -928,7 +930,7 @@ float CActor::currentFOV()
 				return atan(tan(g_fov * (0.5 * PI / 180)) / pWeapon->GetZoomFactor()) / (0.5 * PI / 180); //Alun: For iron sights, we use camera fov
 
 			if (!pWeapon->IsRotatingToZoom())
-				return atan(tan(75.f * (0.5 * PI / 180)) / pWeapon->GetZoomFactor()) / (0.5 * PI / 180); //Alun: This assumes scope has a fake 75 FOV so that no matter camera FOV the scope FOV is exactly the same
+				return atan(tan(g_scope_fov * (0.5 * PI / 180)) / pWeapon->GetZoomFactor()) / (0.5 * PI / 180); //Alun: This assumes scope has a fake FOV so that no matter camera FOV the scope FOV is exactly the same
 		}
 	}
 	return g_fov;

@@ -87,6 +87,8 @@ CWeapon::CWeapon()
 
 CWeapon::~CWeapon()
 {
+	if (m_zoom_params.m_pVision)
+		xr_delete(m_zoom_params.m_pVision);
     xr_delete(m_UIScope);
     delete_data(m_scopes);
 }
@@ -475,8 +477,8 @@ void CWeapon::Load(LPCSTR section)
     }
 
     m_zoom_params.m_bUseDynamicZoom = READ_IF_EXISTS(pSettings, r_bool, section, "scope_dynamic_zoom", FALSE);
-    m_zoom_params.m_sUseZoomPostprocess = 0;
-    m_zoom_params.m_sUseBinocularVision = 0;
+    m_zoom_params.m_sUseZoomPostprocess = READ_IF_EXISTS(pSettings, r_string, section, "scope_nightvision", 0);;
+    m_zoom_params.m_sUseBinocularVision = READ_IF_EXISTS(pSettings, r_string, section, "scope_alive_detector", 0);
 
 	// Added by Axel, to enable optional condition use on any item
 	m_flags.set( FUsingCondition, READ_IF_EXISTS( pSettings, r_bool, section, "use_condition", TRUE ));
@@ -1399,7 +1401,9 @@ void CWeapon::OnZoomOut()
 
     ResetSubStateTime();
 
-    xr_delete(m_zoom_params.m_pVision);
+	if (m_zoom_params.m_pVision)
+		xr_delete(m_zoom_params.m_pVision);
+	
     if (m_zoom_params.m_pNight_vision)
     {
         m_zoom_params.m_pNight_vision->Stop(100000.0f, false);

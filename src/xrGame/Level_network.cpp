@@ -171,6 +171,7 @@ void CLevel::net_Stop		()
 #endif // DEBUG
 }
 
+int g_objects_per_client_update = 5;
 
 void CLevel::ClientSend(bool bForce)
 {
@@ -181,7 +182,7 @@ void CLevel::ClientSend(bool bForce)
 
 	u32 object_count = Objects.o_count();
 	u32 position;
-	for (u32 start = cur_index; start < (bForce ? object_count : cur_index+20); start++)
+	for (u32 start = cur_index; start < (bForce ? object_count : cur_index + g_objects_per_client_update); start++)
 	{
 		if (cur_index >= object_count)
 			cur_index = 0;

@@ -39,6 +39,8 @@ class CDebugRenderer;
 #endif
 
 extern float g_fov;
+extern float g_scope_fov;
+extern int g_objects_per_client_update;
 
 const int maxRP = 64;
 const int maxTeams = 32;
