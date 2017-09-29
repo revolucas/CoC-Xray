@@ -146,14 +146,11 @@ void CSoundRender_CoreA::_initialize(int stage)
 	{
 
 		//Alun: Because Hardware devices usually cannot support number greater then 32, unlike software
-		ALCint nummono, numstereo;
+		ALCint nummono;
 		alcGetIntegerv(pDevice, ALC_MONO_SOURCES, 1, &nummono);
-		alcGetIntegerv(pDevice, ALC_STEREO_SOURCES, 1, &numstereo);
+		int iMaxTargets = std::min(nummono, psSoundTargets);
 
-		int iMaxTargets = std::min(nummono, numstereo);
-		iMaxTargets = std::min(iMaxTargets, psSoundTargets);
-
-		Msg("SOUND: Max Mono Targets %d | Max Stereo Targets %d | psSoundTargets %d | supported %d", nummono, numstereo, psSoundTargets, iMaxTargets);
+		Msg("SOUND: Max Mono Targets %d | psSoundTargets %d | supported %d", nummono, psSoundTargets, iMaxTargets);
 
 		//-Alun
 
