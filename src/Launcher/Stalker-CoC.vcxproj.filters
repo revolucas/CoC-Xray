@@ -30,7 +30,7 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="E:\STALKER\TOOLS\STALKER-CoC\stalker_cs.ico">
+    <Image Include="stalker_cs.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
