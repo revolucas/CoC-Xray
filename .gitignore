@@ -16,3 +16,8 @@ _build/
 *.pdb
 *.sdf
 xray-16-libraries/
+
+src\Launcher\main.cpp.PVS-Studio.cfg
+src\Launcher\main.cpp.cl.cfg
+src\Launcher\main.cpp.cl.cmd
+src\Launcher\main.i-68c5982a
