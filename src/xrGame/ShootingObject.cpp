@@ -43,6 +43,7 @@ CShootingObject::CShootingObject(void)
 	m_sShellParticles				= NULL;
 	
 	bWorking						= false;
+	bCycleDown = false;
 
 	light_render					= 0;
 

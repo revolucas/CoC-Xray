@@ -58,6 +58,7 @@ void SBullet::Init(const Fvector& position,
 {
 	flags._storage			= 0;
 	bullet_pos 				= position;
+	starting_speed			*= cartridge.param_s.kBulletSpeed;
 	speed = max_speed		= starting_speed;
 	VERIFY					(speed > 0.f);
 
