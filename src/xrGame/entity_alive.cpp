@@ -305,6 +305,11 @@ void	CEntityAlive::Hit(SHit* pHDS)
 
 }
 
+void CEntityAlive::OnEvent(NET_Packet& P, u16 type)
+{
+	inherited::OnEvent(P, type);
+}
+
 void CEntityAlive::Die	(CObject* who)
 {
 	RELATION_REGISTRY().Action(smart_cast<CEntityAlive*>(who), this, RELATION_REGISTRY::KILL);

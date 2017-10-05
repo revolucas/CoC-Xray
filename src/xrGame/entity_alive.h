@@ -60,6 +60,9 @@ public:
 	virtual void			HitImpulse				(float amount, Fvector& vWorldDir, Fvector& vLocalDir);
 	virtual	void			Hit						(SHit* pHDS);
 	virtual void			Die						(CObject* who);
+
+	virtual void			OnEvent(NET_Packet& P, u16 type);
+
 	virtual void			g_WeaponBones			(int &L, int &R1, int &R2)										= 0;
 			void			set_lock_corpse			(bool b_l_corpse);
 			bool			is_locked_corpse		();

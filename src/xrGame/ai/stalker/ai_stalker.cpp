@@ -472,7 +472,7 @@ void CAI_Stalker::Die				(CObject* who)
 
 	if(m_death_sound_enabled)
 	{
-		sound().set_sound_mask		((u32)eStalkerSoundMaskDie);
+		//sound().set_sound_mask		((u32)eStalkerSoundMaskDie);
 		if (is_special_killer(who))
 			sound().play			(eStalkerSoundDieInAnomaly);
 		else
