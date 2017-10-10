@@ -304,10 +304,23 @@ static class cl_screen_res : public R_constant_setup
 	}
 }	binder_screen_res;
 
+static class cl_screen_params : public R_constant_setup
+{
+	Fvector4	result;
+	virtual void setup(R_constant* C)
+	{
+		float fov = float(Device.fFOV);
+		float aspect = float(Device.fASPECT);
+		result.set(fov, aspect, tan(deg2rad(fov) / 2), g_pGamePersistent->Environment().CurrentEnv->far_plane*0.75f);
+		RCache.set_c(C, result);
+	}
+}; cl_screen_params binder_screen_params;
 
 // Standart constant-binding
 void	CBlender_Compile::SetMapping	()
 {
+	r_Constant("ogse_c_screen", &binder_screen_params);
+
 	// matrices
 	r_Constant				("m_W",				&binder_w);
 	r_Constant				("m_invW",			&binder_invw);

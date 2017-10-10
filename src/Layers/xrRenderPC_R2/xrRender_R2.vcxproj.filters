@@ -636,6 +636,9 @@
     <ClInclude Include="..\..\Include\xrRender\UISequenceVideoItem.h">
       <Filter>Interfase implementations\UI\UISequenceVideoItem</Filter>
     </ClInclude>
+    <ClInclude Include="blender_sunshafts.h">
+      <Filter>Shading templates</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -1135,6 +1138,12 @@
     </ClCompile>
     <ClCompile Include="..\xrRender\dxUISequenceVideoItem.cpp">
       <Filter>Interfase implementations\UI\UISequenceVideoItem</Filter>
+    </ClCompile>
+    <ClCompile Include="blender_sunshafts.cpp">
+      <Filter>Shading templates</Filter>
+    </ClCompile>
+    <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp">
+      <Filter>Core_Target</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

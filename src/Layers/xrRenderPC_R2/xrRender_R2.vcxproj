@@ -706,6 +706,7 @@
     <ClInclude Include="blender_light_spot.h" />
     <ClInclude Include="blender_luminance.h" />
     <ClInclude Include="blender_ssao.h" />
+    <ClInclude Include="blender_sunshafts.h" />
     <ClInclude Include="cl_intersect.h" />
     <ClInclude Include="DetailFormat.h" />
     <ClInclude Include="light.h" />
@@ -850,6 +851,7 @@
     <ClCompile Include="blender_light_spot.cpp" />
     <ClCompile Include="blender_luminance.cpp" />
     <ClCompile Include="blender_ssao.cpp" />
+    <ClCompile Include="blender_sunshafts.cpp" />
     <ClCompile Include="light_GI.cpp" />
     <ClCompile Include="Light_Render_Direct.cpp" />
     <ClCompile Include="Light_Render_Direct_ComputeXFS.cpp" />
@@ -878,6 +880,7 @@
     <ClCompile Include="r2_rendertarget_phase_smap_D.cpp" />
     <ClCompile Include="r2_rendertarget_phase_smap_S.cpp" />
     <ClCompile Include="r2_rendertarget_phase_ssao.cpp" />
+    <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp" />
     <ClCompile Include="r2_R_calculate.cpp" />
     <ClCompile Include="r2_R_lights.cpp" />
     <ClCompile Include="r2_R_render.cpp" />

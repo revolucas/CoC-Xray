@@ -11,6 +11,7 @@
 #include "blender_bloom_build.h"
 #include "blender_luminance.h"
 #include "blender_ssao.h"
+#include "blender_sunshafts.h"
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
@@ -210,6 +211,7 @@ CRenderTarget::CRenderTarget		()
 	b_ssao							= xr_new<CBlender_SSAO>					();
 	b_luminance						= xr_new<CBlender_luminance>			();
 	b_combine						= xr_new<CBlender_combine>				();
+	b_sunshafts = xr_new<CBlender_sunshafts>();
 
 	//	NORMAL
 	{
@@ -243,12 +245,20 @@ CRenderTarget::CRenderTarget		()
 		// generic(LDR) RTs
 		rt_Generic_0.create			(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8		);
 		rt_Generic_1.create			(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8		);
+		// RT - KD
+		if (ps_r_sun_shafts && (ps_sunshafts_mode == R2SS_SCREEN_SPACE))
+		{
+			rt_sunshafts_0.create(r2_RT_sunshafts0, w, h, D3DFMT_A8R8G8B8);
+			rt_sunshafts_1.create(r2_RT_sunshafts1, w, h, D3DFMT_A8R8G8B8);
+		}
 		//	Igor: for volumetric lights
 		//rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A8R8G8B8		);
 		//	temp: for higher quality blends
 		if (RImplementation.o.advancedpp)
 			rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A16B16G16R16F);
 	}
+
+	s_sunshafts.create(b_sunshafts, "r2\\sunshafts");
 
 	// OCCLUSION
 	s_occq.create					(b_occq,		"r2\\occq");
@@ -631,6 +641,7 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_accum_direct_cascade	);
 	xr_delete					(b_accum_mask			);
 	xr_delete					(b_occq					);
+	xr_delete(b_sunshafts);
 }
 
 void CRenderTarget::reset_light_marker( bool bResetStencil)

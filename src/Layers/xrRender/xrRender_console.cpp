@@ -58,6 +58,13 @@ xr_token							qsun_quality_token							[ ]={
 	{ 0,							0												}
 };
 
+u32 ps_sunshafts_mode = 0;
+xr_token sunshafts_mode_token[] = {
+	{ "volumetric", 0 },
+	{ "screen_space", 1 },
+	{ 0, 0 }
+};
+
 u32			ps_r3_msaa				=	0;			//	=	0;
 xr_token							qmsaa_token							[ ]={
 	{ "st_opt_off",					0												},
@@ -226,6 +233,8 @@ float		ps_r2_dof_kernel_size		= 5.0f;						//	7.0f
 float		ps_r3_dyn_wet_surf_near		= 10.f;				// 10.0f
 float		ps_r3_dyn_wet_surf_far		= 30.f;				// 30.0f
 int			ps_r3_dyn_wet_surf_sm_res	= 256;				// 256
+float		ps_r2_ss_sunshafts_length	= 1.f;
+float		ps_r2_ss_sunshafts_radius	= 1.f;
 
 Flags32 ps_actor_shadow_flags = {0}; //Swartz: actor shadow
 
@@ -899,6 +908,9 @@ void		xrRender_initconsole	()
 //	float		ps_r2_dof_near			= 0.f;					// 0.f
 //	float		ps_r2_dof_focus			= 1.4f;					// 1.4f
 	
+	CMD3(CCC_Token,		"r2_sunshafts_mode",			&ps_sunshafts_mode, sunshafts_mode_token);
+	CMD4(CCC_Float,		"r2_ss_sunshafts_length",		&ps_r2_ss_sunshafts_length, .2f, 1.5f);
+	CMD4(CCC_Float,		"r2_ss_sunshafts_radius",		&ps_r2_ss_sunshafts_radius, .5f, 2.f);
 	CMD3(CCC_Mask,		"r2_volumetric_lights",			&ps_r2_ls_flags,			R2FLAG_VOLUMETRIC_LIGHTS);
 //	CMD3(CCC_Mask,		"r2_sun_shafts",				&ps_r2_ls_flags,			R2FLAG_SUN_SHAFTS);
 	CMD3(CCC_Token,		"r2_sun_shafts",				&ps_r_sun_shafts,			qsun_shafts_token);
