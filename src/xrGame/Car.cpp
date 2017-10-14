@@ -335,6 +335,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 
 	//Alun
 	//TODO: Is this correct?
+/*
 	bool enable = PPhysicsShell()->isEnabled();
 
 	Fmatrix restored_form;
@@ -369,6 +370,7 @@ void CCar::RestoreNetState(CSE_PHSkeleton* po)
 	else m_pPhysicsShell->Disable();
 	m_pPhysicsShell->GetGlobalTransformDynamic(&XFORM());
 	//-Alun
+*/
 }
 void CCar::SetDefaultNetState(CSE_PHSkeleton* po)
 {

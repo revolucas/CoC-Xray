@@ -259,6 +259,25 @@ void CHitMemoryManager::remove_links	(CObject *object)
 #endif
 }
 
+struct CRemoveHitObjectPredicate {
+	const MemorySpace::CHitObject *m_object;
+
+	CRemoveHitObjectPredicate(const MemorySpace::CHitObject *object) : m_object(object)
+	{
+	}
+	bool operator() (const MemorySpace::CHitObject &object) const
+	{
+		return (m_object == &object);
+	}
+};
+
+void CHitMemoryManager::remove(const MemorySpace::CHitObject *hit_object)
+{
+	HITS::iterator I = std::find_if(m_hits->begin(), m_hits->end(), CRemoveHitObjectPredicate(hit_object));
+	if (I != m_hits->end())
+		m_hits->erase(I);
+}
+
 void CHitMemoryManager::save	(NET_Packet &packet) const
 {
 	if (!m_object->g_Alive())

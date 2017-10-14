@@ -542,16 +542,43 @@ void CScriptGameObject::set_visual_name(LPCSTR visual)
 {
 	object().cNameVisual_set(visual);
 
-	/*
-	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
-	if (!stalker)
-		return;
+	CActor* actor = smart_cast<CActor*>(&object());
+	if (actor)
+		actor->OnChangeVisual();
 
-	stalker->ResetBoneProtections(NULL,NULL);
-	*/
+	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
+	if (stalker)
+		stalker->OnChangeVisual();
 }
 
 LPCSTR CScriptGameObject::get_visual_name() const
 {
 	return object().cNameVisual().c_str();
+}
+
+void CScriptGameObject::RemoveMemorySoundObject(const MemorySpace::CSoundObject &memory_object)
+{
+	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		return;
+
+	stalker->memory().sound().remove(&memory_object);
+}
+
+void CScriptGameObject::RemoveMemoryHitObject(const MemorySpace::CHitObject &memory_object)
+{
+	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		return;
+
+	stalker->memory().hit().remove(&memory_object);
+}
+
+void CScriptGameObject::RemoveMemoryVisibleObject(const MemorySpace::CVisibleObject &memory_object)
+{
+	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
+	if (!stalker)
+		return;
+
+	stalker->memory().visual().remove(&memory_object);
 }

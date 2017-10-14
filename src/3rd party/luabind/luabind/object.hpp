@@ -1123,7 +1123,7 @@ private:
 
 			struct assign_into
 			{
-				assign_into() {}
+				assign_into(): n(0) {}
 
 				template<class T>
 				assign_into(tuple_object_ref& to, const T& val)
@@ -1135,7 +1135,7 @@ private:
 				}
 
 				template<class T>
-				assign_into& operator,(const T& val)
+				assign_into& operator,(const T& val) : n(0)
 				{ 
 					if (n >= target->n) return *this;
 					*target->refs[n++] = val; 
@@ -1170,7 +1170,7 @@ private:
 				: n(0)
 			{ objs[n++] = x; }
 
-			tuple_object(const tuple_object_ref& x)
+			tuple_object(const tuple_object_ref& x) : n(0)
 			{
 				for (std::size_t i = 0; i < x.n; ++i)
 					objs[i] = *x.refs[i];

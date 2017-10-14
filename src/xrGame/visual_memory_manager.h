@@ -90,7 +90,7 @@ public:
 	virtual	void	update					(float time_delta);
 	virtual	float	feel_vision_mtl_transp	(CObject* O, u32 element);	
 			void	remove_links			(CObject *object);
-
+			void	remove					(const MemorySpace::CVisibleObject *visible_object);
 public:
 			bool	visible					(const CGameObject *game_object, float time_delta);
 			bool	visible					(u32 level_vertex_id, float yaw, float eye_fov) const;

@@ -21,6 +21,9 @@
 TEMPLATE_SPECIALIZATION
 IC	CSelectorTemplate::CAbstractLocationSelector	(CRestrictedObject *object)
 {
+	m_failed = false;
+	m_last_query_time = 0;
+	m_query_interval = 0;
 	m_restricted_object		= object;
 	VERIFY					(m_restricted_object);
 }

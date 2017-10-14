@@ -137,7 +137,7 @@ class XRCORE_API CTimer_paused_ex : public CTimer
 {
     u64 save_clock;
 public:
-    CTimer_paused_ex() { }
+	CTimer_paused_ex() { save_clock = 0; }
     virtual ~CTimer_paused_ex() { }
     IC BOOL Paused()const { return bPause; }
     IC void Pause(BOOL b)

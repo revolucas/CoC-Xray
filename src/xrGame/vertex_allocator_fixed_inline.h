@@ -15,7 +15,7 @@
 #define CFixedVertexAllocator	CVertexAllocatorFixed<reserved_vertex_count>::CDataStorage<_vertex>
 
 TEMPLATE_SPECIALIZATION
-IC	CFixedVertexAllocator::CDataStorage					()
+IC	CFixedVertexAllocator::CDataStorage() :m_vertex_count(0)
 {
 	u32						memory_usage = 0;
 	u32						byte_count;

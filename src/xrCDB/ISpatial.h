@@ -84,7 +84,7 @@ public:
 		IRender_Sector*			sector;
 		ISpatial_DB*			space;			// allow different spaces
 
-		_spatial() : type(0)	{}				// safe way to enhure type is zero before any contstructors takes place
+		_spatial() : type(0)	{ node_radius = 0.f; node_ptr = NULL; sector = NULL; space = NULL; }				// safe way to enhure type is zero before any contstructors takes place
 	}							spatial;
 public:
 	BOOL						spatial_inside		()			;

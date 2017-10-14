@@ -21,7 +21,7 @@
 #define CGenericPathManager CPathManagerGeneric<_Graph,_DataStorage,_Parameters,_dist_type,_index_type,_iteration_type>
 
 TEMPLATE_SPECIALIZATION
-IC	CGenericPathManager::CPathManagerGeneric		()
+IC	CGenericPathManager::CPathManagerGeneric() :max_visited_node_count(0)
 {
 	graph			= 0;
 	data_storage	= 0;

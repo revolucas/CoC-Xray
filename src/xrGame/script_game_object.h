@@ -40,6 +40,8 @@
 #include "FoodItem.h"
 #include "PhysicsShellHolder.h"
 #include "BottleItem.h"
+#include "danger_object.h"
+#include "danger_manager.h"
 
 enum EPdaMsg;
 enum ESoundTypes;
@@ -851,6 +853,12 @@ public:
 			void				SetSpatialType(u32 sptype);
 			u8					GetRestrictionType();
 			void				SetRestrictionType(u8 typ);
+
+			void				RemoveDanger(const CDangerObject& dobject);
+			
+			void				RemoveMemorySoundObject(const MemorySpace::CSoundObject &memory_object);
+			void				RemoveMemoryHitObject(const MemorySpace::CHitObject &memory_object);
+			void				RemoveMemoryVisibleObject(const MemorySpace::CVisibleObject &memory_object);
 
 			//Weapon
 			void				Weapon_SetCurrentScope(u8 type);

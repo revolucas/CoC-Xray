@@ -254,6 +254,9 @@ protected:
 public:
     IC IReader()
     {
+		data = NULL;
+		Size = 0;
+		iterpos = 0;
         Pos = 0;
     }
 

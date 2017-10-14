@@ -13,7 +13,7 @@ class CWeaponStatMgun:	public CPhysicsShellHolder,
 						public CHolderCustom,
 						public CShootingObject
 {
-private:
+protected:
 	typedef CPhysicsShellHolder inheritedPH;
 	typedef CHolderCustom		inheritedHolder;
 	typedef CShootingObject		inheritedShooting;

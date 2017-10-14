@@ -33,7 +33,7 @@ struct SFlooder  : public SBaseParameters<
 			max_range,
 			max_iteration_count,
 			max_visited_node_count
-		)
+			), m_dummy(u32(-1))
 	{
 	}
 };

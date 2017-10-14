@@ -111,6 +111,10 @@ struct				net_update
 		p_pos.set		(0,0,0);
 		p_accel.set		(0,0,0);
 		p_velocity.set	(0,0,0);
+		o_model = 0.f;
+		mstate = 0;
+		weapon = 0;
+		fHealth = 0.f;
 	}
 
 	void	lerp		(net_update& A,net_update& B, float f);
