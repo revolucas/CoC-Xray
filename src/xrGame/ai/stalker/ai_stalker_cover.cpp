@@ -72,7 +72,7 @@ void CAI_Stalker::on_best_cover_changed				(const CCoverPoint *new_cover, const 
 void CAI_Stalker::compute_enemy_distances			(float &minimum_enemy_distance, float &maximum_enemy_distance)
 {
 	minimum_enemy_distance				= MIN_SUITABLE_ENEMY_DISTANCE;
-	maximum_enemy_distance				= 170.f;
+	maximum_enemy_distance				= 250.f;
 
 	if (!best_weapon())
 		return;
@@ -105,47 +105,58 @@ void CAI_Stalker::compute_enemy_distances			(float &minimum_enemy_distance, floa
 	maximum_enemy_distance				= _max(minimum_enemy_distance, maximum_enemy_distance);
 }
 
-const CCoverPoint *CAI_Stalker::find_best_cover		(const Fvector &position_to_cover_from)
+const CCoverPoint *CAI_Stalker::find_best_cover(const Fvector &position_to_cover_from)
 {
 #ifdef _DEBUG
-//	Msg									("* [%6d][%s] search for new cover performed",Device.dwTimeGlobal,*cName());
+	//	Msg									("* [%6d][%s] search for new cover performed",Device.dwTimeGlobal,*cName());
 #endif
 #ifdef _DEBUG
 	++g_near_cover_search_count;
 #endif
 	float								minimum_enemy_distance, maximum_enemy_distance;
-	compute_enemy_distances				(minimum_enemy_distance, maximum_enemy_distance);
+	compute_enemy_distances(minimum_enemy_distance, maximum_enemy_distance);
 
 	if (!best_weapon())
-		m_ce_best->can_use_smart_covers	(false);
+		m_ce_best->can_use_smart_covers(false);
 	else {
-		CWeapon* weapon					= smart_cast<CWeapon*>(best_weapon());
+		CWeapon* weapon = smart_cast<CWeapon*>(best_weapon());
 		if (!weapon)
-			m_ce_best->can_use_smart_covers	(false);
+			m_ce_best->can_use_smart_covers(false);
 		else {
 			if (weapon->BaseSlot() != INV_SLOT_3)
-				m_ce_best->can_use_smart_covers	(false);
+				m_ce_best->can_use_smart_covers(false);
 			else
-				m_ce_best->can_use_smart_covers	(true);
+				m_ce_best->can_use_smart_covers(true);
 		}
 	}
 
-	m_ce_best->setup					(position_to_cover_from, minimum_enemy_distance,maximum_enemy_distance,minimum_enemy_distance);
-	const CCoverPoint					*point = ai().cover_manager().best_cover(Position(),10.f,*m_ce_best,CStalkerMovementRestrictor(this,true));
+	luabind::functor<bool>	funct;
+	VERIFY(ai().script_engine().functor("ai_stalker.evaluate_cover_point", funct));
+
+	m_ce_best->setup(position_to_cover_from, minimum_enemy_distance, maximum_enemy_distance, minimum_enemy_distance);
+	const CCoverPoint					*point = ai().cover_manager().best_cover(Position(), 10.f, *m_ce_best, CStalkerMovementRestrictor(this, true));
 	if (point)
-		return							(point);
+	{
+		if (funct(this->cast_game_object()->lua_game_object(),point) == true)
+			return (point);
+	}
 
 #ifdef _DEBUG
 	++g_far_cover_search_count;
 #endif
 	m_ce_best->setup					(position_to_cover_from, minimum_enemy_distance,maximum_enemy_distance,minimum_enemy_distance);
 	point								= ai().cover_manager().best_cover(Position(),30.f,*m_ce_best,CStalkerMovementRestrictor(this,true));
-	return								(point);
+	if (point)
+	{
+		if (funct(this->cast_game_object()->lua_game_object(), point) == true)
+			return (point);
+	}
+	return (0);
 }
 
 float CAI_Stalker::best_cover_value					(const Fvector &position_to_cover_from)
 {
-	m_ce_best->setup					(position_to_cover_from,MIN_SUITABLE_ENEMY_DISTANCE,170.f,MIN_SUITABLE_ENEMY_DISTANCE);
+	m_ce_best->setup					(position_to_cover_from,MIN_SUITABLE_ENEMY_DISTANCE,250.f,MIN_SUITABLE_ENEMY_DISTANCE);
 	m_ce_best->initialize				(Position(),true);
 	m_ce_best->evaluate					(m_best_cover,CStalkerMovementRestrictor(this,true).weight(m_best_cover));
 	return								(m_ce_best->best_value());
@@ -221,8 +232,16 @@ void CAI_Stalker::update_best_cover_actuality		(const Fvector &position_to_cover
 #ifdef _DEBUG
 	++g_advance_search_count;
 #endif
-	m_ce_best->setup					(position_to_cover_from,MIN_SUITABLE_ENEMY_DISTANCE,170.f,MIN_SUITABLE_ENEMY_DISTANCE);
-	m_best_cover						= ai().cover_manager().best_cover(Position(),10.f,*m_ce_best,CStalkerMovementRestrictor(this,true));
+	m_ce_best->setup					(position_to_cover_from,MIN_SUITABLE_ENEMY_DISTANCE,250.f,MIN_SUITABLE_ENEMY_DISTANCE);
+	const CCoverPoint					*point = ai().cover_manager().best_cover(Position(), 10.f, *m_ce_best, CStalkerMovementRestrictor(this, true));
+
+	if (point)
+	{
+		luabind::functor<bool>	funct;
+		VERIFY(ai().script_engine().functor("ai_stalker.evaluate_cover_point", funct));
+		if (funct(this->cast_game_object()->lua_game_object(), point) == true)
+			m_best_cover = point;
+	}
 }
 
 const CCoverPoint *CAI_Stalker::best_cover			(const Fvector &position_to_cover_from)
