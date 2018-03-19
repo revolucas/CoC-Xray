@@ -864,7 +864,7 @@ public:
 			void				Weapon_SetCurrentScope(u8 type);
 			u8					Weapon_GetCurrentScope();
 			void				Weapon_AddonAttach(CScriptGameObject* item);
-			void				Weapon_AddonDetach(LPCSTR item_section);
+			void				Weapon_AddonDetach(LPCSTR item_section, bool b_spawn_item);
 			bool				HasAmmoType(u8 type);
 			int					GetAmmoCount(u8 type);
 			void				SetAmmoType(u8 type);

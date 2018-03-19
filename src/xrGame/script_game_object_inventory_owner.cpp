@@ -1669,7 +1669,7 @@ void CScriptGameObject::Weapon_AddonAttach(CScriptGameObject* item)
 	}
 }
 
-void CScriptGameObject::Weapon_AddonDetach(LPCSTR item_section)
+void CScriptGameObject::Weapon_AddonDetach(LPCSTR item_section, bool b_spawn_item = true)
 {
 	CWeaponMagazined* weapon = smart_cast<CWeaponMagazined*>(&object());
 	if (!weapon)
@@ -1680,7 +1680,7 @@ void CScriptGameObject::Weapon_AddonDetach(LPCSTR item_section)
 
 	if (weapon->CanDetach(item_section))
 	{
-		weapon->Detach(item_section, true);
+		weapon->Detach(item_section, b_spawn_item);
 	}
 }
 

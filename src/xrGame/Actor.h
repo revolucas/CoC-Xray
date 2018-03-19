@@ -373,6 +373,7 @@ protected:
 //	shared_str				m_quick_use_slots[4];
     //режим подбирания предметов
     bool					m_bPickupMode;
+	bool					m_bInfoDraw;
     //расстояние (в метрах) на котором актер чувствует гранату (любую)
 //Alundaio
 #ifdef	ACTOR_FEEL_GRENADE

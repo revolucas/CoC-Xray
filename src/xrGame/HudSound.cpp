@@ -13,6 +13,8 @@ void InitHudSoundSettings()
 void HUD_SOUND_ITEM::LoadSound(	LPCSTR section, LPCSTR line, 
 							HUD_SOUND_ITEM& hud_snd, int type)
 {
+	//bool bLoaded = false;
+
 	hud_snd.m_activeSnd		= NULL;
 	hud_snd.sounds.clear	();
 
@@ -25,7 +27,12 @@ void HUD_SOUND_ITEM::LoadSound(	LPCSTR section, LPCSTR line,
 
 		LoadSound	(section, sound_line, s.snd, type, &s.volume, &s.delay);
 		xr_sprintf		(sound_line,"%s%d",line,++k);
+
+		//bLoaded = true;
 	}//while
+
+	//if (!bLoaded)
+		//Msg("[WARNING] HUD_SOUND_ITEM::LoadSound section=%s line=%s does not exist!", section, line);
 }
 
 void  HUD_SOUND_ITEM::LoadSound(LPCSTR section, 

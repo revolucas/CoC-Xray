@@ -249,9 +249,14 @@ void CDetailManager::Unload		()
 }
 
 extern ECORE_API float r_ssaDISCARD;
+extern BOOL ps_no_scale_on_fade;
 
 void CDetailManager::UpdateVisibleM()
 {
+	for (int i = 0; i != 3; i++)
+		for (auto& vis : m_visibles[i])
+		vis.clear();
+
 	Fvector		EYE				= RDEVICE.vCameraPosition_saved;
 
 	CFrustum	View;
@@ -338,8 +343,8 @@ void CDetailManager::UpdateVisibleM()
 						SlotItem			**siIT=&(*sp.items.begin()), **siEND=&(*sp.items.end());
 						for (; siIT!=siEND; siIT++){
 							SlotItem& Item			= *(*siIT);
-							float   scale			= Item.scale_calculated	= Item.scale*alpha_i;
-							float	ssa				= scale*scale*Rq_drcp;
+							float   scale = ps_no_scale_on_fade ? (Item.scale_calculated = Item.scale) : (Item.scale_calculated = Item.scale*alpha_i);
+							float	ssa = ps_no_scale_on_fade ? scale : scale*scale*Rq_drcp;
 							if (ssa < r_ssaDISCARD)
 							{
 								continue;

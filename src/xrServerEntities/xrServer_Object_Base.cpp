@@ -130,24 +130,30 @@ CSE_Abstract::CSE_Abstract					(LPCSTR caSection)
 				config			= FS.r_open(file_name);
 		}
 
-		if ( config ) {
+		if ( config ) 
+		{
 			int					size = config->length()*sizeof(char);
 			LPSTR				temp = (LPSTR)_alloca(size + 1);
 			CopyMemory			(temp,config->pointer(),size);
 			temp[size]			= 0;
 			m_ini_string		= temp;
 
+			if (Core.ParamFlags.is(Core.dbgdev))
+			{
+				Msg("%s try loading custom data from %s [%d]", caSection, raw_file_name, size);
+			}
+
 #ifdef XRGAME_EXPORTS
-		if ( NULL==ai().get_alife() )
+			if ( NULL==ai().get_alife() )
 #endif // #ifdef XRGAME_EXPORTS
-		{
-			IReader* _r	= (IReader*)config;
-			FS.r_close(_r);
-		}
+			{
+				IReader* _r	= (IReader*)config;
+				FS.r_close(_r);
+			}
 
 		}
 		else
-			Msg					( "! cannot open config file %s", raw_file_name );
+			Msg( "ERROR! cannot open config file %s", raw_file_name );
 	}
 
 #ifndef AI_COMPILER
@@ -183,8 +189,8 @@ CInifile &CSE_Abstract::spawn_ini			()
 #pragma warning(disable:4238)
 		m_ini_file			= xr_new<CInifile>(
 			&IReader			(
-				(void*)(*(m_ini_string)),
-				m_ini_string.size()
+				(void*)(*m_ini_string),
+				xr_strlen(m_ini_string)
 			),
 			FS.get_path("$game_config$")->m_Path
 		);

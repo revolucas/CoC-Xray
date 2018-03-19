@@ -38,6 +38,7 @@ void CSE_ALifeDynamicObject::on_register			()
 
 void CSE_ALifeDynamicObject::on_before_register		()
 {
+
 }
 
 #include "level.h"
@@ -45,9 +46,6 @@ void CSE_ALifeDynamicObject::on_before_register		()
 
 void CSE_ALifeDynamicObject::on_unregister()
 {
-	luabind::functor<void> funct;
-	if (ai().script_engine().functor("_G.CSE_ALifeDynamicObject_on_unregister", funct))
-		funct((u16)ID);
 	Level().MapManager().OnObjectDestroyNotify(ID);
 }
 
