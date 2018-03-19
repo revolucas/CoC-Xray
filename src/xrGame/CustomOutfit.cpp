@@ -149,6 +149,9 @@ float CCustomOutfit::GetBoneArmor(s16 element)
 #pragma optimize( "", off )
 float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, bool& add_wound, ALife::EHitType hit_type)
 {
+	if (Core.ParamFlags.test(Core.dbgbullet))
+		Msg("CCustomOutfit::HitThroughArmor hit_type=%d | unmodified hit_power=%f",(u32)hit_type,hit_power);
+
 	float NewHitPower = hit_power;
 	if(hit_type == ALife::eHitTypeFireWound)
 	{
@@ -169,7 +172,7 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 			if (d_hit_power < m_boneProtection->m_fHitFracActor)
 				d_hit_power = m_boneProtection->m_fHitFracActor;
 
-			hit_power *= d_hit_power;
+			NewHitPower *= d_hit_power;
 		}
 	}
 	else
@@ -188,8 +191,15 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 		if(NewHitPower < 0.f)
 			NewHitPower = 0.f;
 	}
+
+	if (Core.ParamFlags.test(Core.dbgbullet))
+		Msg("CCustomOutfit::HitThroughArmor hit_type=%d | After HitFractionActor hit_power=%f", (u32)hit_type, NewHitPower);
+
 	//увеличить изношенность костюма
 	Hit(hit_power, hit_type);
+
+	if (Core.ParamFlags.test(Core.dbgbullet))
+		Msg("CCustomOutfit::HitThroughArmor hit_type=%d | After Immunities hit_power=%f", (u32)hit_type, NewHitPower);
 
 	return NewHitPower;
 }

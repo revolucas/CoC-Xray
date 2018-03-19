@@ -228,8 +228,14 @@ void CAI_Stalker::Hit(SHit* pHDS)
     //    Msg("Bone [%d]->[%s]", HDS.boneID, bone_name);
     //}
     //-AVO
-	
+
+	if (Core.ParamFlags.test(Core.dbgbullet))
+		Msg("CAI_Stalker::Hit hit_type=%d | unmodified hit_power=%f", (u32)HDS.hit_type, HDS.power);
+
 	float hit_power = HDS.power * m_fRankImmunity;
+
+	if (Core.ParamFlags.test(Core.dbgbullet))
+		Msg("CAI_Stalker::Hit hit_type=%d | after m_fRankImmunity hit_power=%f", (u32)HDS.hit_type, hit_power);
 
 	if(m_boneHitProtection && HDS.hit_type == ALife::eHitTypeFireWound)
 	{
@@ -258,6 +264,10 @@ void CAI_Stalker::Hit(SHit* pHDS)
 			hit_power = 1000.f;
 		}
 	}
+
+	if (Core.ParamFlags.test(Core.dbgbullet))
+		Msg("CAI_Stalker::Hit hit_type=%d | after HitFracNpc hit_power=%f", (u32)HDS.hit_type, hit_power);
+
 	HDS.power = hit_power;
 
 	if (g_Alive())
