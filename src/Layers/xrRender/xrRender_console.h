@@ -203,6 +203,8 @@ enum
 	R2FLAGEXT_SUN_OLD				= (1<<9),
 };
 
+extern ECORE_API int ps_r2_fxaa;
+
 //Swartz: actor shadow
 extern ECORE_API Flags32 ps_actor_shadow_flags; 
 

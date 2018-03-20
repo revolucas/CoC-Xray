@@ -12,6 +12,7 @@
 #include "blender_luminance.h"
 #include "blender_ssao.h"
 #include "blender_sunshafts.h"
+#include "blender_aa.h"
 
 #include "../xrRender/dxRenderDeviceRender.h"
 
@@ -212,6 +213,7 @@ CRenderTarget::CRenderTarget		()
 	b_luminance						= xr_new<CBlender_luminance>			();
 	b_combine						= xr_new<CBlender_combine>				();
 	b_sunshafts = xr_new<CBlender_sunshafts>();
+	b_fxaa = xr_new<CBlender_FXAA>();
 
 	//	NORMAL
 	{
@@ -343,6 +345,8 @@ CRenderTarget::CRenderTarget		()
 		s_bloom.create				(b_bloom,					"r2\\bloom");
 		f_bloom_factor				= 0.5f;
 	}
+	s_fxaa.create(b_fxaa, "r3\\fxaa");
+	g_fxaa.create(FVF::F_V, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	//HBAO
 	if (RImplementation.o.ssao_opt_data)
@@ -418,6 +422,9 @@ CRenderTarget::CRenderTarget		()
 
 		u32 fvf_aa_AA				= D3DFVF_XYZRHW|D3DFVF_TEX7|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3)|D3DFVF_TEXCOORDSIZE2(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6);
 		g_aa_AA.create				(fvf_aa_AA,		RCache.Vertex.Buffer(), RCache.QuadIB);
+
+		u32 fvf_KD = D3DFVF_XYZRHW | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE2(0);
+		g_KD.create(fvf_KD, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 		t_envmap_0.create			(r2_T_envs0);
 		t_envmap_1.create			(r2_T_envs1);
@@ -642,6 +649,7 @@ CRenderTarget::~CRenderTarget	()
 	xr_delete					(b_accum_mask			);
 	xr_delete					(b_occq					);
 	xr_delete(b_sunshafts);
+	xr_delete(b_fxaa);
 }
 
 void CRenderTarget::reset_light_marker( bool bResetStencil)
