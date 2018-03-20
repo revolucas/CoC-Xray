@@ -31,7 +31,8 @@
 TEMPLATE_SPECIALIZATION
 IC	CPlanner::CActionPlanner			() :
 	m_initialized			(false),
-	m_solving				(false)
+	m_solving				(false),
+	m_loaded(false)
 {
 #ifdef LOG_ACTION
 	m_use_log				= false;

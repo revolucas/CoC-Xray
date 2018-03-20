@@ -179,7 +179,7 @@ void SGameMtlPair::Load(IReader& fs)
 }
 #endif
 
-#ifdef DEBUG
+//#ifdef DEBUG
 LPCSTR SGameMtlPair::dbg_Name()
 {
     static string256 nm;
@@ -188,4 +188,4 @@ LPCSTR SGameMtlPair::dbg_Name()
     xr_sprintf(nm, sizeof(nm), "Pair: %s - %s", *M0->m_Name, *M1->m_Name);
     return nm;
 }
-#endif
+//#endif

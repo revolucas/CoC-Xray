@@ -26,7 +26,7 @@ private:
 		TIME_ID		m_tTimeID;
 		TYPE_ID		m_tpIDs[tBlockSize];
 
-		IC				SID_Block	() : m_tCount(0) {}
+		IC				SID_Block	() : m_tCount(0), m_tTimeID(0) {}
 		
 		IC	bool		operator<	(const SID_Block &b) const
 		{
@@ -58,7 +58,7 @@ private:
 
 		if (l_tID_Block.m_tCount == 1) {
 			--m_available_count;
-			VERIFY				(m_available_count >= 0);
+			//VERIFY				(m_available_count >= 0);
 		}
 
 		if (tInvalidValueID == tValueID)

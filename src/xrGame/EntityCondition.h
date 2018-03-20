@@ -54,7 +54,7 @@ struct SBooster{
 	float fBoostTime;
 	float fBoostValue;
 	EBoostParams m_type;
-	SBooster():fBoostTime(-1.0f){};
+	SBooster() :fBoostTime(-1.0f), fBoostValue(0.f), m_type(eBoostHpRestore){};
 	void Load(const shared_str& sect, EBoostParams type);
 };
 

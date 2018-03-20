@@ -628,7 +628,7 @@ void time::fill(editor::property_holder_collection* collection)
         wind_velocity,
         wind_velocity,
         0.f,
-        1000.f
+        100.f
     );
 }
 

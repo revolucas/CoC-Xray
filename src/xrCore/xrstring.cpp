@@ -153,6 +153,11 @@ str_value* str_container::dock(str_c value)
     // calc len
     u32 s_len = xr_strlen(value);
     u32 s_len_with_zero = (u32)s_len + 1;
+
+	if (sizeof(str_value) + s_len_with_zero >= 4096)
+	{
+		LogStackTrace("ERROR: sizeof(str_value) + s_len_with_zero >= 4096");
+	}
 	VERIFY(sizeof(str_value) + s_len_with_zero < 4096);
 
     // setup find structure

@@ -350,6 +350,28 @@ bool dont_has_info								(const CALifeSimulator *self, const ALife::_OBJECT_ID 
 	return								(!has_info(self,id,info_id));
 }
 
+void AlifeGiveInfo(const CALifeSimulator *alife, const ALife::_OBJECT_ID &id, LPCSTR info_id)
+{
+	KNOWN_INFO_VECTOR *known_info = alife->registry(info_portions).object(id, true);
+	if (!known_info)
+		return;
+
+	if (std::find_if(known_info->begin(), known_info->end(), CFindByIDPred(info_id)) == known_info->end())
+	{
+		known_info->push_back(info_id);
+	}
+
+	return;
+}
+
+void AlifeRemoveInfo(const CALifeSimulator *alife, const ALife::_OBJECT_ID &id, LPCSTR info_id)
+{
+	KNOWN_INFO_VECTOR	*known_info = alife->registry(info_portions).object(id, true);
+	if (!known_info)
+		return;
+	known_info->erase(std::find_if(known_info->begin(), known_info->end(), CFindByIDPred(info_id)),known_info->end());
+}
+
 //Alundaio: teleport object
 void teleport_object(CALifeSimulator *alife, ALife::_OBJECT_ID id, GameGraph::_GRAPH_ID game_vertex_id, u32 level_vertex_id, const Fvector &position)
 {
@@ -423,6 +445,12 @@ void set_process_time(CALifeSimulator *self, int micro)
 {
 	self->set_process_time(micro);
 }
+
+const CALifeObjectRegistry::OBJECT_REGISTRY& alife_objects(const CALifeSimulator *self)
+{
+	VERIFY(self);
+	return self->objects().objects();
+}
 //-Alundaio
 
 
@@ -437,6 +465,7 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("level_name",				&get_level_name)
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID))(alife_object))
 			.def("object",					(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_OBJECT_ID, bool))(alife_object))
+			.def("objects", &alife_objects, return_stl_pair_iterator)
 			.def("story_object",			(CSE_ALifeDynamicObject *(*) (const CALifeSimulator *,ALife::_STORY_ID))(alife_story_object))
 			.def("set_switch_online",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(&CALifeSimulator::set_switch_online))
 			.def("set_switch_offline",		(void (CALifeSimulator::*) (ALife::_OBJECT_ID,bool))(&CALifeSimulator::set_switch_offline))
@@ -460,6 +489,8 @@ void CALifeSimulator::script_register			(lua_State *L)
 			.def("actor",					&get_actor)
 			.def("has_info",				&has_info)
 			.def("dont_has_info",			&dont_has_info)
+			.def("give_info",				&AlifeGiveInfo)
+			.def("disable_info",			&AlifeRemoveInfo)
 			.def("switch_distance",			&CALifeSimulator::switch_distance)
 			.def("set_switch_distance",			&CALifeSimulator::set_switch_distance) //Alundaio: renamed to set_switch_distance from switch_distance
 			//Alundaio: extend alife simulator exports

@@ -11,6 +11,9 @@
 IC	CSpaceRestrictor::CSpaceRestrictor		()
 {
 	m_space_restrictor_type = RestrictionSpace::eRestrictorTypeNone;
+	m_selfbounds.P.set(0.f, 0.f, 0.f);
+	m_selfbounds.R = 1.f;
+	m_actuality = false;
 }
 
 IC	bool CSpaceRestrictor::actual			() const

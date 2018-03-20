@@ -304,8 +304,8 @@ BOOL CGameObject::net_Spawn		(CSE_Abstract*	DC)
 #pragma warning(disable:4238)
 		m_ini_file					= xr_new<CInifile>(
 			&IReader				(
-				(void*)(*(O->m_ini_string)),
-				O->m_ini_string.size()
+				(void*)(*O->m_ini_string),
+				xr_strlen(O->m_ini_string)
 			),
 			FS.get_path("$game_config$")->m_Path
 		);

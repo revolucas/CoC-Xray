@@ -15,13 +15,13 @@
 
 TEMPLATE_SPECIALIZATION
 IC	CBaseAction::CActionBase		(const xr_vector<COperatorCondition> &conditions, const xr_vector<COperatorCondition> &effects, _object_type *object, LPCSTR action_name) :
-	inherited			(conditions,effects)
+m_start_level_time(0), m_start_game_time(0),m_first_time(0),	inherited			(conditions,effects)
 {
 	init				(object,action_name);
 }
 
 TEMPLATE_SPECIALIZATION
-IC	CBaseAction::CActionBase		(_object_type *object, LPCSTR action_name)
+IC	CBaseAction::CActionBase(_object_type *object, LPCSTR action_name) : m_start_level_time(0), m_start_game_time(0), m_first_time(0)
 {
 	init				(object,action_name);
 }

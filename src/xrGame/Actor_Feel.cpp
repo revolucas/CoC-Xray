@@ -117,7 +117,7 @@ BOOL CActor::CanPickItem(const CFrustum& frustum, const Fvector& from, CObject* 
 
 void CActor::PickupModeUpdate()
 {
-	if (!m_bPickupMode)
+	if (!m_bInfoDraw)
 		return;
 
 	feel_touch_update(Position(), m_fPickupInfoRadius);
@@ -130,35 +130,17 @@ void CActor::PickupModeUpdate()
 		if (CanPickItem(frustum, Device.vCameraPosition, *it))
 			PickupInfoDraw(*it);
 	}
-
-	CInventoryItem* pPickUpItem = smart_cast<CInventoryItem*>(m_pObjectWeLookingAt);
-	if (!pPickUpItem || !pPickUpItem->Useful() || !pPickUpItem->CanTake())
-		return;
-
-	if (Level().m_feel_deny.is_object_denied(m_pObjectWeLookingAt))
-		return;
-
-	if (m_pUsableObject)
-		m_pUsableObject->use(this);
-
-	Game().SendPickUpEvent(ID(), m_pObjectWeLookingAt->ID());
 }
 
 #include "../xrEngine/CameraBase.h"
-BOOL	g_b_COD_PickUpMode = FALSE;
+
 void	CActor::PickupModeUpdate_COD	()
 {
-	if (!g_b_COD_PickUpMode)
-		return;
-
-	if (Level().CurrentViewEntity() != this) 
-		return;
-		
-	if (eacFirstEye != cam_active)
+	if (m_pPersonWeLookingAt || Level().CurrentViewEntity() != this)
 	{
 		CurrentGameUI()->UIMainIngameWnd->SetPickUpItem(NULL);
 		return;
-	};
+	}
 	
 	CFrustum						frustum;
 	frustum.CreateFromMatrix		(Device.mFullTransform, FRUSTUM_P_LRTB|FRUSTUM_P_FAR);
@@ -185,10 +167,11 @@ void	CActor::PickupModeUpdate_COD	()
 		CMissile*	pMissile	= smart_cast<CMissile*> (spatial->dcast_CObject        ());
 		if (pMissile && !pMissile->Useful())						continue;
 		
-		Fvector A, B, tmp; 
+		Fvector A; 
 		pIItem->object().Center			(A);
 		if (A.distance_to_sqr(Position())>4)						continue;
 
+		Fvector B, tmp;
 		tmp.sub(A, cam_Active()->vPosition);
 		B.mad(cam_Active()->vPosition, cam_Active()->vDirection, tmp.dotproduct(cam_Active()->vDirection));
 		float len = B.distance_to_sqr(A);
@@ -221,7 +204,7 @@ void	CActor::PickupModeUpdate_COD	()
 
 	CurrentGameUI()->UIMainIngameWnd->SetPickUpItem(pNearestItem);
 
-	if (pNearestItem && m_bPickupMode)
+	if (pNearestItem && m_bPickupMode && !m_pPersonWeLookingAt)
 	{
 		CUsableScriptObject*	pUsableObject = smart_cast<CUsableScriptObject*>(pNearestItem);
 		if(pUsableObject && (!m_pUsableObject))

@@ -21,6 +21,7 @@ struct player_hud_motion
 	shared_str				m_base_name;
 	shared_str				m_additional_name;
 	xr_vector<motion_descr>	m_animations;
+	float					m_anim_speed;
 };
 
 struct player_hud_motion_container
@@ -97,6 +98,9 @@ struct attachable_hud_item
 class player_hud
 {
 public: 
+	static Fvector	m_hud_offset_pos;
+	static Fvector	m_hand_offset_pos;
+
 					player_hud			();
 					~player_hud			();
 	void			load				(const shared_str& model_name);

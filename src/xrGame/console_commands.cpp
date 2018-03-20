@@ -57,6 +57,7 @@
 #	include "game_graph.h"
 #	include "CharacterPhysicsSupport.h"
 #endif // DEBUG
+#include "player_hud.h"
 
 string_path		g_last_saved_game;
 
@@ -102,6 +103,7 @@ float			g_aim_predict_time = 0.40f;
 int				g_keypress_on_start = 1;
 
 extern BOOL		g_ai_die_in_anomaly; //Alundaio
+extern BOOL		g_invert_zoom; //Alundaio
 
 ENGINE_API extern float	g_console_sensitive;
 
@@ -2258,6 +2260,8 @@ void CCC_RegisterCommands()
 
 //#ifndef MASTER_GOLD
 	CMD4(CCC_Vector3, "psp_cam_offset", &CCameraLook2::m_cam_offset, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
+	CMD4(CCC_Vector3, "hud_offset_pos", &player_hud::m_hud_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
+	CMD4(CCC_Vector3, "hand_offset_pos", &player_hud::m_hand_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
 //#endif // MASTER_GOLD
 
 	CMD1(CCC_GSCheckForUpdates, "check_for_updates");
@@ -2298,6 +2302,7 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Integer, "ai_use_old_vision", &g_ai_use_old_vision, 0, 1);
 
 	CMD4(CCC_Integer, "ai_die_in_anomaly", &g_ai_die_in_anomaly, 0, 1); //Alundaio
+	CMD4(CCC_Integer, "g_invert_zoom", &g_invert_zoom, 0, 1); //Alundaio
 
 	CMD4(CCC_Float, "ai_aim_predict_time", &g_aim_predict_time, 0.f, 10.f);
 

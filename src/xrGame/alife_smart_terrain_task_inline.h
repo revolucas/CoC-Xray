@@ -30,7 +30,7 @@ IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask				(const shared_str &patrol_p
 	init					(patrol_path_name,patrol_point_index);
 }
 
-IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask				(const GameGraph::_GRAPH_ID &game_vertex_id,	const u32 &level_vertex_id)
+IC	CALifeSmartTerrainTask::CALifeSmartTerrainTask(const GameGraph::_GRAPH_ID &game_vertex_id, const u32 &level_vertex_id) :m_patrol_point(0)
 {
 	VERIFY2(ai().game_graph().valid_vertex_id(game_vertex_id), make_string("Vertex [%d] is not valid!!!", game_vertex_id));
 	m_game_vertex_id = game_vertex_id;

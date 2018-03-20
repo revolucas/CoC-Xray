@@ -188,6 +188,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     m_pVehicleWeLookingAt = NULL;
     m_pObjectWeLookingAt = NULL;
     m_bPickupMode = false;
+	m_bInfoDraw = false;
 
     pStatGraph = NULL;
 
@@ -937,20 +938,28 @@ float CActor::currentFOV()
 }
 
 static bool bLook_cam_fp_zoom = false;
-
+BOOL	g_b_COD_PickUpMode = FALSE;
 void CActor::UpdateCL()
 {
     if (g_Alive() && Level().CurrentViewEntity() == this)
     {
         if (CurrentGameUI() && NULL == CurrentGameUI()->TopInputReceiver())
         {
-            int dik = get_action_dik(kUSE, 0);
-            if (dik && pInput->iGetAsyncKeyState(dik))
-                m_bPickupMode = true;
+			int dik = get_action_dik(kUSE, 0);
+			if (dik && pInput->iGetAsyncKeyState(dik))
+			{
+				if (g_b_COD_PickUpMode)
+					m_bPickupMode = true;
+				m_bInfoDraw = true;
+			}
 
-            dik = get_action_dik(kUSE, 1);
-            if (dik && pInput->iGetAsyncKeyState(dik))
-                m_bPickupMode = true;
+			dik = get_action_dik(kUSE, 1);
+			if (dik && pInput->iGetAsyncKeyState(dik))
+			{
+				if (g_b_COD_PickUpMode)
+					m_bPickupMode = true;
+				m_bInfoDraw = true;
+			}
         }
     }
 
@@ -1091,6 +1100,7 @@ void CActor::UpdateCL()
         g_player_hud->update(trans);
 
     m_bPickupMode = false;
+	m_bInfoDraw = false;
 }
 
 float	NET_Jump = 0;

@@ -144,6 +144,7 @@ void CActor::IR_OnKeyboardPress(int cmd)
 */
 	case kUSE:
 		ActorUse();
+		m_bPickupMode = true;
 		break;
 	case kDROP:
 		b_DropActivated			= TRUE;
@@ -400,6 +401,35 @@ void CActor::ActorUse()
 
 	if(!m_pUsableObject||m_pUsableObject->nonscript_usable())
 	{
+		bool bCaptured = false;
+
+		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
+		u16 element = BI_NONE;
+		if (object)
+		{
+			element = (u16)RQ.element;
+
+			if (Level().IR_GetKeyState(DIK_LSHIFT))
+			{
+				bool b_allow = !!pSettings->line_exist("ph_capture_visuals", object->cNameVisual());
+				if (b_allow && !character_physics_support()->movement()->PHCapture())
+				{
+					character_physics_support()->movement()->PHCaptureObject(object, element);
+					bCaptured = true;
+				}
+
+			}
+			else if (smart_cast<CHolderCustom*>(object))
+			{
+				NET_Packet		P;
+				CGameObject::u_EventGen(P, GEG_PLAYER_ATTACH_HOLDER, ID());
+				P.w_u16(object->ID());
+				CGameObject::u_EventSend(P);
+				return;
+			}
+		}
+
 		if(m_pPersonWeLookingAt)
 		{
 			CEntityAlive* pEntityAliveWeLookingAt = 
@@ -410,50 +440,23 @@ void CActor::ActorUse()
 			if(pEntityAliveWeLookingAt->g_Alive())
 			{
 				TryToTalk();
-			}else
+			}
+			else if (!bCaptured)
 			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
-				if ( pGameSP )
+				if (pGameSP)
 				{
-					if ( !m_pPersonWeLookingAt->deadbody_closed_status() )
+					if (!m_pPersonWeLookingAt->deadbody_closed_status())
 					{
-						if(pEntityAliveWeLookingAt->AlreadyDie() && 
-							pEntityAliveWeLookingAt->GetLevelDeathTime()+3000 < Device.dwTimeGlobal)
+						if (pEntityAliveWeLookingAt->AlreadyDie() && pEntityAliveWeLookingAt->GetLevelDeathTime() + 3000 < Device.dwTimeGlobal)
+						{	
 							// 99.9% dead
-							pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
+							pGameSP->StartCarBody(this, m_pPersonWeLookingAt);
+						}
 					}
 				}
 			}
-		}
-
-		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
-		u16 element = BI_NONE;
-		if(object) 
-			element = (u16)RQ.element;
-
-		if(object && Level().IR_GetKeyState(DIK_LSHIFT))
-		{
-			bool b_allow = !!pSettings->line_exist("ph_capture_visuals",object->cNameVisual());
-			if(b_allow && !character_physics_support()->movement()->PHCapture())
-			{
-				character_physics_support()->movement()->PHCaptureObject( object, element );
-
-			}
-
-		}
-		else
-		{
-			if (object && smart_cast<CHolderCustom*>(object))
-			{
-					NET_Packet		P;
-					CGameObject::u_EventGen		(P, GEG_PLAYER_ATTACH_HOLDER, ID());
-					P.w_u16						(object->ID());
-					CGameObject::u_EventSend	(P);
-					return;
-			}
-
 		}
 	}
 }
@@ -623,17 +626,24 @@ void CActor::SwitchTorch()
 void CActor::actor_kick()
 {
 	CGameObject *O = ObjectWeLookingAt();
-	if (O)
-	{
-		CEntityAlive *EA = smart_cast<CEntityAlive*>(O);
-		if (EA && EA->g_Alive())
-			return;
+	if (!O)
+		return;
+		
+	float mass_f = 100.f;
 
-		static float kick_impulse = READ_IF_EXISTS(pSettings, r_float, "actor", "kick_impulse", 250.f);
-		Fvector dir = Direction();
-		dir.y = sin(15.f * PI / 180.f);
-		dir.normalize();
-		float mass_f = 1.f;
+	CEntityAlive *EA = smart_cast<CEntityAlive*>(O);
+	if (EA)
+	{
+		if (EA->character_physics_support())
+			mass_f = EA->character_physics_support()->movement()->GetMass();
+		else
+			mass_f = EA->GetMass();
+
+		if (EA->g_Alive() && mass_f > 20.0f) //ability to kick tuskano and rat
+			return;
+	}
+	else
+	{
 		CPhysicsShellHolder *sh = smart_cast<CPhysicsShellHolder*>(O);
 		if (sh)
 			mass_f = sh->GetMass();
@@ -641,43 +651,46 @@ void CActor::actor_kick()
 		PIItem itm = smart_cast<PIItem>(O);
 		if (itm)
 			mass_f = itm->Weight();
+	}
 
-		CInventoryOwner *io = smart_cast<CInventoryOwner*> (O);
-		if (io)
-			mass_f += io->inventory().TotalWeight();
+	CInventoryOwner *io = smart_cast<CInventoryOwner*> (O);
+	if (io)
+		mass_f += io->inventory().TotalWeight();
 
-		if (mass_f < 1)
-			mass_f = 1;
+	static float kick_impulse = READ_IF_EXISTS(pSettings, r_float, "actor", "kick_impulse", 250.f);
+	Fvector dir = Direction();
+	dir.y = sin(15.f * PI / 180.f);
+	dir.normalize();
 
+	u16 bone_id = 0;
+	collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+	if (RQ.O == O && RQ.element != 0xffff)
+		bone_id = (u16)RQ.element;
 
-		u16 bone_id = 0;
-		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-		if (RQ.O == O && RQ.element != 0xffff)
-			bone_id = (u16)RQ.element;
+	clamp<float>(mass_f, 1.0f, 100.f); // ограничить параметры хита
 
-		clamp<float>(mass_f, 0.1f, 100.f); // ограничить параметры хита
+	// The smaller the mass, the more damage given capped at 60 mass. 60+ mass take 0 damage
+	float hit_power = 100.f * ( (mass_f/100.f) - 0.6f) / (0.f - 0.6f);
+	clamp<float>(hit_power, 0.f, 100.f);
+	hit_power /= 100;
 
-		//shell->applyForce(dir, kick_power * conditions().GetPower());
-		Fvector h_pos = O->Position();
-		SHit hit = SHit(0.001f * mass_f, dir, this, bone_id, h_pos, kick_impulse, ALife::eHitTypeStrike, 0.f, false);
-		O->Hit(&hit);
-		if (EA)
+	//shell->applyForce(dir, kick_power * conditions().GetPower());
+	Fvector h_pos = O->Position();
+	SHit hit = SHit(hit_power, dir, this, bone_id, h_pos, kick_impulse, ALife::eHitTypeStrike, 0.f, false);
+	O->Hit(&hit);
+	if (EA)
+	{
+		static float alive_kick_power = 3.f;
+		float real_imp = kick_impulse / mass_f;
+		dir.mul(pow(real_imp, alive_kick_power));
+		if (EA->character_physics_support())
 		{
-			static float alive_kick_power = 3.f;
-			float real_imp = kick_impulse / mass_f;
-			dir.mul(pow(real_imp, alive_kick_power));
 			EA->character_physics_support()->movement()->AddControlVel(dir);
 			EA->character_physics_support()->movement()->ApplyImpulse(dir.normalize(), kick_impulse * alive_kick_power);
 		}
-
-
-		conditions().ConditionJump(mass_f / 50);
-		if (mass_f > 5)
-		{
-			hit.boneID = 0;  // пока не ясно, куда лушче ГГ ударить (в ногу надо?)
-			this->Hit(&hit); // сила действия равна силе противодействия
-		}
 	}
+
+	conditions().ConditionJump(mass_f / 50);
 }
 
 #ifdef DEBUG

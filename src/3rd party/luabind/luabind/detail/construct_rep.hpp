@@ -45,7 +45,7 @@ namespace luabind { namespace detail
 	{
 		struct overload_t: public overload_rep_base
 		{
-			overload_t(): wrapped_construct_fun(0) 
+			overload_t() : wrapped_construct_fun(0), construct_fun(0)
 			{
 			}
 

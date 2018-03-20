@@ -10,7 +10,7 @@ namespace PAPI{
 		u32			max_particles;			// Max particles allowed in effect.
 		u32			particles_allocated;	// Actual allocated size.
 		Particle*	particles;				// Actually, num_particles in size
-		void*		real_ptr;				// Base, possible not aligned pointer
+
         OnBirthParticleCB 	b_cb;
         OnDeadParticleCB	d_cb;
         void*				owner;
@@ -27,13 +27,11 @@ namespace PAPI{
 			max_particles			= mp;
 			particles_allocated		= max_particles;
 
-			real_ptr				= xr_malloc( sizeof( Particle ) * ( max_particles + 1 ) );
-			particles = (Particle*)((uintptr_t)real_ptr + (64 - ((uintptr_t)real_ptr & 63)));
-			//Msg( "Allocated %u bytes (%u particles) with base address 0x%p" , max_particles * sizeof( Particle ) , max_particles , particles );
+			particles = xr_alloc<Particle>(max_particles);
 		}
 					~ParticleEffect	()
 		{
-			xr_free					(real_ptr);
+			xr_free					(particles);
 		}
 		IC int		Resize			(u32 max_count)
 		{
@@ -50,22 +48,18 @@ namespace PAPI{
 			}
 
 			// Allocate particles.
-			void* new_real_ptr = xr_malloc( sizeof( Particle ) * ( max_count + 1 ) );
-
-			if( new_real_ptr == NULL ){
+			Particle* new_particles = xr_alloc<Particle>(max_count);
+			if (!new_particles)
+			{
 				// ERROR - Not enough memory. Just give all we've got.
 				max_particles		= particles_allocated;
 				return max_particles;
 			}
 
-			Particle* new_particles = (Particle*)((uintptr_t)new_real_ptr + (64 - ((uintptr_t)new_real_ptr & 63)));
-			//Msg( "Re-allocated %u bytes (%u particles) with base address 0x%p" , max_count * sizeof( Particle ) , max_count , new_particles );
-
 			CopyMemory			(new_particles, particles, p_count * sizeof(Particle));
-			xr_free					(real_ptr);
+			xr_free(particles);
 
 			particles				= new_particles;
-			real_ptr				= new_real_ptr;
 
 			max_particles			= max_count;
 			particles_allocated		= max_count;
@@ -80,9 +74,7 @@ namespace PAPI{
 			// Msg( "pDel() : %u" , p_count );
 		}
 
-		IC BOOL		Add				(const pVector &pos, const pVector &posB,
-									const pVector &size, const pVector &rot, const pVector &vel, u32 color,
-									const float age = 0.0f, u16 frame=0, u16 flags=0)
+		IC BOOL		Add				(const pVector &pos, const pVector &posB,const pVector &size, const pVector &rot, const pVector &vel, u32 color, const float age = 0.0f, u16 frame=0, u16 flags=0)
 		{
 			if(p_count >= max_particles)	return FALSE;
 			else{

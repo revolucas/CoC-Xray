@@ -70,6 +70,10 @@ public:
 
 				CSoundSingle					()
 		{
+			m_sound = NULL;
+			m_start_time = 0;
+			m_stop_time = 0;
+			m_bone_id = u16(-1);
 			m_started							= false;
 		}
 

@@ -225,7 +225,7 @@ struct ECORE_API SJointIKData
 
     float friction;
 
-    SJointIKData() { Reset(); }
+    SJointIKData():friction(0.f) { Reset(); }
     void Reset()
     {
         limits[0].Reset();
@@ -489,7 +489,7 @@ public:
     DEFINE_VECTOR(FacesVec, ChildFacesVec, ChildFacesVecIt);
     ChildFacesVec child_faces; // shared
 public:
-    CBoneData(u16 ID) :SelfID(ID) { VERIFY(SelfID != BI_NONE); }
+	CBoneData(u16 ID) :SelfID(ID), ParentID(u16(-1)), game_mtl_idx(u16(-1)), mass(0) { VERIFY(SelfID != BI_NONE); }
     virtual ~CBoneData() {}
 #ifdef DEBUG
     typedef svector<int, 128> BoneDebug;
@@ -524,7 +524,7 @@ public:
     virtual u32 mem_usage()
     {
         u32 sz = sizeof(*this) + sizeof(vecBones::value_type)*children.size();
-        for (ChildFacesVecIt c_it = child_faces.begin(); c_it != child_faces.end(); ++c_it)
+		for (ChildFacesVecIt c_it = child_faces.begin(); c_it != child_faces.end(); c_it++)
             sz += c_it->size()*sizeof(FacesVec::value_type) + sizeof(*c_it);
         return sz;
     }

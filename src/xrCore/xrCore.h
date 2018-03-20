@@ -321,6 +321,7 @@ public:
 		fpslock144		= (1 << 6),
 		fpslock240		= (1 << 7),
 		nofpslock		= (1 << 8),
+		dbgbullet		= (1 << 9),
 	};
 public:
     void _initialize(LPCSTR ApplicationName, LogCallback cb = 0, BOOL init_fs = TRUE, LPCSTR fs_fname = 0);
