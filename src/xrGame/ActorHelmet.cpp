@@ -210,7 +210,7 @@ void CHelmet::AddBonesProtection(LPCSTR bones_section)
 float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add_wound, ALife::EHitType hit_type)
 {
 	if (Core.ParamFlags.test(Core.dbgbullet))
-		Msg("CHelmet::HitThroughArmor hit_type=%d | passed hit_power=%f", (u32)hit_type, hit_power);
+		Msg("CHelmet::HitThroughArmor hit_type=%d | unmodified hit_power=%f", (u32)hit_type, hit_power);
 
 	float NewHitPower = hit_power;
 	if(hit_type == ALife::eHitTypeFireWound)
@@ -225,6 +225,8 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 			//пуля НЕ пробила бронь
 			NewHitPower *= m_boneProtection->m_fHitFracActor;
 			//add_wound = false; 	//раны нет
+			if (Core.ParamFlags.test(Core.dbgbullet))
+				Msg("CHelmet::HitThroughArmor AP(%f) <= bone_armor(%f)=%f [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
 		}
 		else 
 		{
@@ -234,6 +236,9 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 
 			NewHitPower *= d_hit_power;
 		}
+
+		if (Core.ParamFlags.test(Core.dbgbullet))
+			Msg("CHelmet::HitThroughArmor AP(%f) > bone_armor(%f)=%f [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
 	}
 	else
 	{
@@ -250,6 +255,9 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 
 		if(NewHitPower < 0.f)
 			NewHitPower = 0.f;
+
+		if (Core.ParamFlags.test(Core.dbgbullet))
+			Msg("CHelmet::HitThroughArmor hit_type=%d | After HitTypeProtection(%f) hit_power=%f", (u32)hit_type, protect*one, NewHitPower);
 	}
 
 	if (Core.ParamFlags.test(Core.dbgbullet))

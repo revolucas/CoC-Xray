@@ -401,6 +401,35 @@ void CActor::ActorUse()
 
 	if(!m_pUsableObject||m_pUsableObject->nonscript_usable())
 	{
+		bool bCaptured = false;
+
+		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
+		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
+		u16 element = BI_NONE;
+		if (object)
+		{
+			element = (u16)RQ.element;
+
+			if (Level().IR_GetKeyState(DIK_LSHIFT))
+			{
+				bool b_allow = !!pSettings->line_exist("ph_capture_visuals", object->cNameVisual());
+				if (b_allow && !character_physics_support()->movement()->PHCapture())
+				{
+					character_physics_support()->movement()->PHCaptureObject(object, element);
+					bCaptured = true;
+				}
+
+			}
+			else if (smart_cast<CHolderCustom*>(object))
+			{
+				NET_Packet		P;
+				CGameObject::u_EventGen(P, GEG_PLAYER_ATTACH_HOLDER, ID());
+				P.w_u16(object->ID());
+				CGameObject::u_EventSend(P);
+				return;
+			}
+		}
+
 		if(m_pPersonWeLookingAt)
 		{
 			CEntityAlive* pEntityAliveWeLookingAt = 
@@ -411,50 +440,23 @@ void CActor::ActorUse()
 			if(pEntityAliveWeLookingAt->g_Alive())
 			{
 				TryToTalk();
-			}else
+			}
+			else if (!bCaptured)
 			{
 				//только если находимся в режиме single
 				CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
-				if ( pGameSP )
+				if (pGameSP)
 				{
-					if ( !m_pPersonWeLookingAt->deadbody_closed_status() )
+					if (!m_pPersonWeLookingAt->deadbody_closed_status())
 					{
-						if(pEntityAliveWeLookingAt->AlreadyDie() && 
-							pEntityAliveWeLookingAt->GetLevelDeathTime()+3000 < Device.dwTimeGlobal)
+						if (pEntityAliveWeLookingAt->AlreadyDie() && pEntityAliveWeLookingAt->GetLevelDeathTime() + 3000 < Device.dwTimeGlobal)
+						{	
 							// 99.9% dead
-							pGameSP->StartCarBody(this, m_pPersonWeLookingAt );
+							pGameSP->StartCarBody(this, m_pPersonWeLookingAt);
+						}
 					}
 				}
 			}
-		}
-
-		collide::rq_result& RQ = HUD().GetCurrentRayQuery();
-		CPhysicsShellHolder* object = smart_cast<CPhysicsShellHolder*>(RQ.O);
-		u16 element = BI_NONE;
-		if(object) 
-			element = (u16)RQ.element;
-
-		if(object && Level().IR_GetKeyState(DIK_LSHIFT))
-		{
-			bool b_allow = !!pSettings->line_exist("ph_capture_visuals",object->cNameVisual());
-			if(b_allow && !character_physics_support()->movement()->PHCapture())
-			{
-				character_physics_support()->movement()->PHCaptureObject( object, element );
-
-			}
-
-		}
-		else
-		{
-			if (object && smart_cast<CHolderCustom*>(object))
-			{
-					NET_Packet		P;
-					CGameObject::u_EventGen		(P, GEG_PLAYER_ATTACH_HOLDER, ID());
-					P.w_u16						(object->ID());
-					CGameObject::u_EventSend	(P);
-					return;
-			}
-
 		}
 	}
 }
