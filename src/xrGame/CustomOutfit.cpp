@@ -172,9 +172,7 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 		else
 		{
 			float d_hit_power = (ap - BoneArmor) / (ap * m_boneProtection->APScale);
-			if (d_hit_power < m_boneProtection->m_fHitFracActor)
-				d_hit_power = m_boneProtection->m_fHitFracActor;
-			clamp(d_hit_power, 0.0f, 1.0f);
+			clamp(d_hit_power, m_boneProtection->m_fHitFracActor, 1.0f);
 			NewHitPower *= d_hit_power;
 
 			if (Core.ParamFlags.test(Core.dbgbullet))
