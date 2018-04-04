@@ -48,6 +48,7 @@ public:
 	IBlender*					b_accum_reflected_msaa[8];
 	IBlender*					b_ssao;
 	IBlender*					b_ssao_msaa[8];
+	IBlender*					b_fxaa;
 
     // compute shader for hdao
     IBlender*                   b_hdao_cs;
@@ -133,6 +134,8 @@ private:
 	ref_shader					s_accum_spot	;
 	ref_shader					s_accum_reflected;
 	ref_shader					s_accum_volume;
+	ref_shader					s_fxaa;
+	ref_geom					g_fxaa;
 
 	//	generate min/max
 	ref_shader					s_create_minmax_sm;
@@ -248,6 +251,7 @@ public:
 	BOOL						u_DBT_enable			(float zMin, float zMax);
 	void						u_DBT_disable			();
 
+	void						phase_fxaa();
 	void						phase_scene_prepare		();
 	void						phase_scene_begin		();
 	void						phase_scene_end			();
