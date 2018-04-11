@@ -226,7 +226,7 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 			NewHitPower *= m_boneProtection->m_fHitFracActor;
 			//add_wound = false; 	//раны нет
 			if (Core.ParamFlags.test(Core.dbgbullet))
-				Msg("CHelmet::HitThroughArmor AP(%f) <= bone_armor(%f)=%f [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
+				Msg("CHelmet::HitThroughArmor AP(%f) <= bone_armor(%f) [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
 		}
 		else 
 		{
@@ -238,7 +238,7 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
 		}
 
 		if (Core.ParamFlags.test(Core.dbgbullet))
-			Msg("CHelmet::HitThroughArmor AP(%f) > bone_armor(%f)=%f [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
+			Msg("CHelmet::HitThroughArmor AP(%f) > bone_armor(%f) [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
 	}
 	else
 	{

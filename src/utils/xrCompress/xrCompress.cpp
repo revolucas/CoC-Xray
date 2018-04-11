@@ -80,6 +80,8 @@ bool xrCompressor::testSKIP(LPCSTR path)
 //	if (strstr(path,"textures\\lod\\"))				return true;
 //	if (strstr(path,"textures\\det\\"))				return true;
 
+	if (0 == stricmp(p_name, "level")) return false;
+
 	if (	stricmp(p_ext,".thm") && 
 			strstr(path,"textures\\terrain\\terrain_") && 
 			!is_tail(p_name,"_mask",5) 
@@ -566,8 +568,10 @@ void xrCompressor::GatherFiles(LPCSTR path)
 	for (;it!=itE;++it)
 	{
 		xr_string		tmp_path	= xr_string(path)+xr_string(*it);
+		
 		if (!testSKIP(tmp_path.c_str()))
 		{
+			printf("%s\n", tmp_path.c_str());
 			files_list->push_back	(xr_strdup(tmp_path.c_str()));
 		}else{
 			Msg				("-f: %s",tmp_path.c_str());
