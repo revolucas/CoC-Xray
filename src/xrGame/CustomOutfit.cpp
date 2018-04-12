@@ -107,7 +107,7 @@ void CCustomOutfit::Load(LPCSTR section)
 
 	//m_full_icon_name		= pSettings->r_string( section, "full_icon_name" );
 	m_artefact_count 		= READ_IF_EXISTS( pSettings, r_u32, section, "artefact_count", 0 );
-	clamp( m_artefact_count, (u32)0, (u32)5 );
+	clamp( m_artefact_count, (u32)0, (u32)10 );
 
 	m_BonesProtectionSect	= READ_IF_EXISTS(pSettings, r_string, section, "bones_koeff_protection",  "" );
 	bIsHelmetAvaliable		= !!READ_IF_EXISTS(pSettings, r_bool, section, "helmet_avaliable", true);
@@ -167,7 +167,7 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 			//add_wound = false; 	//раны нет
 
 			if (Core.ParamFlags.test(Core.dbgbullet))
-				Msg("CCustomOutfit::HitThroughArmor AP(%f) <= bone_armor(%f)=%f [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
+				Msg("CCustomOutfit::HitThroughArmor AP(%f) <= bone_armor(%f) [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
 		}
 		else
 		{
@@ -176,7 +176,7 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 			NewHitPower *= d_hit_power;
 
 			if (Core.ParamFlags.test(Core.dbgbullet))
-				Msg("CCustomOutfit::HitThroughArmor AP(%f) > bone_armor(%f)=%f [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
+				Msg("CCustomOutfit::HitThroughArmor AP(%f) > bone_armor(%f) [HitFracActor=%f] modified hit_power=%f", ap, BoneArmor, m_boneProtection->m_fHitFracActor, NewHitPower);
 		}
 	}
 	else
