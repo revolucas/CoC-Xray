@@ -519,11 +519,12 @@ void xrCompressor::PerformWork()
 
 		for (u32 it=0; it<files_list->size(); it++)
 		{
-			xr_sprintf				(caption,"Compress files: %d/%d - %d%%",it,files_list->size(),(it*100)/files_list->size());
+			xr_sprintf				(caption,"Compress files: %d/%d - %d%%",it+1,files_list->size(),((it+1)*100)/files_list->size());
 			SetWindowText		(GetConsoleWindow(),caption);
 			printf				("\n%-80s   ",(*files_list)[it]);    
-		if (fs_pack_writer->tell()>XRP_MAX_SIZE)
-		{ 
+			
+			if (fs_pack_writer->tell()>XRP_MAX_SIZE)
+			{ 
 				ClosePack		();
 				OpenPack		(target_name.c_str(), pack_num++);
 			}
