@@ -1,5 +1,5 @@
-//////////////////////////////////////////////////////////////////////////
-// character_info.cpp			èãðîâàÿ èíôîðìàöèÿ äëÿ ïåðñîíàæåé â èãðå
+ï»¿//////////////////////////////////////////////////////////////////////////
+// character_info.cpp			Ð¸Ð³Ñ€Ð¾Ð²Ð°Ñ Ð¸Ð½Ñ„Ð¾Ñ€Ð¼Ð°Ñ†Ð¸Ñ Ð´Ð»Ñ Ð¿ÐµÑ€ÑÐ¾Ð½Ð°Ð¶ÐµÐ¹ Ð² Ð¸Ð³Ñ€Ðµ
 // 
 //////////////////////////////////////////////////////////////////////////
 
@@ -17,9 +17,9 @@
 //////////////////////////////////////////////////////////////////////////
 SCharacterProfile::SCharacterProfile()
 {
-	m_CharacterId		= NULL;
-	m_Rank				= NO_RANK;
-	m_Reputation		= NO_REPUTATION;
+	m_CharacterId = NULL;
+	m_Rank = NO_RANK;
+	m_Reputation = NO_REPUTATION;
 }
 
 SCharacterProfile::~SCharacterProfile()
@@ -57,31 +57,31 @@ void CCharacterInfo::Load(shared_str id)
 
 #ifdef XRGAME_EXPORTS
 
-void CCharacterInfo::InitSpecificCharacter (shared_str new_id)
+void CCharacterInfo::InitSpecificCharacter(shared_str new_id)
 {
 	R_ASSERT(new_id.size());
 	m_SpecificCharacterId = new_id;
 
 	m_SpecificCharacter.Load(m_SpecificCharacterId);
-	if(Rank().value() == NO_RANK)
+	if (Rank().value() == NO_RANK)
 		SetRank(m_SpecificCharacter.Rank());
-	if(Reputation().value() == NO_REPUTATION)
+	if (Reputation().value() == NO_REPUTATION)
 		SetReputation(m_SpecificCharacter.Reputation());
-	if(Community().index() == NO_COMMUNITY_INDEX)
+	if (Community().index() == NO_COMMUNITY_INDEX)
 		SetCommunity(m_SpecificCharacter.Community().index());
-	if(!m_StartDialog || !m_StartDialog.size() )
+	if (!m_StartDialog || !m_StartDialog.size())
 		m_StartDialog = m_SpecificCharacter.data()->m_StartDialog;
 }
 
 
 #endif
 
-void CCharacterInfo::load_shared	(LPCSTR)
+void CCharacterInfo::load_shared(LPCSTR)
 {
 	const ITEM_DATA& item_data = *id_to_index::GetById(m_ProfileId);
 
-	CUIXml*		pXML		= item_data._xml;
-	pXML->SetLocalRoot		(pXML->GetRoot());
+	CUIXml*		pXML = item_data._xml;
+	pXML->SetLocalRoot(pXML->GetRoot());
 
 	XML_NODE* item_node = pXML->NavigateToNode(id_to_index::tag_name, item_data.pos_in_file);
 	R_ASSERT3(item_node, "profile id=", *item_data.id);
@@ -91,37 +91,63 @@ void CCharacterInfo::load_shared	(LPCSTR)
 
 
 	LPCSTR spec_char = pXML->Read("specific_character", 0, NULL);
-	if(!spec_char)
+	if (!spec_char)
 	{
-		data()->m_CharacterId	= NULL;
-		
-		LPCSTR char_class			= pXML->Read	("class",		0,	NULL);
+		data()->m_CharacterId = NULL;
 
-		if(char_class)
+		LPCSTR char_class = pXML->Read("class", 0, NULL);
+
+		if (char_class)
 		{
 			char* buf_str = xr_strdup(char_class);
 			xr_strlwr(buf_str);
-			data()->m_Class				= buf_str;
+			data()->m_Class = buf_str;
 			xr_free(buf_str);
 		}
 		else
-			data()->m_Class				= NO_CHARACTER_CLASS;
-			
-		data()->m_Rank = pXML->ReadInt			("rank",		0,	NO_RANK);
-		data()->m_Reputation = pXML->ReadInt	("reputation",	0,	NO_REPUTATION);
+			data()->m_Class = NO_CHARACTER_CLASS;
+
+
+		int min_rank = pXML->ReadAttribInt("rank", 0, "min", NO_RANK);
+		int max_rank = pXML->ReadAttribInt("rank", 0, "max", NO_RANK);
+		if (min_rank != NO_RANK && max_rank != NO_RANK)
+		{
+			min_rank = _min(min_rank, max_rank);
+			max_rank = _max(max_rank, min_rank);
+			if (max_rank != min_rank)
+				data()->m_Rank = ::Random.randI(min_rank, max_rank);
+			else
+				data()->m_Rank = max_rank;
+		}
+		else
+			data()->m_Rank = pXML->ReadInt("rank", 0, NO_RANK);
+
+		int min_reputation = pXML->ReadAttribInt("reputation", 0, "min", NO_REPUTATION);
+		int max_reputation = pXML->ReadAttribInt("reputation", 0, "max", NO_REPUTATION);
+		if (min_reputation != NO_REPUTATION && max_reputation != NO_REPUTATION)
+		{
+			min_reputation = _min(min_reputation, max_reputation);
+			max_reputation = _max(max_reputation, min_reputation);
+			if (max_reputation != min_reputation)
+				data()->m_Reputation = ::Random.randI(min_reputation, max_reputation);
+			else
+				data()->m_Reputation = max_reputation;
+		}
+		else
+			data()->m_Reputation = pXML->ReadInt("reputation", 0, NO_REPUTATION);
 	}
 	else
 		data()->m_CharacterId = spec_char;
 }
 
 #ifdef XRGAME_EXPORTS
-void CCharacterInfo::Init	(CSE_ALifeTraderAbstract* trader)
+void CCharacterInfo::Init(CSE_ALifeTraderAbstract* trader)
 {
-	SetCommunity				(trader->m_community_index);
-	SetRank						(trader->m_rank);
-	SetReputation				(trader->m_reputation);
-	Load						(trader->character_profile());
-	InitSpecificCharacter		(trader->specific_character());
+	SetCommunity(trader->m_community_index);
+	SetRank(trader->m_rank);
+	SetReputation(trader->m_reputation);
+	Load(trader->character_profile());
+	InitSpecificCharacter(trader->specific_character());
 }
 
 
@@ -141,20 +167,20 @@ shared_str CCharacterInfo::Bio() const
 	return 	m_SpecificCharacter.Bio();
 }
 
-void CCharacterInfo::SetRank (CHARACTER_RANK_VALUE rank)
+void CCharacterInfo::SetRank(CHARACTER_RANK_VALUE rank)
 {
 	m_CurrentRank.set(rank);
 }
 
-void CCharacterInfo::SetReputation (CHARACTER_REPUTATION_VALUE reputation)
+void CCharacterInfo::SetReputation(CHARACTER_REPUTATION_VALUE reputation)
 {
 	m_CurrentReputation.set(reputation);
 }
 
 void CCharacterInfo::SetCommunity(CHARACTER_COMMUNITY_INDEX community)
 {
-	m_CurrentCommunity.set( community );
-	m_Sympathy = m_CurrentCommunity.sympathy( m_CurrentCommunity.index() );
+	m_CurrentCommunity.set(community);
+	m_Sympathy = m_CurrentCommunity.sympathy(m_CurrentCommunity.index());
 }
 
 const shared_str& CCharacterInfo::IconName() const
@@ -163,25 +189,25 @@ const shared_str& CCharacterInfo::IconName() const
 	return m_SpecificCharacter.IconName();
 }
 
-shared_str	CCharacterInfo::StartDialog	()	const
+shared_str	CCharacterInfo::StartDialog()	const
 {
 	return m_StartDialog;
 }
 
-const DIALOG_ID_VECTOR&	CCharacterInfo::ActorDialogs	()	const
+const DIALOG_ID_VECTOR&	CCharacterInfo::ActorDialogs()	const
 {
 	R_ASSERT(m_SpecificCharacterId.size());
 	return m_SpecificCharacter.data()->m_ActorDialogs;
 }
 
-void CCharacterInfo::load	(IReader& stream)
+void CCharacterInfo::load(IReader& stream)
 {
-	stream.r_stringZ	(m_StartDialog);
+	stream.r_stringZ(m_StartDialog);
 }
 
-void CCharacterInfo::save	(NET_Packet& stream)
+void CCharacterInfo::save(NET_Packet& stream)
 {
-	stream.w_stringZ	(m_StartDialog);
+	stream.w_stringZ(m_StartDialog);
 }
 
 #endif
@@ -190,8 +216,8 @@ void CCharacterInfo::save	(NET_Packet& stream)
 
 void CCharacterInfo::InitXmlIdToIndex()
 {
-	if(!id_to_index::tag_name)
+	if (!id_to_index::tag_name)
 		id_to_index::tag_name = "character";
-	if(!id_to_index::file_str)
+	if (!id_to_index::file_str)
 		id_to_index::file_str = pSettings->r_string("profiles", "files");
 }
