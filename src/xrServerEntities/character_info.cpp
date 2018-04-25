@@ -64,9 +64,21 @@ void CCharacterInfo::InitSpecificCharacter(shared_str new_id)
 
 	m_SpecificCharacter.Load(m_SpecificCharacterId);
 	if (Rank().value() == NO_RANK)
-		SetRank(m_SpecificCharacter.Rank());
+		if (m_SpecificCharacter.RankDef().min != m_SpecificCharacter.RankDef().max)
+		{
+			int rank = ::Random.randI(m_SpecificCharacter.RankDef().min, m_SpecificCharacter.RankDef().max);
+			SetRank(rank);
+		}
+		else
+			SetRank(m_SpecificCharacter.RankDef().max);
 	if (Reputation().value() == NO_REPUTATION)
-		SetReputation(m_SpecificCharacter.Reputation());
+		if (m_SpecificCharacter.ReputationDef().min != m_SpecificCharacter.ReputationDef().max)
+		{
+			int rep = ::Random.randI(m_SpecificCharacter.ReputationDef().min, m_SpecificCharacter.ReputationDef().max);
+			SetReputation(rep);
+		}
+		else
+			SetReputation(m_SpecificCharacter.ReputationDef().max);
 	if (Community().index() == NO_COMMUNITY_INDEX)
 		SetCommunity(m_SpecificCharacter.Community().index());
 	if (!m_StartDialog || !m_StartDialog.size())

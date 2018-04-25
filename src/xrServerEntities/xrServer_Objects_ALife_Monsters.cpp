@@ -417,11 +417,21 @@ void CSE_ALifeTraderAbstract::set_specific_character	(shared_str new_spec_char)
 		setup_location_types_section	(monster->m_tpaTerrain, pSettings, *(selected_char.terrain_sect()));
 	}
 //----
-	if(NO_RANK == m_rank)
-		m_rank = selected_char.Rank();
+	if (NO_RANK == m_rank)
+	{
+		if (selected_char.RankDef().min != selected_char.RankDef().max)
+			m_rank = ::Random.randI(selected_char.RankDef().min, selected_char.RankDef().max);
+		else
+			m_rank = selected_char.RankDef().max;
+	}
 
-	if(NO_REPUTATION == m_reputation)
-		m_reputation = selected_char.Reputation();
+	if (NO_REPUTATION == m_reputation)
+	{
+		if (selected_char.ReputationDef().min != selected_char.ReputationDef().max)
+			m_reputation = ::Random.randI(selected_char.ReputationDef().min, selected_char.ReputationDef().max);
+		else
+			m_reputation = selected_char.ReputationDef().max;
+	}
 
 	m_icon_name = selected_char.IconName();
 
