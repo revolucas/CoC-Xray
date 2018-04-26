@@ -672,6 +672,7 @@ private:
     virtual	bool			install_upgrade_ammo_class(LPCSTR section, bool test);
     bool			install_upgrade_disp(LPCSTR section, bool test);
     bool			install_upgrade_hit(LPCSTR section, bool test);
+	bool			install_upgrade_hud(LPCSTR section, bool test);
     bool			install_upgrade_addon(LPCSTR section, bool test);
 protected:
     virtual bool			install_upgrade_impl(LPCSTR section, bool test);
