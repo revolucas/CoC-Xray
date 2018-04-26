@@ -50,6 +50,7 @@ public:
 	bool				m_b_FitToHeight;
 	u32					delay;
 	
+	CUIWindow*			pUIScriptWnd;
 	CUIFrameWindow*		UIBackground;
 	CUITextWnd*			UIName;
 	CUITextWnd*			UIWeight;
