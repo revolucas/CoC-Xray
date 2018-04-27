@@ -177,6 +177,18 @@ public:
     void PlayAnimCrouchIdleMoving(); //AVO: new crouch idle animation
     bool HudAnimationExist(LPCSTR anim_name);
 
+	struct inertion_params
+	{
+		float m_pitch_offset_r;
+		float m_pitch_offset_n;
+		float m_pitch_offset_d;
+		float m_pitch_low_limit;
+		float m_origin_offset;
+		float m_origin_offset_aim;
+		float m_tendto_speed;
+		float m_tendto_speed_aim;
+	};
+	inertion_params m_inertion_params;
 	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 
