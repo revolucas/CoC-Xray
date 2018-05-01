@@ -1719,7 +1719,7 @@ bool CScriptGameObject::InstallUpgrade(LPCSTR upgrade)
 	if (!pSettings->section_exist(upgrade))
 		return false;
 
-	return item->install_upgrade(upgrade);
+	return ai().alife().inventory_upgrade_manager().upgrade_install(*item, upgrade, false);
 }
 
 bool CScriptGameObject::HasUpgrade(LPCSTR upgrade)

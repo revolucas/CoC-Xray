@@ -11,6 +11,7 @@
 #include "weapon.h"
 
 //Alun: defined in HudItem.cpp now
+//Improved weapon inertion from Shoker Weapon Mod 3.0, fixed up/down inertion by Surs
 extern const float PITCH_OFFSET_R;		// barrel movement sideways (to the left) with vertical camera turns
 extern const float PITCH_OFFSET_N;		// barrel rise / fall with vertical camera turns
 extern const float PITCH_OFFSET_D;		// barrel toward / away when the camera rotates vertically
