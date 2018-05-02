@@ -478,7 +478,7 @@ void CSoundMemoryManager::load	(IReader &packet)
 		else
 			object.m_level_time = 0;
 
-		VERIFY(Device.dwTimeGlobal >= object.m_level_time);
+		VERIFY(Device.dwTimeGlobal > object.m_level_time);
 #endif // USE_LEVEL_TIME
 #ifdef USE_LAST_LEVEL_TIME
 		object.m_last_level_time	= packet.r_u32();
@@ -488,7 +488,7 @@ void CSoundMemoryManager::load	(IReader &packet)
 		else
 			object.m_last_level_time = 0;
 
-		VERIFY(Device.dwTimeGlobal >= object.m_last_level_time);
+		VERIFY(Device.dwTimeGlobal > object.m_last_level_time);
 #endif // USE_LAST_LEVEL_TIME
 #ifdef USE_FIRST_LEVEL_TIME
 		object.m_first_level_time	= packet.r_u32();
