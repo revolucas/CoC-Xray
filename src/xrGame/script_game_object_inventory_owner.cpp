@@ -1707,6 +1707,21 @@ u8 CScriptGameObject::Weapon_GetCurrentScope()
 	return weapon->m_cur_scope;
 }
 
+LPCSTR CScriptGameObject::Weapon_GetAmmoSection(u8 ammo_type)
+{
+	CWeaponMagazined* weapon = smart_cast<CWeaponMagazined*>(&object());
+	if (!weapon)
+	{
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeError, "CWeaponMagazined : cannot access class member Weapon_GetAmmoSection!");
+		return "";
+	}
+
+	if (weapon->m_ammoTypes.empty() || ammo_type+1 > weapon->m_ammoTypes.size())
+		return "";
+
+	return weapon->m_ammoTypes[ammo_type].c_str();
+}
+
 bool CScriptGameObject::InstallUpgrade(LPCSTR upgrade)
 {
 	CInventoryItem* item = smart_cast<CInventoryItem*>(&object());

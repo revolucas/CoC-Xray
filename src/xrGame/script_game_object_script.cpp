@@ -117,6 +117,7 @@ void CScriptGameObject::script_register(lua_State *L)
 #endif
 #ifdef EXTENDED_WEAPON_CALLBACKS
 				//weapon
+				value("weapon_fired",				int(GameObject::eOnWeaponFired)),
 				value("weapon_jammed",				int(GameObject::eOnWeaponJammed)),
 				value("weapon_zoom_in",				int(GameObject::eOnWeaponZoomIn)),
 				value("weapon_zoom_out",			int(GameObject::eOnWeaponZoomOut)),

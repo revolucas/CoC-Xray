@@ -77,6 +77,7 @@ namespace GameObject
 		eOnWeaponZoomIn,
 		eOnWeaponZoomOut,
 		eOnWeaponJammed,
+		eOnWeaponFired,
 		eOnWeaponMagazineEmpty,
 #endif
         // actor

@@ -861,6 +861,7 @@ public:
 			void				RemoveMemoryVisibleObject(const MemorySpace::CVisibleObject &memory_object);
 
 			//Weapon
+			LPCSTR				Weapon_GetAmmoSection(u8 ammo_type);
 			void				Weapon_SetCurrentScope(u8 type);
 			u8					Weapon_GetCurrentScope();
 			void				Weapon_AddonAttach(CScriptGameObject* item);
