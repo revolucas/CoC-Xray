@@ -12,12 +12,14 @@
 
 void add_upgrade_script(CSE_ALifeInventoryItem* ta, LPCSTR str)
 {
-	ta->add_upgrade(str);
+	shared_str upgrade_id(str);
+	ta->add_upgrade(upgrade_id);
 }
 
 bool has_upgrade_script(CSE_ALifeInventoryItem* ta,LPCSTR str)
 {
-	return ta->has_upgrade(str);
+	shared_str upgrade_id(str);
+	return ta->has_upgrade(upgrade_id);
 }
 
 using namespace luabind;
@@ -29,8 +31,8 @@ void CSE_ALifeInventoryItem::script_register(lua_State *L)
 		class_<CSE_ALifeInventoryItem>
 			("cse_alife_inventory_item")
 //			.def(		constructor<LPCSTR>())
-			.def("has_upgrade", &has_upgrade)
-			.def("add_upgrade", &add_upgrade)
+			.def("has_upgrade", &has_upgrade_script)
+			.def("add_upgrade", &add_upgrade_script)
 			.def_readwrite("condition", &CSE_ALifeInventoryItem::m_fCondition)
 	];
 }

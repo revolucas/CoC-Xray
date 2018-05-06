@@ -590,12 +590,6 @@ void CWeaponMagazined::state_Fire(float dt)
 
         while (!m_magazine.empty() && fShotTimeCounter < 0 && (IsWorking() || m_bFireSingleShot) && (m_iQueueSize < 0 || m_iShotNum < m_iQueueSize))
         {
-            if (CheckForMisfire())
-            {
-                StopShooting();
-                return;
-            }
-
             m_bFireSingleShot = false;
 
 			//Alundaio: Use fModeShotTime instead of fOneShotTime if current fire mode is 2-shot burst
@@ -616,6 +610,12 @@ void CWeaponMagazined::state_Fire(float dt)
                 FireTrace(p1, d);
             else
                 FireTrace(m_vStartPos, m_vStartDir);
+
+					if (CheckForMisfire())
+					{
+						StopShooting();
+						return;
+					}
         }
 
         if (m_iShotNum == m_iQueueSize)
