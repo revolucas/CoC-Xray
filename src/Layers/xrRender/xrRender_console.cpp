@@ -58,6 +58,13 @@ xr_token							qsun_quality_token							[ ]={
 	{ 0,							0												}
 };
 
+u32 ps_sunshafts_mode = 0;
+xr_token sunshafts_mode_token[] = {
+	{ "volumetric", 0 },
+	{ "screen_space", 1 },
+	{ 0, 0 }
+};
+
 u32			ps_r3_msaa				=	0;			//	=	0;
 xr_token							qmsaa_token							[ ]={
 	{ "st_opt_off",					0												},
@@ -227,6 +234,9 @@ float		ps_r2_dof_kernel_size		= 5.0f;						//	7.0f
 float		ps_r3_dyn_wet_surf_near		= 10.f;				// 10.0f
 float		ps_r3_dyn_wet_surf_far		= 30.f;				// 30.0f
 int			ps_r3_dyn_wet_surf_sm_res	= 256;				// 256
+float		ps_r2_ss_sunshafts_length	= 1.f;
+float		ps_r2_ss_sunshafts_radius	= 1.f;
+int ps_r2_fxaa = 0;
 
 Flags32 ps_actor_shadow_flags = {0}; //Swartz: actor shadow
 
@@ -746,7 +756,7 @@ void		xrRender_initconsole	()
 //.	CMD4(CCC_Float,		"r__geometry_lod_pow",	&ps_r__LOD_Power,			0,		2		);
 
 //.	CMD4(CCC_Float,		"r__detail_density",	&ps_r__Detail_density,		.05f,	0.99f	);
-    CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.3f, 1.0f);
+    CMD4(CCC_Float, "r__detail_density", &ps_current_detail_density/*&ps_r__Detail_density*/, 0.15f, 1.0f);
 	CMD4(CCC_Float, "r__detail_scale", &ps_current_detail_scale, 0.2f, 3.0f);
 #ifdef DEBUG
 	CMD4(CCC_Float,		"r__detail_l_ambient",	&ps_r__Detail_l_ambient,	.5f,	.95f	);
@@ -901,6 +911,9 @@ void		xrRender_initconsole	()
 //	float		ps_r2_dof_near			= 0.f;					// 0.f
 //	float		ps_r2_dof_focus			= 1.4f;					// 1.4f
 	
+	CMD3(CCC_Token,		"r2_sunshafts_mode",			&ps_sunshafts_mode, sunshafts_mode_token);
+	CMD4(CCC_Float,		"r2_ss_sunshafts_length",		&ps_r2_ss_sunshafts_length, .2f, 1.5f);
+	CMD4(CCC_Float,		"r2_ss_sunshafts_radius",		&ps_r2_ss_sunshafts_radius, .5f, 2.f);
 	CMD3(CCC_Mask,		"r2_volumetric_lights",			&ps_r2_ls_flags,			R2FLAG_VOLUMETRIC_LIGHTS);
 //	CMD3(CCC_Mask,		"r2_sun_shafts",				&ps_r2_ls_flags,			R2FLAG_SUN_SHAFTS);
 	CMD3(CCC_Token,		"r2_sun_shafts",				&ps_r_sun_shafts,			qsun_shafts_token);
@@ -949,6 +962,7 @@ void		xrRender_initconsole	()
 	CMD4(CCC_Float,		"r3_dynamic_wet_surfaces_near",	&ps_r3_dyn_wet_surf_near,	10,	70		);
 	CMD4(CCC_Float,		"r3_dynamic_wet_surfaces_far",	&ps_r3_dyn_wet_surf_far,	30,	100		);
 	CMD4(CCC_Integer,	"r3_dynamic_wet_surfaces_sm_res",&ps_r3_dyn_wet_surf_sm_res,64,	2048	);
+	CMD4(CCC_Integer, "r2_fxaa", &ps_r2_fxaa, 0, 1);
 
 	CMD3(CCC_Mask,			"r3_volumetric_smoke",			&ps_r2_ls_flags,			R3FLAG_VOLUMETRIC_SMOKE);
 	CMD1(CCC_memory_stats,	"render_memory_stats" );

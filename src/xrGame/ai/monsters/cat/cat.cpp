@@ -9,7 +9,9 @@
 
 CCat::CCat()
 {
-	StateMan = xr_new<CStateManagerCat>		(this);
+	StateMan = xr_new<CStateManagerCat>(this);
+	com_man().add_ability(ControlCom::eControlJump);
+	//com_man().add_ability(ControlCom::eControlRotationJump);
 }
 
 CCat::~CCat()
@@ -90,21 +92,16 @@ void CCat::reinit()
 {
 	inherited::reinit();
 
-	MotionID			def1, def2, def3;
-	IKinematicsAnimated	*pSkel = smart_cast<IKinematicsAnimated*>(Visual());
+	com_man().load_jump_data(0, "run_jamp_0", "run_jamp_1", "run_jamp_2", MonsterMovement::eVelocityParameterRunNormal, MonsterMovement::eVelocityParameterRunNormal, 0);
+	//com_man().add_rotation_jump_data(0,0,"run_turn_180_r_0", "run_turn_180_r_1", deg(179));
 
-	def1 = pSkel->ID_Cycle_Safe("jump_attack_0");	VERIFY(def1);
-	def2 = pSkel->ID_Cycle_Safe("jump_attack_1");	VERIFY(def2);
-	def3 = pSkel->ID_Cycle_Safe("jump_attack_2");	VERIFY(def3);
-
-	//CJumpingAbility::reinit(def1, def2, def3);
 }
 
-void CCat::try_to_jump()
-{
-	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
-	if (!target || !EnemyMan.see_enemy_now()) return;
-}
+//void CCat::try_to_jump()
+//{
+//	CObject *target = const_cast<CEntityAlive *>(EnemyMan.get_enemy());
+//	if (!target || !EnemyMan.see_enemy_now()) return;
+//}
 
 void CCat::CheckSpecParams(u32 spec_params)
 {
@@ -151,8 +148,8 @@ void CCat::UpdateCL()
 
 void CCat::HitEntityInJump(const CEntity *pEntity)
 {
-	SAAParam &params	= anim().AA_GetParams("jump_attack_2");
-	HitEntity			(pEntity, params.hit_power, params.impulse, params.impulse_dir);
+	SAAParam &params = anim().AA_GetParams("run_jamp_1");
+	HitEntity(pEntity, params.hit_power, params.impulse, params.impulse_dir);
 }
 
 

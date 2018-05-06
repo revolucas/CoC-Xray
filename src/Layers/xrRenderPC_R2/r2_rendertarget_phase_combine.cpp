@@ -222,10 +222,22 @@ void	CRenderTarget::phase_combine	()
 		}
 	}
 
+	//FXAA
+	if (ps_r2_fxaa)
+	{
+		phase_fxaa();
+		RCache.set_Stencil(FALSE);
+	}
+
 	// PP enabled ?
 	//	Render to RT texture to be able to copy RT even in windowed mode.
 	BOOL	PP_Complex		= u_need_PP	() | (BOOL)RImplementation.m_bMakeAsyncSS;
 	if (_menu_pp)			PP_Complex	= FALSE;
+
+	if (!_menu_pp)
+	{
+		if (ps_r_sun_shafts > 0 && ps_sunshafts_mode == R2SS_SCREEN_SPACE) phase_sunshafts();
+	}
 
 	// Combine everything + perform AA
 	if		(PP_Complex)	u_setrt		( rt_Color,0,0,HW.pBaseZB );			// LDR RT

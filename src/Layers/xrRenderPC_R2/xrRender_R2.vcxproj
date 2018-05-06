@@ -692,6 +692,7 @@
     <ClInclude Include="..\xrRender\xrRender_console.h" />
     <ClInclude Include="..\xrRender\xrStripify.h" />
     <ClInclude Include="..\xrRender\xr_effgamma.h" />
+    <ClInclude Include="blender_aa.h" />
     <ClInclude Include="blender_bloom_build.h" />
     <ClInclude Include="blender_combine.h" />
     <ClInclude Include="blender_deffer_aref.h" />
@@ -706,6 +707,7 @@
     <ClInclude Include="blender_light_spot.h" />
     <ClInclude Include="blender_luminance.h" />
     <ClInclude Include="blender_ssao.h" />
+    <ClInclude Include="blender_sunshafts.h" />
     <ClInclude Include="cl_intersect.h" />
     <ClInclude Include="DetailFormat.h" />
     <ClInclude Include="light.h" />
@@ -836,6 +838,7 @@
     <ClCompile Include="..\xrRender\xrRender_console.cpp" />
     <ClCompile Include="..\xrRender\xrStripify.cpp" />
     <ClCompile Include="..\xrRender\xr_effgamma.cpp" />
+    <ClCompile Include="blender_aa.cpp" />
     <ClCompile Include="blender_bloom_build.cpp" />
     <ClCompile Include="blender_combine.cpp" />
     <ClCompile Include="blender_deffer_aref.cpp" />
@@ -850,6 +853,7 @@
     <ClCompile Include="blender_light_spot.cpp" />
     <ClCompile Include="blender_luminance.cpp" />
     <ClCompile Include="blender_ssao.cpp" />
+    <ClCompile Include="blender_sunshafts.cpp" />
     <ClCompile Include="light_GI.cpp" />
     <ClCompile Include="Light_Render_Direct.cpp" />
     <ClCompile Include="Light_Render_Direct_ComputeXFS.cpp" />
@@ -868,6 +872,7 @@
     <ClCompile Include="r2_rendertarget_accum_spot_geom.cpp" />
     <ClCompile Include="r2_rendertarget_draw_volume.cpp" />
     <ClCompile Include="r2_rendertarget_enable_scissor.cpp" />
+    <ClCompile Include="r2_rendertarget_phase_aa.cpp" />
     <ClCompile Include="r2_rendertarget_phase_accumulator.cpp" />
     <ClCompile Include="r2_rendertarget_phase_bloom.cpp" />
     <ClCompile Include="r2_rendertarget_phase_combine.cpp" />
@@ -878,6 +883,7 @@
     <ClCompile Include="r2_rendertarget_phase_smap_D.cpp" />
     <ClCompile Include="r2_rendertarget_phase_smap_S.cpp" />
     <ClCompile Include="r2_rendertarget_phase_ssao.cpp" />
+    <ClCompile Include="r2_rendertarget_phase_sunshafts.cpp" />
     <ClCompile Include="r2_R_calculate.cpp" />
     <ClCompile Include="r2_R_lights.cpp" />
     <ClCompile Include="r2_R_render.cpp" />

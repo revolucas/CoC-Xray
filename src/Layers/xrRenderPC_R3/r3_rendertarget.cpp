@@ -10,12 +10,12 @@
 #include "blender_bloom_build.h"
 #include "blender_luminance.h"
 #include "blender_ssao.h"
+#include "blender_ss_sunshafts.h"
 #include "dx10MinMaxSMBlender.h"
 #include "../xrRenderDX10/msaa/dx10MSAABlender.h"
 #include "../xrRenderDX10/DX10 Rain/dx10RainBlender.h"
-
-
 #include "../xrRender/dxRenderDeviceRender.h"
+#include "blender_aa.h"
 
 #include <D3DX10Tex.h>
 
@@ -314,6 +314,8 @@ CRenderTarget::CRenderTarget		()
 	b_luminance				= xr_new<CBlender_luminance>			();
 	b_combine				= xr_new<CBlender_combine>				();
 	b_ssao					= xr_new<CBlender_SSAO_noMSAA>			();
+	b_sunshafts				= xr_new<CBlender_sunshafts>			();
+	b_fxaa					= xr_new<CBlender_FXAA>					();
 
 	if( RImplementation.o.dx10_msaa )
 	{
@@ -392,11 +394,16 @@ CRenderTarget::CRenderTarget		()
 		// generic(LDR) RTs
 		rt_Generic_0.create		(r2_RT_generic0,w,h,D3DFMT_A8R8G8B8, 1		);
 		rt_Generic_1.create		(r2_RT_generic1,w,h,D3DFMT_A8R8G8B8, 1		);
+		rt_Generic.create(r2_RT_generic, w, h, D3DFMT_A8R8G8B8, 1);
+
+		// RT - KD
+		rt_sunshafts_0.create(r2_RT_sunshafts0, w, h, D3DFMT_A8R8G8B8);
+		rt_sunshafts_1.create(r2_RT_sunshafts1, w, h, D3DFMT_A8R8G8B8);
+		
 		if( RImplementation.o.dx10_msaa )
 		{
 			rt_Generic_0_r.create(r2_RT_generic0_r,w,h,D3DFMT_A8R8G8B8, SampleCount	);
 			rt_Generic_1_r.create(r2_RT_generic1_r,w,h,D3DFMT_A8R8G8B8, SampleCount		);
-			rt_Generic.create	 (r2_RT_generic,w,h,   D3DFMT_A8R8G8B8, 1		);
 		}
 		//	Igor: for volumetric lights
 		//rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A8R8G8B8		);
@@ -404,6 +411,8 @@ CRenderTarget::CRenderTarget		()
 		if (RImplementation.o.advancedpp)
 			rt_Generic_2.create			(r2_RT_generic2,w,h,D3DFMT_A16B16G16R16F, SampleCount );
 	}
+
+	s_sunshafts.create(b_sunshafts, "r2\\sunshafts");
 
 	// OCCLUSION
 	s_occq.create					(b_occq,		"r2\\occq");
@@ -586,6 +595,8 @@ CRenderTarget::CRenderTarget		()
       }
 		f_bloom_factor				= 0.5f;
 	}
+	s_fxaa.create(b_fxaa, "r3\\fxaa");
+	g_fxaa.create(FVF::F_V, RCache.Vertex.Buffer(), RCache.QuadIB);
 
 	// TONEMAP
 	{
@@ -672,6 +683,9 @@ CRenderTarget::CRenderTarget		()
 		u32 fvf_aa_AA				= D3DFVF_XYZRHW|D3DFVF_TEX7|D3DFVF_TEXCOORDSIZE2(0)|D3DFVF_TEXCOORDSIZE2(1)|D3DFVF_TEXCOORDSIZE2(2)|D3DFVF_TEXCOORDSIZE2(3)|D3DFVF_TEXCOORDSIZE2(4)|D3DFVF_TEXCOORDSIZE4(5)|D3DFVF_TEXCOORDSIZE4(6);
 		g_aa_AA.create				(fvf_aa_AA,		RCache.Vertex.Buffer(), RCache.QuadIB);
 
+		u32 fvf_KD = D3DFVF_XYZRHW | D3DFVF_TEX1 | D3DFVF_TEXCOORDSIZE2(0);
+		g_KD.create(fvf_KD, RCache.Vertex.Buffer(), RCache.QuadIB);
+		
 		t_envmap_0.create			(r2_T_envs0);
 		t_envmap_1.create			(r2_T_envs1);
 	}
@@ -1040,6 +1054,8 @@ CRenderTarget::~CRenderTarget	()
    }
 	xr_delete					(b_accum_mask			);
 	xr_delete					(b_occq					);
+	xr_delete					(b_sunshafts			);
+	xr_delete					(b_fxaa					);
 }
 
 void CRenderTarget::reset_light_marker( bool bResetStencil)

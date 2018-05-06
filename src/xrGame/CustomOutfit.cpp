@@ -107,7 +107,7 @@ void CCustomOutfit::Load(LPCSTR section)
 
 	//m_full_icon_name		= pSettings->r_string( section, "full_icon_name" );
 	m_artefact_count 		= READ_IF_EXISTS( pSettings, r_u32, section, "artefact_count", 0 );
-	clamp( m_artefact_count, (u32)0, (u32)10 );
+	clamp( m_artefact_count, (u32)0, (u32)5 );
 
 	m_BonesProtectionSect	= READ_IF_EXISTS(pSettings, r_string, section, "bones_koeff_protection",  "" );
 	bIsHelmetAvaliable		= !!READ_IF_EXISTS(pSettings, r_bool, section, "helmet_avaliable", true);
@@ -171,10 +171,8 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
 		}
 		else
 		{
-			float d_hit_power = (ap - BoneArmor) / ap;
-			if (d_hit_power < m_boneProtection->m_fHitFracActor)
-				d_hit_power = m_boneProtection->m_fHitFracActor;
-
+			float d_hit_power = (ap - BoneArmor) / (ap * m_boneProtection->APScale);
+			clamp(d_hit_power, m_boneProtection->m_fHitFracActor, 1.0f);
 			NewHitPower *= d_hit_power;
 
 			if (Core.ParamFlags.test(Core.dbgbullet))
