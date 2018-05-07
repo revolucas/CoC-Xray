@@ -10,12 +10,12 @@
     <xrLibDir>$(xrLibRootDir)$(Configuration)\</xrLibDir>
     <xrIntDir>$(SolutionDir)..\_build\intermediate\$(Configuration)\</xrIntDir>
     <xrSdkDir>$(SolutionDir)..\sdk\</xrSdkDir>
-    <xrGameDir>C:\COC_original\STALKER_COC\</xrGameDir>
+    <xrGameDir>E:\STALKER\Games\</xrGameDir>
     <xrGameBinDir>$(xrGameDir)bin\</xrGameBinDir>
     <xr3rdPartyDir>$(SolutionDir)3rd party\</xr3rdPartyDir>
     <dxSdkDir>$(xrSdkDir)include\dxsdk\</dxSdkDir>
     <xrLuaDir>$(SolutionDir)3rd party\luajit-2\src\</xrLuaDir>
-    <xrSdkLibDir>C:\COC_original\engine\xray-16-libraries\</xrSdkLibDir>
+    <xrSdkLibDir>E:\STALKER\X-Ray Source\xray-16-libraries\</xrSdkLibDir>
     <DxLibDir>$(SolutionDir)..\sdk\libraries\</DxLibDir>
   </PropertyGroup>
   <PropertyGroup>
