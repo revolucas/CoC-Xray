@@ -728,6 +728,12 @@ void CWeaponMagazined::OnShot()
     //дым из ствола
     ForceUpdateFireParticles();
     StartSmokeParticles(get_LastFP(), vel);
+
+#ifdef EXTENDED_WEAPON_CALLBACKS
+	CGameObject	*object = smart_cast<CGameObject*>(H_Parent());
+	if (object)
+		object->callback(GameObject::eOnWeaponFired)(object->lua_game_object(), this->lua_game_object(), iAmmoElapsed);
+#endif
 }
 
 void CWeaponMagazined::OnEmptyClick()
@@ -1269,14 +1275,6 @@ void CWeaponMagazined::OnZoomIn()
 
     if (GetState() == eIdle)
         PlayAnimIdle();
-
-	//Alundaio: callback not sure why vs2013 gives error, it's fine
-#ifdef EXTENDED_WEAPON_CALLBACKS
-	CGameObject	*object = smart_cast<CGameObject*>(H_Parent());
-	if (object)
-		object->callback(GameObject::eOnWeaponZoomIn)(object->lua_game_object(),this->lua_game_object());
-#endif
-	//-Alundaio
 
     CActor* pActor = smart_cast<CActor*>(H_Parent());
     if (pActor)
