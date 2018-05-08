@@ -226,7 +226,10 @@ void CEnvironment::Invalidate()
     bWFX = false;
     Current[0] = 0;
     Current[1] = 0;
-	if (eff_Rain)eff_Rain->InvalidateState();
+	if (eff_Rain){
+		eff_Rain->snd_Ambient.stop();
+		eff_Rain->InvalidateState();
+	}
     if (eff_LensFlare) eff_LensFlare->Invalidate();
 }
 

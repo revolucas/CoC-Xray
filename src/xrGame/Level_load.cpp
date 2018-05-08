@@ -34,7 +34,6 @@ bool CLevel::Load_GameSpecific_Before()
 	return								(TRUE);
 }
 
-#include "../xrEngine/Rain.h"
 bool CLevel::Load_GameSpecific_After()
 {
 	R_ASSERT(m_StaticParticles.empty());
@@ -115,12 +114,7 @@ bool CLevel::Load_GameSpecific_After()
 		}
 
 		if (g_pGamePersistent->pEnvironment)
-		{
-			if (CEffect_Rain* rain = g_pGamePersistent->pEnvironment->eff_Rain)
-			{
-				rain->InvalidateState();
-			}
-		}
+			g_pGamePersistent->pEnvironment->Invalidate();
 
 		if ( FS.exist(fn_game, "$level$", "level.fog_vol")) 
 		{
