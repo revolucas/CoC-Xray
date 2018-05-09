@@ -394,7 +394,7 @@ void CActor::update_camera (CCameraShotEffector* effector)
 	if (!effector) return;
 	//	if (Level().CurrentViewEntity() != this) return;
 
-	CCameraBase* pACam = cam_FirstEye();
+	CCameraBase* pACam = cam_Active();
 	if (!pACam) return;
 
 	if (pACam->bClampPitch)
