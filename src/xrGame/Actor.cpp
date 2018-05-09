@@ -23,7 +23,6 @@
 #include "UIGameCustom.h"
 #include "../xrphysics/matrix_utils.h"
 #include "clsid_game.h"
-#include "game_cl_base_weapon_usage_statistic.h"
 #include "Grenade.h"
 #include "Torch.h"
 
@@ -41,7 +40,6 @@
 //#include "Physics.h"
 #include "level.h"
 #include "GamePersistent.h"
-#include "game_cl_base.h"
 #include "game_cl_single.h"
 #include "xrmessages.h"
 #include "string_table.h"

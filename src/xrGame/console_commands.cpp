@@ -2070,23 +2070,18 @@ void CCC_RegisterCommands()
 	CMD1(CCC_TimeFactor, "time_factor");
 #endif // DEBUG
 
-	/* AVO: changing restriction to -dbg key instead of DEBUG */
 	//#ifndef MASTER_GOLD
 #ifdef MASTER_GOLD
-	if (Core.ParamFlags.test(Core.dbg))
-	{
-		CMD1(CCC_JumpToLevel, "jump_to_level");
-		CMD3(CCC_Mask, "g_god", &psActorFlags, AF_GODMODE);
-		CMD3(CCC_Mask, "g_unlimitedammo", &psActorFlags, AF_UNLIMITEDAMMO);
-		CMD1(CCC_Script, "run_script");
-		CMD1(CCC_ScriptCommand, "run_string");
-		CMD1(CCC_TimeFactor, "time_factor");
-		//CMD3(CCC_Mask, "g_no_clip", &psActorFlags, AF_NO_CLIP);
-		CMD1(CCC_PHGravity, "ph_gravity");
-	}
+	CMD1(CCC_JumpToLevel, "jump_to_level");
+	CMD3(CCC_Mask, "g_god", &psActorFlags, AF_GODMODE);
+	CMD3(CCC_Mask, "g_unlimitedammo", &psActorFlags, AF_UNLIMITEDAMMO);
+	CMD1(CCC_Script, "run_script");
+	CMD1(CCC_ScriptCommand, "run_string");
+	CMD1(CCC_TimeFactor, "time_factor");
+	//CMD3(CCC_Mask, "g_no_clip", &psActorFlags, AF_NO_CLIP);
+	CMD1(CCC_PHGravity, "ph_gravity");
 #endif // MASTER_GOLD
 	//#endif // MASTER_GOLD
-	/* AVO: end */
 
 	CMD3(CCC_Mask, "g_use_tracers", &psActorFlags, AF_USE_TRACERS);
 	CMD3(CCC_Mask, "g_autopickup", &psActorFlags, AF_AUTOPICKUP);

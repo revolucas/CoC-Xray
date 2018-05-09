@@ -46,20 +46,14 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
         xr_strlwr(Params);
 
 
-		if (strstr(Params, "-dbg"))
-			ParamFlags.set(ParamFlag::dbg, TRUE);
-
-		if (strstr(Params, "-dbgdev"))
-			ParamFlags.set(ParamFlag::dbgdev, TRUE);
-
-		if (strstr(Params, "-dbgact"))
-			ParamFlags.set(ParamFlag::dbgact, TRUE);
+		if (strstr(Params, "-verboselog"))
+			ParamFlags.set(ParamFlag::verboselog, TRUE);
 
 		if (strstr(Params, "-dbgbullet"))
 			ParamFlags.set(ParamFlag::dbgbullet, TRUE);
 		
-		if (strstr(Params, "-dbganim"))
-			ParamFlags.set(ParamFlag::dbganim, TRUE);
+		if (strstr(Params, "-dev"))
+			ParamFlags.set(ParamFlag::dev, TRUE);
 
 		if (strstr(Params, "-nofpslock"))
 			ParamFlags.set(ParamFlag::nofpslock, TRUE);
@@ -75,6 +69,9 @@ void xrCore::_initialize(LPCSTR _ApplicationName, LogCallback cb, BOOL init_fs, 
 
 		if (strstr(Params, "-fpslock240"))
 			ParamFlags.set(ParamFlag::fpslock240, TRUE);
+		
+		if (strstr(Params, "-genbump"))
+			ParamFlags.set(ParamFlag::genbump, TRUE);
 
 		// Init COM so we can use CoCreateInstance
         // HRESULT co_res =

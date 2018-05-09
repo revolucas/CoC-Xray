@@ -9,6 +9,7 @@
 #include <d3dx9.h>
 #pragma warning(default:4995)
 
+#include <tbb/parallel_for_each.h>
 #include "ResourceManager.h"
 #include "tss.h"
 #include "blenders\blender.h"
@@ -334,61 +335,10 @@ void CResourceManager::Delete(const Shader* S)
 	Msg	("! ERROR: Failed to find complete shader");
 }
 
-xr_vector<CTexture*> tex_to_load;
-
-void TextureLoading(u16 thread_num)
-{
-	Msg("TextureLoading -> thread %d started!", thread_num);
-
-	u16 upperbound = thread_num * 100;
-	u32 lowerbound = upperbound - 100;
-
-	for (size_t i = lowerbound; i < upperbound; i++)
-	{
-		if (i < tex_to_load.size())
-			tex_to_load[i]->Load();
-		else
-			break;
-	}
-
-	Msg("TextureLoading -> thread %d finished!", thread_num);
-}
-
 void CResourceManager::DeferredUpload()
 {
 	if (!RDEVICE.b_is_Ready) return;
-	tex_to_load.clear();
-
-	Msg("CResourceManager::DeferredUpload -> START, size = %d", m_textures.size());
-
-	CTimer timer;
-	timer.Start();
-
-	if (m_textures.size() <= 100) // около 100 текстур можно загрузить и не создавая второй
-	{
-		Msg("CResourceManager::DeferredUpload -> one thread");
-		for (map_TextureIt t = m_textures.begin(); t != m_textures.end(); t++)
-			t->second->Load();
-	}
-	else
-	{
-		// Тут наверное правильнее будет еще к харкам пк привязать,
-		// да и ограничить макс. их число, т.к. 17 потоков это уже по-моему перебор
-		u32 th_count = (m_textures.size() / 100) + 1;
-		std::thread* th_arr = new std::thread[th_count];
-		for (auto tex : m_textures)
-			tex_to_load.push_back(tex.second);
-
-		for (u16 i = 0; i < th_count; i++)
-			th_arr[i] = std::thread(TextureLoading, i + 1);
-
-		for (size_t i = 0; i < th_count; i++)
-			th_arr[i].join();
-
-		tex_to_load.clear();
-	}
-
-	Msg("texture loading time: %d", timer.GetElapsed_ms());
+	tbb::parallel_for_each(m_textures, [&](struct std::pair<const char*,CTexture*> m_tex) { m_tex.second->Load(); });
 }
 /*
 void	CResourceManager::DeferredUnload	()
@@ -454,6 +404,7 @@ void	CResourceManager::_DumpMemoryUsage		()
 	}
 
 	// dump
+	if (Core.ParamFlags.test(Core.verboselog))
 	{
 		xr_multimap<u32,std::pair<u32,shared_str> >::iterator I = mtex.begin	();
 		xr_multimap<u32,std::pair<u32,shared_str> >::iterator E = mtex.end		();

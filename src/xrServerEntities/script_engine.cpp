@@ -425,7 +425,8 @@ void CScriptEngine::process_file_if_exists(LPCSTR file_name, bool warn_if_not_ex
 	script_list_type::iterator it = xray_scripts.find( xr_string(file_name) );
 	if (it != xray_scripts.end())
 	{
-		Msg("* loading script %s.script", file_name);
+		if (Core.ParamFlags.test(Core.verboselog))
+			Msg("* loading script %s.script", file_name);
 		m_reload_modules = false;
 
 		load_file_into_namespace(it->second.c_str(), strcmp(file_name,"_g") == 0 ? "_G" : file_name);

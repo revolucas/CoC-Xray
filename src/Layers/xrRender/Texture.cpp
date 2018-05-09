@@ -529,24 +529,24 @@ _BUMP_from_base:
 		Msg			("! auto-generated bump map: %s",fname);
 //////////////////
 #ifndef _EDITOR
-		if (strstr(fname,"_bump#"))
-		{
-			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"ed\\ed_dummy_bump#",	".dds"), "ed_dummy_bump#");
-			S						= FS.r_open	(fn);
-			R_ASSERT2				(S, fn);
-			img_size				= S->length	();
-			goto		_DDS_2D;
-		}
-		if (strstr(fname,"_bump"))
-		{
-			R_ASSERT2	(FS.exist(fn,"$game_textures$",	"ed\\ed_dummy_bump",	".dds"),"ed_dummy_bump");
-			S						= FS.r_open	(fn);
+			if (strstr(fname, "_bump#"))
+			{
+				R_ASSERT2(FS.exist(fn, "$game_textures$", "ed\\ed_dummy_bump#", ".dds"), "ed_dummy_bump#");
+				S = FS.r_open(fn);
+				R_ASSERT2(S, fn);
+				img_size = S->length();
+				goto		_DDS_2D;
+			}
+			if (strstr(fname, "_bump"))
+			{
+				R_ASSERT2(FS.exist(fn, "$game_textures$", "ed\\ed_dummy_bump", ".dds"), "ed_dummy_bump");
+				S = FS.r_open(fn);
 
-			R_ASSERT2	(S, fn);
+				R_ASSERT2(S, fn);
 
-			img_size				= S->length	();
-			goto		_DDS_2D;
-		}
+				img_size = S->length();
+				goto		_DDS_2D;
+			}
 #endif        
 //////////////////
 

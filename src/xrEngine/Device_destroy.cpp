@@ -61,7 +61,7 @@ void CRenderDevice::Reset(bool precache)
     u32 dwHeight_before = dwHeight;
 
     ShowCursor(TRUE);
-    u32 tm_start = TimerAsync();
+
     if (g_pGamePersistent)
     {
 
@@ -79,9 +79,7 @@ void CRenderDevice::Reset(bool precache)
     _SetupStates();
     if (precache)
         PreCache(20, true, false);
-    u32 tm_end = TimerAsync();
-    Msg("*** RESET [%d ms]", tm_end - tm_start);
-
+	
     // TODO: Remove this! It may hide crash
     Memory.mem_compact();
 
