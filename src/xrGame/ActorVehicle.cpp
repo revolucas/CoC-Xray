@@ -57,7 +57,7 @@ void CActor::attach_Vehicle(CHolderCustom* vehicle)
 	m_holder = vehicle;
 	m_holderID = car->ID();
 
-	SetWeaponHideState				(INV_STATE_CAR, true);
+	SetWeaponHideState(INV_STATE_BLOCK_ALL, true);
 
 	CStepManager::on_animation_start(MotionID(), 0);
 
