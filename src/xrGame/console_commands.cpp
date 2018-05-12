@@ -57,7 +57,6 @@
 #	include "game_graph.h"
 #	include "CharacterPhysicsSupport.h"
 #endif // DEBUG
-#include "player_hud.h"
 
 string_path		g_last_saved_game;
 
@@ -76,6 +75,8 @@ ENGINE_API
 extern	float	psHUD_FOV;
 extern	float	psSqueezeVelocity;
 extern	int		psLUA_GCSTEP;
+extern Fvector	m_hud_offset_pos;
+extern Fvector	m_hand_offset_pos;
 
 extern	int		x_m_x;
 extern	int		x_m_z;
@@ -2255,8 +2256,8 @@ void CCC_RegisterCommands()
 
 //#ifndef MASTER_GOLD
 	CMD4(CCC_Vector3, "psp_cam_offset", &CCameraLook2::m_cam_offset, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
-	CMD4(CCC_Vector3, "hud_offset_pos", &player_hud::m_hud_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
-	CMD4(CCC_Vector3, "hand_offset_pos", &player_hud::m_hand_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
+	CMD4(CCC_Vector3, "hud_offset_pos", &m_hud_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
+	CMD4(CCC_Vector3, "hand_offset_pos", &m_hand_offset_pos, Fvector().set(-1000, -1000, -1000), Fvector().set(1000, 1000, 1000));
 //#endif // MASTER_GOLD
 
 	CMD1(CCC_GSCheckForUpdates, "check_for_updates");
