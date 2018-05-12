@@ -60,6 +60,8 @@ class CActorStatisticMgr;
 
 class CLocationManager;
 
+class CNightVisionEffector;
+
 class	CActor: 
     public CEntityAlive, 
     public IInputReceiver,
@@ -788,7 +790,17 @@ private:
 			{
 				mstate_wishful = state;
 			}
-      
+public:
+	void	SwitchNightVision(bool light_on, bool use_sounds = true, bool send_event = true);
+
+	bool	GetNightVisionStatus() { return m_bNightVisionOn; }
+	void	SetNightVisionAllowed(bool bAllow) { m_bNightVisionAllow = bAllow; }
+	CNightVisionEffector* GetNightVision() { return m_night_vision; }
+protected:
+	bool					m_bNightVisionOn;
+	bool					m_bNightVisionAllow;
+
+	CNightVisionEffector*	m_night_vision;
 DECLARE_SCRIPT_REGISTER_FUNCTION
 };
 add_to_type_list(CActor)

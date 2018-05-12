@@ -7381,6 +7381,9 @@
     <ClInclude Include="ui\UIPdaSpot.h">
       <Filter>UI\Common\PDA\PDA Spot</Filter>
     </ClInclude>
+    <ClInclude Include="ActorNightVision.h">
+      <Filter>Core\Client\Objects\actor\base</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="damage_manager.cpp">
@@ -11066,6 +11069,9 @@
     </ClCompile>
     <ClCompile Include="ui\UIPdaSpot.cpp">
       <Filter>UI\Common\PDA\PDA Spot</Filter>
+    </ClCompile>
+    <ClCompile Include="ActorNightVision.cpp">
+      <Filter>Core\Client\Objects\actor\base</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

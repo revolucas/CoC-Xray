@@ -540,15 +540,28 @@ void CScriptGameObject::ResetBoneProtections(LPCSTR imm_sect, LPCSTR bone_sect)
 
 void CScriptGameObject::set_visual_name(LPCSTR visual)
 {
-	object().cNameVisual_set(visual);
+	if (strcmp(visual, object().cNameVisual().c_str()) == 0)
+		return;
 
 	CActor* actor = smart_cast<CActor*>(&object());
 	if (actor)
-		actor->OnChangeVisual();
+	{
+		actor->ChangeVisual(visual);
+		return;
+	}
 
 	CAI_Stalker* stalker = smart_cast<CAI_Stalker*>(&object());
 	if (stalker)
-		stalker->OnChangeVisual();
+	{
+		stalker->cNameVisual_set(visual);
+		stalker->Visual()->dcast_PKinematics()->CalculateBones_Invalidate();
+		stalker->Visual()->dcast_PKinematics()->CalculateBones(TRUE);
+		stalker->ResetBoneProtections(NULL,NULL);
+		NET_Packet P;
+		object().u_EventGen(P, GE_CHANGE_VISUAL, object().ID());
+		P.w_stringZ(visual);
+		object().u_EventSend(P);
+	}
 }
 
 LPCSTR CScriptGameObject::get_visual_name() const

@@ -7,7 +7,6 @@
 #include "ActorHelmet.h"
 #include "Actor.h"
 #include "Inventory.h"
-#include "Torch.h"
 #include "BoneProtections.h"
 #include "../Include/xrRender/Kinematics.h"
 //#include "CustomOutfit.h"
@@ -107,9 +106,8 @@ void CHelmet::OnMoveToSlot(const SInvItemPlace& previous_place)
 		CActor* pActor = smart_cast<CActor*> (H_Parent());
 		if (pActor)
 		{
-			CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
-			if(pTorch && pTorch->GetNightVisionStatus())
-				pTorch->SwitchNightVision(true, false);
+			if(pActor->GetNightVisionStatus())
+				pActor->SwitchNightVision(true, false);
 		}
 	}
 }
@@ -122,9 +120,7 @@ void CHelmet::OnMoveToRuck(const SInvItemPlace& previous_place)
 		CActor* pActor = smart_cast<CActor*> (H_Parent());
 		if (pActor)
 		{
-			CTorch* pTorch = smart_cast<CTorch*>(pActor->inventory().ItemFromSlot(TORCH_SLOT));
-			if(pTorch)
-				pTorch->SwitchNightVision(false);
+			pActor->SwitchNightVision(false);
 		}
 	}
 }

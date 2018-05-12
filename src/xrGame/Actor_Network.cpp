@@ -85,7 +85,8 @@ void	CActor::ConvState(u32 mstate_rl, string128 *buf)
 void CActor::net_Export(NET_Packet& P)					// export to server
 {
 	//CSE_ALifeCreatureAbstract
-	u8					flags = 0;
+	u8 flags = 0;
+
 	P.w_float(GetfHealth());
 	P.w_u32(Level().timeServer());
 	P.w_u8(flags);
@@ -117,7 +118,7 @@ void CActor::net_Export(NET_Packet& P)					// export to server
 
 	P.w_u8(u8(inventory().GetActiveSlot()));
 	/////////////////////////////////////////////////
-	P.w_u16				(0);
+	P.w_u16(0);
 };
 
 static void w_vec_q8(NET_Packet& P, const Fvector& vec, const Fvector& min, const Fvector& max)
@@ -277,6 +278,7 @@ void		CActor::net_Import_Base(NET_Packet& P)
 	//---------------------------------------------
 
 	P.r_u8(flags);
+
 	P.r_vec3(N.p_pos);
 	P.r_float /*r_angle8*/(N.o_model);
 	P.r_float /*r_angle8*/(N.o_torso.yaw);
@@ -651,6 +653,10 @@ BOOL CActor::net_Spawn(CSE_Abstract* DC)
 	{
 		setLocal(FALSE);
 	};
+
+	//Alun: In theory it will call SwitchNightVision 'true' when outfit or helmet spawn and moved to slot if m_bNightVisionOn is true
+	m_bNightVisionOn = !!m_trader_flags.test(CSE_ALifeTraderAbstract::eTraderFlagNightVisionActive);
+
 	return					TRUE;
 }
 
