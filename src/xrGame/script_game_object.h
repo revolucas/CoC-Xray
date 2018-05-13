@@ -700,7 +700,7 @@ public:
             bool				invulnerable						() const;
             void				invulnerable						(bool invulnerable);
             LPCSTR				get_smart_cover_description			() const;
-            void				set_visual_name						(LPCSTR visual);
+            void				set_visual_name						(LPCSTR visual,bool bForce = false);
             LPCSTR				get_visual_name						() const;
 
             bool				can_throw_grenades					() const;
