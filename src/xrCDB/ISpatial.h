@@ -114,8 +114,6 @@ public:
 class 	ISpatial_NODE
 {
 public:
-	typedef	_W64 unsigned		ptrt;
-public:
 	ISpatial_NODE*				parent;					// parent node for "empty-members" optimization
 	ISpatial_NODE*				children		[8];	// children nodes
 	xr_vector<ISpatial*>		items;					// own items
@@ -127,10 +125,10 @@ public:
 	{
 		return items.empty() && (
 			0==(
-				ptrt(children[0])|ptrt(children[1])|
-				ptrt(children[2])|ptrt(children[3])|
-				ptrt(children[4])|ptrt(children[5])|
-				ptrt(children[6])|ptrt(children[7])
+			uintptr_t(children[0]) | uintptr_t(children[1]) |
+			uintptr_t(children[2]) | uintptr_t(children[3]) |
+			uintptr_t(children[4]) | uintptr_t(children[5]) |
+			uintptr_t(children[6]) | uintptr_t(children[7])
 				)
 			);	
 	}
