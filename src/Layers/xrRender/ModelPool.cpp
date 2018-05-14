@@ -27,9 +27,6 @@
 	#include "IGame_Persistent.h"
 #endif
 
-#include <tbb/parallel_for_each.h>
-#include <tbb/blocked_range.h>
-
 dxRender_Visual*	CModelPool::Instance_Create(u32 type)
 {
 	dxRender_Visual *V = NULL;
@@ -381,17 +378,11 @@ void CModelPool::Prefetch()
 	string256 section;
 	strconcat				(sizeof(section),section,"prefetch_visuals_",g_pGamePersistent->m_game_params.m_game_type);
 	CInifile::Sect& sect	= pSettings->r_section(section);
-	tbb::parallel_for(tbb::blocked_range<CInifile::SectCIt>(sect.Data.begin(), sect.Data.end()), [&](const tbb::blocked_range<CInifile::SectCIt>& range)
-	{
-		for (CInifile::SectCIt I = range.begin(); I != range.end(); ++I)
-		{
-			const CInifile::Item& item = *I;
-			//Msg("%s start",item.first.c_str());
-			dxRender_Visual* V = Create(item.first.c_str());
-			//Msg("%s end", item.first.c_str());
-			Delete(V, FALSE);
-		}
-	});
+	for (CInifile::SectCIt I=sect.Data.begin(); I!=sect.Data.end(); I++)	{
+		const CInifile::Item& item= *I;
+		dxRender_Visual* V	= Create(item.first.c_str());
+		Delete				(V,FALSE);
+	}
 	Logging					(TRUE);
 }
 
