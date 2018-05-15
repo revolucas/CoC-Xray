@@ -89,7 +89,7 @@ void CWeaponBM16::PlayAnimReload()
 
 	if((m_magazine.size()==1 || !b_both) && 
 		(m_set_next_ammoType_on_reload == undefined_ammo_type || 
-		 m_ammoType == m_set_next_ammoType_on_reload))
+		 m_ammoType.type1 == m_set_next_ammoType_on_reload))
 		PlayHUDMotion("anm_reload_1",TRUE,this,GetState());
 	else
 		PlayHUDMotion("anm_reload_2",TRUE,this,GetState());

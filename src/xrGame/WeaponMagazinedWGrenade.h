@@ -81,15 +81,8 @@ public:
 	//для подствольника
 //-	CWeaponAmmo*			m_pAmmo2;
 	xr_vector<shared_str>	m_ammoTypes2;
-	u8						m_ammoType2;
-
-	int						iMagazineSize2;
 	xr_vector<CCartridge>	m_magazine2;
-
-	bool					m_bGrenadeMode;
-
 	CCartridge				m_DefaultCartridge2;
-	u8						iAmmoElapsed2;
 
 	virtual void UpdateGrenadeVisibility(bool visibility);
 };

@@ -357,11 +357,11 @@ void CUIHudStatesWnd::UpdateActiveItemInfo( CActor* actor )
 		CWeaponMagazined* wpnm = smart_cast<CWeaponMagazined*>(item);
 		if (wpnm)
 		{
-			if (wpnm->m_ammoType == 0)
+			if (wpnm->m_ammoType.type1 == 0)
 				m_ui_weapon_fmj_ammo->SetTextColor(m_ui_weapon_ammo_color_active);
-			else if (wpnm->m_ammoType == 1)
+			else if (wpnm->m_ammoType.type1 == 1)
 				m_ui_weapon_ap_ammo->SetTextColor(m_ui_weapon_ammo_color_active);
-			else if (wpnm->m_ammoType == 2)
+			else if (wpnm->m_ammoType.type1 == 2)
 				m_ui_weapon_third_ammo->SetTextColor(m_ui_weapon_ammo_color_active);
 		}
 		//-Alundaio

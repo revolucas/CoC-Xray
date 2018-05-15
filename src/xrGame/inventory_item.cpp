@@ -601,6 +601,17 @@ void CInventoryItem::net_Export_PH_Params(NET_Packet& P, SPHNetState& State, mas
 void CInventoryItem::net_Export(NET_Packet& P)
 {
 	P.w_u8(0);
+
+	//Alun: To fix condition not persisting offline for items except weapons
+	if (g_actor && this->parent_id() == g_actor->ID()) //Optimization, as I can't think of very many cases where we need update condition change when item is not actor's
+	{
+		CGameObject *obj = smart_cast<CGameObject*>(this);
+		NET_Packet stpk;
+		obj->u_EventGen(stpk, GE_SYNC_ALIFEITEM, obj->ID());
+		stpk.w_float(m_fCondition);
+		obj->u_EventSend(stpk, net_flags(FALSE));
+	}
+	//-Alun
 	return;
 };
 

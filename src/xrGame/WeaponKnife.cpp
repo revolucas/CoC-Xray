@@ -182,7 +182,7 @@ void CWeaponKnife::MakeShot(Fvector const & pos, Fvector const & dir, float cons
 	cartridge.bullet_material_idx	= knife_material_idx;
 
 	/*while(m_magazine.size() < 2)*/	m_magazine.push_back(cartridge);
-	iAmmoElapsed					= m_magazine.size();
+	m_ammoElapsed.type1					= m_magazine.size();
 	bool SendHit					= SendHitAllowed(H_Parent());
 
 	PlaySound						("sndShot",pos);

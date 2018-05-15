@@ -129,7 +129,7 @@ public:
 
     IC BOOL					IsValid()	const
     {
-        return iAmmoElapsed;
+        return m_ammoElapsed.type1;
     }
     // Does weapon need's update?
     BOOL					IsUpdating();
@@ -195,54 +195,53 @@ public:
     //для отоброажения иконок апгрейдов в интерфейсе
     int	GetScopeX()
     {
-        return pSettings->r_s32(m_scopes[m_cur_scope], "scope_x");
+		return pSettings->r_s32(m_scopes[m_cur_addon.scope], "scope_x");
     }
     int	GetScopeY()
     {
-        return pSettings->r_s32(m_scopes[m_cur_scope], "scope_y");
+		return pSettings->r_s32(m_scopes[m_cur_addon.scope], "scope_y");
     }
     int	GetSilencerX()
     {
-        return m_iSilencerX;
+		return pSettings->r_s32(m_silencers[m_cur_addon.silencer], "silencer_x");
     }
     int	GetSilencerY()
     {
-        return m_iSilencerY;
+		return pSettings->r_s32(m_silencers[m_cur_addon.silencer], "silencer_y");
     }
     int	GetGrenadeLauncherX()
     {
-        return m_iGrenadeLauncherX;
+		return pSettings->r_s32(m_launchers[m_cur_addon.launcher], "grenade_launcher_x");
     }
     int	GetGrenadeLauncherY()
     {
-        return m_iGrenadeLauncherY;
+		return pSettings->r_s32(m_launchers[m_cur_addon.launcher], "grenade_launcher_y");
     }
 
-    const shared_str& GetGrenadeLauncherName() const
+    const shared_str GetGrenadeLauncherName() const
     {
-        return m_sGrenadeLauncherName;
+		return pSettings->r_string(m_launchers[m_cur_addon.launcher], "grenade_launcher_name");
     }
     const shared_str GetScopeName() const
     {
-        return pSettings->r_string(m_scopes[m_cur_scope], "scope_name");
+		return pSettings->r_string(m_scopes[m_cur_addon.scope], "scope_name");
     }
-    const shared_str& GetSilencerName() const
+    const shared_str GetSilencerName() const
     {
-        return m_sSilencerName;
+		return pSettings->r_string(m_silencers[m_cur_addon.silencer], "silencer_name");
     }
 
 	const shared_str GetGrenadeLauncherBoneName() const
 	{
-		return READ_IF_EXISTS(pSettings, r_string, m_sGrenadeLauncherName, "addon_bone", "wpn_launcher");
+		return READ_IF_EXISTS(pSettings, r_string, GetGrenadeLauncherName(), "addon_bone", "wpn_launcher");
 	}
 	const shared_str GetScopeBoneName() const
 	{
-		LPCSTR scope_section = pSettings->r_string(m_scopes[m_cur_scope], "scope_name");
-		return READ_IF_EXISTS(pSettings, r_string, scope_section, "addon_bone", "wpn_scope");
+		return READ_IF_EXISTS(pSettings, r_string, GetScopeName(), "addon_bone", "wpn_scope");
 	}
 	const shared_str GetSilencerBoneName() const
 	{
-		return READ_IF_EXISTS(pSettings, r_string, m_sSilencerName, "addon_bone", "wpn_silencer");
+		return READ_IF_EXISTS(pSettings, r_string, GetSilencerName(), "addon_bone", "wpn_silencer");
 	}
 
 	bool SetBoneVisible(IKinematics* m_model, const shared_str& bone_name, BOOL bVisibility, BOOL bSilent);
@@ -269,16 +268,20 @@ protected:
     ALife::EWeaponAddonStatus	m_eSilencerStatus;
     ALife::EWeaponAddonStatus	m_eGrenadeLauncherStatus;
 
-    //названия секций подключаемых аддонов
-    shared_str		m_sScopeName;
-    shared_str		m_sSilencerName;
-    shared_str		m_sGrenadeLauncherName;
-
-    //смещение иконов апгрейдов в инвентаре
-    int	m_iScopeX, m_iScopeY;
-    int	m_iSilencerX, m_iSilencerY;
-    int	m_iGrenadeLauncherX, m_iGrenadeLauncherY;
-
+	struct current_addon_t
+	{
+		union {
+			u16 data;
+			struct {
+				u16 scope : 6;			//2^6 possible scope sections
+				u16 silencer : 5;		//2^5 possible silencer/launcher sections
+				u16 launcher : 5;
+			};
+		};
+	};
+public:
+	current_addon_t m_cur_addon;
+	virtual void SyncronizeWeaponToServer();
 protected:
 
     struct SZoomParams
@@ -558,7 +561,7 @@ protected:
 public:
     IC int					GetAmmoElapsed()	const
     {
-        return /*int(m_magazine.size())*/iAmmoElapsed;
+        return /*int(m_magazine.size())*/m_ammoElapsed.type1;
     }
     IC int					GetAmmoMagSize()	const
     {
@@ -603,8 +606,7 @@ public:
         return m_first_bullet_controller.get_fire_dispertion();
     };
 protected:
-    int						iAmmoElapsed;		// ammo in magazine, currently
-    int						iMagazineSize;		// size (in bullets) of magazine
+    
 
     //для подсчета в GetSuitableAmmoTotal
     mutable int				m_iAmmoCurrentTotal;
@@ -614,6 +616,35 @@ protected:
     virtual bool			IsNecessaryItem(const shared_str& item_sect);
 
 public:
+	struct ammo_type_t
+	{
+		union {
+			u8 data;
+			struct {
+				u8 type1 : 4; //Type1 is normal ammo unless in grenade mode it's swapped
+				u8 type2 : 4; //Type2 is grenade ammo unless in grenade mode it's swapped
+			};
+		};
+	};
+	ammo_type_t  m_ammoType;
+
+	struct ammo_elapsed_t
+	{
+		union {
+			u16 data;
+			struct {
+				u16 type1 : 8; //Type1 is normal ammo unless in grenade mode it's swapped
+				u16 type2 : 8; //Type2 is grenade ammo unless in grenade mode it's swapped
+			};
+		};
+	};
+	ammo_elapsed_t m_ammoElapsed;
+
+	int						iMagazineSize;		// size (in bullets) of magazine
+	int						iMagazineSize2;
+
+	bool					m_bGrenadeMode;
+
     xr_vector<shared_str>	m_ammoTypes;
     /*
         struct SScopes
@@ -630,10 +661,11 @@ public:
 
     DEFINE_VECTOR(shared_str, SCOPES_VECTOR, SCOPES_VECTOR_IT);
     SCOPES_VECTOR			m_scopes;
-    u8						m_cur_scope;
+	SCOPES_VECTOR			m_silencers;
+	SCOPES_VECTOR			m_launchers;
 
     CWeaponAmmo*			m_pCurrentAmmo;
-    u8						m_ammoType;
+    
     //-	shared_str				m_ammoName; <== deleted
     bool					m_bHasTracers;
     u8						m_u8TracerColorID;
@@ -663,8 +695,8 @@ public:
 	int						GetAmmoCount_forType(shared_str const& ammo_type) const;
 	virtual void			set_ef_main_weapon_type(u32 type){ m_ef_main_weapon_type = type; };
 	virtual void			set_ef_weapon_type(u32 type){ m_ef_weapon_type = type; };
-	virtual void			SetAmmoType(u8 type) { m_ammoType = type; };
-	u8						GetAmmoType() { return m_ammoType; };
+	virtual void			SetAmmoType(u8 type) { m_ammoType.type1 = type; };
+	u8						GetAmmoType() { return m_ammoType.type1; };
 	//-Alundaio
 
 protected:

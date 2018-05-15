@@ -174,7 +174,7 @@ CSE_Abstract *CLevel::spawn_item		(LPCSTR section, const Fvector &position, u32 
 	//оружие спавним с полным магазинои
 	CSE_ALifeItemWeapon* weapon = smart_cast<CSE_ALifeItemWeapon*>(abstract);
 	if(weapon)
-		weapon->a_elapsed	= weapon->get_ammo_magsize();
+		weapon->a_elapsed.type1	= weapon->get_ammo_magsize();
 	
 	// Fill
 	abstract->s_name		= section;

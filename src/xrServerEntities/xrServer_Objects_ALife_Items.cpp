@@ -489,14 +489,11 @@ void CSE_ALifeItemTorch::FillProps			(LPCSTR pref, PropItemVec& values)
 ////////////////////////////////////////////////////////////////////////////
 CSE_ALifeItemWeapon::CSE_ALifeItemWeapon	(LPCSTR caSection) : CSE_ALifeItem(caSection)
 {
-	a_current					= 90;
-	a_elapsed					= 0;
-	a_elapsed_grenades.grenades_count	=	0;
-	a_elapsed_grenades.grenades_type	=	0;
+	a_elapsed.data				= 0;
 
 	wpn_flags					= 0;
 	wpn_state					= 0;
-	ammo_type					= 0;
+	ammo_type.data				= 0;
 
 	m_fHitPower					= pSettings->r_float(caSection,"hit_power");
 	m_tHitType					= ALife::g_tfString2HitType(pSettings->r_string(caSection,"hit_type"));
@@ -535,9 +532,9 @@ void CSE_ALifeItemWeapon::UPDATE_Read(NET_Packet	&tNetPacket)
 
 	tNetPacket.r_float_q8		(m_fCondition,0.0f,1.0f);
 	tNetPacket.r_u8				(wpn_flags);
-	tNetPacket.r_u16			(a_elapsed);
+	tNetPacket.r_u16			(a_elapsed.data);
 	tNetPacket.r_u8				(m_addon_flags.flags);
-	tNetPacket.r_u8				(ammo_type);
+	tNetPacket.r_u8				(ammo_type.data);
 	tNetPacket.r_u8				(wpn_state);
 	tNetPacket.r_u8				(m_bZoom);
 }
@@ -553,9 +550,9 @@ void CSE_ALifeItemWeapon::UPDATE_Write(NET_Packet	&tNetPacket)
 
 	tNetPacket.w_float_q8		(m_fCondition,0.0f,1.0f);
 	tNetPacket.w_u8				(wpn_flags);
-	tNetPacket.w_u16			(a_elapsed);
+	tNetPacket.w_u16			(a_elapsed.data);
 	tNetPacket.w_u8				(m_addon_flags.get());
-	tNetPacket.w_u8				(ammo_type);
+	tNetPacket.w_u8				(ammo_type.data);
 	tNetPacket.w_u8				(wpn_state);
 	tNetPacket.w_u8				(m_bZoom);
 }
@@ -563,29 +560,33 @@ void CSE_ALifeItemWeapon::UPDATE_Write(NET_Packet	&tNetPacket)
 void CSE_ALifeItemWeapon::STATE_Read(NET_Packet	&tNetPacket, u16 size)
 {
 	inherited::STATE_Read		(tNetPacket, size);
-	tNetPacket.r_u16			(a_current);
-	tNetPacket.r_u16			(a_elapsed);
-	tNetPacket.r_u8				(wpn_state);
+	a_current_addon.data = tNetPacket.r_u16();
+
+	if (a_current_addon.data == 90) //Alun: Hack because all.spawn ammo_current all set to 90. Since this unlikely anyway (launcher=26, silencer=1, scope=0), this hack is okay.
+		a_current_addon.data = 0;
+
+	tNetPacket.r_u16(a_elapsed.data);
+	tNetPacket.r_u8(wpn_state);
 	
 	if (m_wVersion > 40)
-		tNetPacket.r_u8			(m_addon_flags.flags);
+		tNetPacket.r_u8(m_addon_flags.flags);
 
 	if (m_wVersion > 46)
-		tNetPacket.r_u8			(ammo_type);
+		tNetPacket.r_u8(ammo_type.data);
 	
 	if (m_wVersion > 122)
-		a_elapsed_grenades.unpack_from_byte(tNetPacket.r_u8());
+		tNetPacket.r_u8(); //Alun: Currently unused
 }
 
 void CSE_ALifeItemWeapon::STATE_Write		(NET_Packet	&tNetPacket)
 {
-	inherited::STATE_Write		(tNetPacket);
-	tNetPacket.w_u16			(a_current);
-	tNetPacket.w_u16			(a_elapsed);
-	tNetPacket.w_u8				(wpn_state);
-	tNetPacket.w_u8				(m_addon_flags.get());
-	tNetPacket.w_u8				(ammo_type);
-	tNetPacket.w_u8				(a_elapsed_grenades.pack_to_byte());
+	inherited::STATE_Write(tNetPacket);
+	tNetPacket.w_u16(a_current_addon.data);
+	tNetPacket.w_u16(a_elapsed.data);
+	tNetPacket.w_u8(wpn_state);
+	tNetPacket.w_u8(m_addon_flags.get());
+	tNetPacket.w_u8(ammo_type.data);
+	tNetPacket.w_u8(0);
 }
 
 void CSE_ALifeItemWeapon::OnEvent			(NET_Packet	&tNetPacket, u16 type, u32 time, ClientID sender )
@@ -617,17 +618,8 @@ u16	 CSE_ALifeItemWeapon::get_ammo_limit	()
 
 u16	 CSE_ALifeItemWeapon::get_ammo_total	()
 {
-	return						((u16)a_current);
-}
-
-u16	 CSE_ALifeItemWeapon::get_ammo_elapsed	()
-{
-	return						((u16)a_elapsed);
-}
-
-void CSE_ALifeItemWeapon::set_ammo_elapsed(u16 count)
-{
-	a_elapsed = count;
+	//not implemented for server entity
+	return						((u16)90);
 }
 
 u16	 CSE_ALifeItemWeapon::get_ammo_magsize	()
