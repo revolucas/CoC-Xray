@@ -49,7 +49,23 @@ bool xrCompressor::testSKIP(LPCSTR path)
 {
 	string256			p_name;
 	string256			p_ext;
-	_splitpath			(path, 0, 0, p_name, p_ext );
+	string256			p_dir;
+	_splitpath			(path, 0, p_dir, p_name, p_ext );
+
+
+	if (config_ltx && config_ltx->section_exist("exclude_files"))
+	{
+		CInifile::Sect& if_sect = config_ltx->r_section("exclude_files");
+		for (CInifile::SectCIt if_it = if_sect.Data.begin(); if_it != if_sect.Data.end(); ++if_it)
+		{
+			string512 buf;
+			strcpy(buf, p_dir);
+			strcat(buf, p_name);
+			strcat(buf, p_ext);
+			if (!stricmp(if_it->first.c_str(), buf))
+				return true;
+		}
+	}
 
 	if (!stricmp(p_name, "level") && !stricmp(p_ext, ""))
 		return false;
