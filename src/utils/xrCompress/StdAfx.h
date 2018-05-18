@@ -4,9 +4,7 @@
 
 #include "../../xrcore/xrCore.h"
 
-#include "lzo/lzo1x.h"
-#include "zlib/zlib.h"
-#include "lzo/lzo1z.h"
+#include "lzo\lzo1x.h"
 #include <mmsystem.h>
 
 #pragma warning	(disable:4995)
