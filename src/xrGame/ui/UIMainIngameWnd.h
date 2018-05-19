@@ -26,8 +26,7 @@ public:
 	virtual void Update();
 
 
-protected:
-	
+public:
 	CUIStatic*			UIStaticDiskIO;
 	CUITextWnd*			UIStaticQuickHelp;
 	CUIMotionIcon*		UIMotionIcon;
@@ -43,7 +42,6 @@ protected:
 	CUIStatic*			m_ind_outfit_broken;
 	CUIStatic*			m_ind_overweight;
 
-public:
 	CUIStatic*			m_ind_boost_psy;
 	CUIStatic*			m_ind_boost_radia;
 	CUIStatic*			m_ind_boost_chem;
@@ -174,4 +172,8 @@ public:
 #ifdef DEBUG
 	void				draw_adjust_mode					();
 #endif
+	DECLARE_SCRIPT_REGISTER_FUNCTION
 };
+add_to_type_list(CUIMainIngameWnd)
+#undef script_type_list
+#define script_type_list save_type_list(CUIMainIngameWnd)
