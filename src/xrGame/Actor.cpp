@@ -1769,9 +1769,9 @@ float	CActor::HitArtefactsOnBelt(float hit_power, ALife::EHitType hit_type)
     for (; it != ite; ++it)
     {
         CArtefact*	artefact = smart_cast<CArtefact*>(*it);
-        if (artefact)
+		if (artefact && artefact->m_ArtefactHitImmunities[hit_type])
         {
-            hit_power -= artefact->m_ArtefactHitImmunities.AffectHit(1.0f, hit_type);
+			hit_power -= (artefact->m_ArtefactHitImmunities[hit_type] * artefact->GetCondition());
         }
     }
     clamp(hit_power, 0.0f, flt_max);
@@ -1787,9 +1787,9 @@ float CActor::GetProtection_ArtefactsOnBelt(ALife::EHitType hit_type)
     for (; it != ite; ++it)
     {
         CArtefact*	artefact = smart_cast<CArtefact*>(*it);
-        if (artefact)
+		if (artefact && artefact->m_ArtefactHitImmunities[hit_type])
         {
-            sum += (artefact->m_ArtefactHitImmunities.AffectHit(1.0f, hit_type)*artefact->GetCondition());
+			sum += (artefact->m_ArtefactHitImmunities[hit_type] * artefact->GetCondition());
         }
     }
     return sum;
