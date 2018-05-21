@@ -166,7 +166,7 @@ public:
     {
         //AVO: fixed crash due to original GSC assumption that CWeaponMagazined will always have firemodes specified in configs.
         //return m_aFireModes[m_iCurFireMode];
-        if (HasFireModes())
+        if (HasFireModes() && m_iCurFireMode < m_aFireModes.size())
             return m_aFireModes[m_iCurFireMode];
         else
             return 1;
