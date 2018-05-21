@@ -7,8 +7,9 @@
 
 #include "ActorNightVision.h"
 
-CNightVisionEffector::CNightVisionEffector(const shared_str& section)
+CNightVisionEffector::CNightVisionEffector(const shared_str& section, u16 effID)
 {
+	effectorID = effID;
 	m_sounds.LoadSound(section.c_str(), "snd_night_vision_on", "NightVisionOnSnd", false, SOUND_TYPE_ITEM_USING);
 	m_sounds.LoadSound(section.c_str(), "snd_night_vision_off", "NightVisionOffSnd", false, SOUND_TYPE_ITEM_USING);
 	m_sounds.LoadSound(section.c_str(), "snd_night_vision_idle", "NightVisionIdleSnd", false, SOUND_TYPE_ITEM_USING);
@@ -17,7 +18,7 @@ CNightVisionEffector::CNightVisionEffector(const shared_str& section)
 
 void CNightVisionEffector::Start(const shared_str& sect, CActor* pA, bool play_sound)
 {
-	AddEffector(pA, effNightvision, sect);
+	AddEffector(pA, effectorID, sect);
 	if (play_sound)
 	{
 		PlaySounds(eStartSound);
@@ -29,7 +30,7 @@ void CNightVisionEffector::Stop(const float factor, bool play_sound)
 {
 	CActor* pActor = smart_cast<CActor*>(Level().CurrentControlEntity());
 	if (!pActor)		return;
-	CEffectorPP* pp = pActor->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
+	CEffectorPP* pp = pActor->Cameras().GetPPEffector((EEffectorPPType)effectorID);
 	if (pp)
 	{
 		pp->Stop(factor);
@@ -44,7 +45,7 @@ bool CNightVisionEffector::IsActive()
 {
 	CActor* pActor = smart_cast<CActor*>(Level().CurrentControlEntity());
 	if (!pActor)		return false;
-	CEffectorPP* pp = pActor->Cameras().GetPPEffector((EEffectorPPType)effNightvision);
+	CEffectorPP* pp = pActor->Cameras().GetPPEffector((EEffectorPPType)effectorID);
 	return (pp != NULL);
 }
 

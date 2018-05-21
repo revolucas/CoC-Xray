@@ -61,10 +61,14 @@ CWeapon::CWeapon()
 	
     eHandDependence = hdNone;
 
+	m_zoom_params.m_sUseZoomPostprocess = NULL;
     m_zoom_params.m_fCurrentZoomFactor = 1.0;
     m_zoom_params.m_fZoomRotationFactor = 0.f;
     m_zoom_params.m_pVision = NULL;
     m_zoom_params.m_pNight_vision = NULL;
+	m_zoom_params.m_bNightVisionAllow = true;
+	m_zoom_params.m_fScopeZoomFactor = 1.0f;
+	m_zoom_params.m_fScopeZoomFactorMin = 0.3f;
 
     m_pCurrentAmmo = NULL;
 
@@ -85,7 +89,7 @@ CWeapon::CWeapon()
     m_crosshair_inertion = 0.f;
     m_activation_speed_is_overriden = false;
 	m_cur_addon.data = 0;
-    m_bRememberActorNVisnStatus = false;
+	m_fRTZoomFactor = 1.f;
 }
 
 CWeapon::~CWeapon()
@@ -417,6 +421,10 @@ void CWeapon::Load(LPCSTR section)
     {
         shared_str scope_tex_name = pSettings->r_string(cNameSect(), "scope_texture");
         m_zoom_params.m_fScopeZoomFactor = pSettings->r_float(cNameSect(), "scope_zoom_factor");
+		m_zoom_params.m_fScopeZoomFactorMin = READ_IF_EXISTS(pSettings, r_float, cNameSect(), "scope_zoom_factor_min", 0.3f);
+		float delta, min_zoom_factor;
+		GetZoomData(m_zoom_params.m_fScopeZoomFactor, delta, min_zoom_factor);
+        m_fRTZoomFactor = min_zoom_factor;
         if (!g_dedicated_server)
         {
             m_UIScope = xr_new<CUIWindow>();
@@ -548,7 +556,6 @@ BOOL CWeapon::net_Spawn(CSE_Abstract* DC)
 	if (m_cur_addon.launcher >= (u16)m_launchers.size())
 		m_cur_addon.launcher = 0;
 
-    m_fRTZoomFactor = m_zoom_params.m_fScopeZoomFactor;
     BOOL bResult = inherited::net_Spawn(DC);
 
 	if (m_bGrenadeMode) //normal ammo will be in *2
@@ -690,14 +697,15 @@ void CWeapon::save(NET_Packet &output_packet)
     save_data(m_flagsAddOnState, output_packet);
     save_data(m_ammoType.data, output_packet);
     save_data(m_zoom_params.m_bIsZoomModeNow, output_packet);
-    save_data(m_bRememberActorNVisnStatus, output_packet);
+	save_data(0, output_packet);
 }
 
 void CWeapon::load(IReader &input_packet)
 {
     inherited::load(input_packet);
 	load_data(m_ammoElapsed.data, input_packet);
-    load_data(0, input_packet);
+	int dummy;
+    load_data(dummy, input_packet);
     load_data(m_flagsAddOnState, input_packet);
     UpdateAddonsVisibility();
     load_data(m_ammoType.data, input_packet);
@@ -707,8 +715,8 @@ void CWeapon::load(IReader &input_packet)
         OnZoomIn();
     else
         OnZoomOut();
-
-    load_data(m_bRememberActorNVisnStatus, input_packet);
+	
+	load_data(dummy, input_packet);
 }
 
 void CWeapon::OnEvent(NET_Packet& P, u16 type)
@@ -878,38 +886,29 @@ void CWeapon::UpdateCL()
 
     if (m_zoom_params.m_pNight_vision && !need_renderable())
     {
-        if (!m_zoom_params.m_pNight_vision->IsActive())
-        {
-            CActor *pA = smart_cast<CActor *>(H_Parent());
-            R_ASSERT(pA);
-            if (pA->GetNightVisionStatus())
-            {
-                m_bRememberActorNVisnStatus = pA->GetNightVisionStatus();
-                pA->SwitchNightVision(false, false, false);
-            }
-            m_zoom_params.m_pNight_vision->Start(m_zoom_params.m_sUseZoomPostprocess, pA, false);
-        }
-    }
-    else if (m_bRememberActorNVisnStatus)
-    {
-        m_bRememberActorNVisnStatus = false;
-        EnableActorNVisnAfterZoom();
+		if (m_zoom_params.m_bNightVisionAllow)
+		{
+			if (!m_zoom_params.m_pNight_vision->IsActive())
+			{
+				CActor *pA = smart_cast<CActor *>(H_Parent());
+				if (!pA->GetNightVisionStatus())
+					m_zoom_params.m_pNight_vision->Start(m_zoom_params.m_sUseZoomPostprocess, pA, false);
+			}
+		}
+		else
+		{
+			if (m_zoom_params.m_pNight_vision)
+			{
+				if (m_zoom_params.m_pNight_vision->IsActive())
+				{
+					m_zoom_params.m_pNight_vision->Stop(100000.0f, false);
+				}
+			}
+		}
     }
 
     if (m_zoom_params.m_pVision)
         m_zoom_params.m_pVision->Update();
-}
-void CWeapon::EnableActorNVisnAfterZoom()
-{
-    CActor *pA = smart_cast<CActor *>(H_Parent());
-    if (!pA)
-        pA = g_actor;
-
-    if (pA)
-    {
-        pA->SwitchNightVision(true, false, false);
-        pA->GetNightVision()->PlaySounds(CNightVisionEffector::eIdleSound);
-    }
 }
 
 bool  CWeapon::need_renderable()
@@ -1451,7 +1450,7 @@ float CWeapon::CurrentZoomFactor()
 {
     return IsScopeAttached() ? m_zoom_params.m_fScopeZoomFactor : m_zoom_params.m_fIronSightZoomFactor;
 };
-void GetZoomData(const float scope_factor, float& delta, float& min_zoom_factor);
+
 void CWeapon::OnZoomIn()
 {
     m_zoom_params.m_bIsZoomModeNow = true;
@@ -1469,14 +1468,14 @@ void CWeapon::OnZoomIn()
         GamePersistent().SetPickableEffectorDOF(true);
 
     if (m_zoom_params.m_sUseBinocularVision.size() && IsScopeAttached() && NULL == m_zoom_params.m_pVision)
-        m_zoom_params.m_pVision = xr_new<CBinocularsVision>(m_zoom_params.m_sUseBinocularVision/*"wpn_binoc"*/);
+        m_zoom_params.m_pVision = xr_new<CBinocularsVision>(m_zoom_params.m_sUseBinocularVision);
 
     if (m_zoom_params.m_sUseZoomPostprocess.size() && IsScopeAttached())
     {
 		CActor *pA = smart_cast<CActor *>(H_Parent());
-        if (pA && NULL == m_zoom_params.m_pNight_vision)
+		if (pA && !m_zoom_params.m_pNight_vision)
         {
-            m_zoom_params.m_pNight_vision = xr_new<CNightVisionEffector>(m_zoom_params.m_sUseZoomPostprocess/*"device_torch"*/);
+			m_zoom_params.m_pNight_vision = xr_new<CNightVisionEffector>(m_zoom_params.m_sUseZoomPostprocess, effNightvisionScope);
         }
     }
 }
@@ -1500,7 +1499,8 @@ void CWeapon::OnZoomOut()
 	
     if (m_zoom_params.m_pNight_vision)
     {
-        m_zoom_params.m_pNight_vision->Stop(100000.0f, false);
+		if (m_zoom_params.m_pNight_vision->IsActive())
+			m_zoom_params.m_pNight_vision->Stop(100000.0f, false);
         xr_delete(m_zoom_params.m_pNight_vision);
     }
 }

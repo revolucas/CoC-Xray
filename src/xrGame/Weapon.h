@@ -296,6 +296,7 @@ protected:
 
         float			m_fIronSightZoomFactor;	//коэффициент увеличения прицеливания
         float			m_fScopeZoomFactor;		//коэффициент увеличения прицела
+		float			m_fScopeZoomFactorMin;
 
         float			m_fZoomRotationFactor;
 
@@ -307,11 +308,26 @@ protected:
         shared_str		m_sUseBinocularVision;
         CBinocularsVision*		m_pVision;
         CNightVisionEffector*	m_pNight_vision;
+		bool			m_bNightVisionAllow;
     } m_zoom_params;
 
     float			m_fRTZoomFactor; //run-time zoom factor
     CUIWindow*		m_UIScope;
 public:
+
+	void GetZoomData(const float scope_factor, float& delta, float& min_zoom_factor)
+	{
+		float def_fov = 1.0f;//float(g_fov);
+		float min_zoom_k = m_zoom_params.m_fScopeZoomFactorMin;// 0.3f;
+		float zoom_step_count = 3.0f;
+		float delta_factor_total = def_fov - scope_factor;
+		//VERIFY(delta_factor_total>0);
+		min_zoom_factor = (def_fov - delta_factor_total)*min_zoom_k;
+		delta = (delta_factor_total*(1 - min_zoom_k)) / zoom_step_count;
+	}
+
+	void					AllowNightVision(bool value) { m_zoom_params.m_bNightVisionAllow = value; };
+	bool					AllowNightVision() { return m_zoom_params.m_bNightVisionAllow; };
 
     IC bool					IsZoomEnabled()	const
     {
@@ -735,16 +751,8 @@ private:
     Fvector					m_overriden_activation_speed;
     bool					m_activation_speed_is_overriden;
     virtual bool			ActivationSpeedOverriden(Fvector& dest, bool clear_override);
-
-    bool					m_bRememberActorNVisnStatus;
 public:
-    virtual void			SetActivationSpeedOverride(Fvector const& speed);
-    bool			GetRememberActorNVisnStatus()
-    {
-        return m_bRememberActorNVisnStatus;
-    };
-    virtual void			EnableActorNVisnAfterZoom();
-
+    virtual void				SetActivationSpeedOverride(Fvector const& speed);
     virtual void				DumpActiveParams(shared_str const & section_name, CInifile & dst_ini) const;
     virtual shared_str const	GetAnticheatSectionName() const
     {
