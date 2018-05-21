@@ -143,22 +143,9 @@ void CStalkerCombatPlanner::initialize			()
 	m_last_enemy_id			= u16(-1);
 	m_last_level_time		= 0;
 	m_last_wounded			= false;
-
-	if (!m_loaded && object().memory().enemy().selected()) {
-		CVisualMemoryManager*visual_memory_manager = object().memory().enemy().selected()->visual_memory();
-		VERIFY				(visual_memory_manager);
-		CScriptActionPlanner::m_storage.set_property(eWorldPropertyUseSuddenness,	!visual_memory_manager->visible_now(&object()));
-	}
-
 	m_loaded				= false;
 
-	if (!object().agent_manager().member().combat_members().empty())
-		CScriptActionPlanner::m_storage.set_property		(eWorldPropertyUseSuddenness,	false);
-
-//  this is possible when i enter combat when it is wait after combat stage
-//	VERIFY					(object().memory().enemy().selected());
-
-	if (m_object->memory().visual().visible_now(m_object->memory().enemy().selected())) {
+	if (m_object->memory().enemy().selected() && m_object->memory().visual().visible_now(m_object->memory().enemy().selected())) {
 		if (m_object->memory().enemy().selected()->human_being())
 			if (object().agent_manager().member().can_cry_noninfo_phrase())
 				if (object().agent_manager().member().members().size() > 1)
@@ -214,7 +201,7 @@ void CStalkerCombatPlanner::add_evaluators		()
 	add_evaluator			(eWorldPropertyLookedOut		,xr_new<CStalkerPropertyEvaluatorMember>			((CPropertyStorage*)0,eWorldPropertyLookedOut,true,true,"looked out"));
 	add_evaluator			(eWorldPropertyPositionHolded	,xr_new<CStalkerPropertyEvaluatorMember>			((CPropertyStorage*)0,eWorldPropertyPositionHolded,true,true,"position holded"));
 	add_evaluator			(eWorldPropertyEnemyDetoured	,xr_new<CStalkerPropertyEvaluatorMember>			((CPropertyStorage*)0,eWorldPropertyEnemyDetoured,true,true,"enemy detoured"));
-	add_evaluator			(eWorldPropertyUseSuddenness	,xr_new<CStalkerPropertyEvaluatorMember>			((CPropertyStorage*)0,eWorldPropertyUseSuddenness,true,true,"use suddenness"));
+	add_evaluator			(eWorldPropertyUseSuddenness	,xr_new<CStalkerPropertyEvaluatorUseSuddenness>		(m_object,"use suddenness"));
 	add_evaluator			(eWorldPropertyCriticallyWounded,xr_new<CStalkerPropertyEvaluatorMember>			(&object().brain().CStalkerPlanner::m_storage,eWorldPropertyCriticallyWounded,true,true,"critically wounded"));
 	add_evaluator			(eWorldPropertyKilledWounded	,xr_new<CStalkerPropertyEvaluatorMember>			(&object().brain().CStalkerPlanner::m_storage,eWorldPropertyKilledWounded,true,true,"killed critically wounded"));
 

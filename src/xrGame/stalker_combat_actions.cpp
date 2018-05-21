@@ -1023,25 +1023,14 @@ void CStalkerActionSuddenAttack::execute()
 
 	inherited::execute();
 
-	//Alundaio: Removed check to allow stalkers to sneak up on enemy even if they are in a group. 
-	//if (object().agent_manager().member().combat_members().size() > 1)
-	//	m_storage->set_property	(eWorldPropertyUseSuddenness,false);
-	//Alundaio: END
-
 	const CEntityAlive *enemy = object().memory().enemy().selected();
 	if (!enemy)
-	{
-		m_storage->set_property	(eWorldPropertyUseSuddenness,false);
 		return;
-	}
 
-	CMemoryInfo							mem_object = object().memory().memory(enemy);
+	CMemoryInfo mem_object = object().memory().memory(enemy);
 
 	if (!mem_object.m_object)
-	{
-		m_storage->set_property	(eWorldPropertyUseSuddenness,false);
 		return;
-	}
 
 	bool visible_now = object().memory().visual().visible_now(enemy);
 	if (visible_now)
@@ -1064,51 +1053,34 @@ void CStalkerActionSuddenAttack::execute()
 	else
 		object().movement().set_nearest_accessible_position(ai().level_graph().vertex_position(mem_object.m_object_params.m_level_vertex_id), mem_object.m_object_params.m_level_vertex_id);
 
-/* 	if (!visible_now) 
-	{
-		u32 target_vertex_id = object().movement().level_path().dest_vertex_id();
-		if (object().ai_location().level_vertex_id() == target_vertex_id) {
-			m_storage->set_property(eWorldPropertyUseSuddenness, false);
-			return;
-		}
-	} */
-
 	float distance = object().Position().distance_to(mem_object.m_object_params.m_position);
 	if (distance >= 15.f) {
 		object().movement().set_body_state(eBodyStateStand);
 		object().movement().set_movement_type(eMovementTypeRun);
+		aim_ready();
 	}
 	else {
-		if (distance >= 8.f) {
-			object().movement().set_body_state(eBodyStateStand);
-			object().movement().set_movement_type(eMovementTypeWalk);
-		}
-		else {
-			if (distance >= 6.f) {
-				object().movement().set_body_state(eBodyStateCrouch);
-				object().movement().set_movement_type(eMovementTypeRun);
+			if (distance >= 8.f) {
+				object().movement().set_body_state(eBodyStateStand);
+				object().movement().set_movement_type(eMovementTypeWalk);
+				aim_ready();
 			}
 			else {
-				if ((distance >= 4.f) || !visible_now) {
+				if (distance >= 6.f) {
 					object().movement().set_body_state(eBodyStateCrouch);
 					object().movement().set_movement_type(eMovementTypeRun);
+					aim_ready();
 				}
 				else {
 					object().movement().set_body_state(eBodyStateCrouch);
 					object().movement().set_movement_type(eMovementTypeStand);
-
-					fire();
+					if (visible_now)
+						fire();
+					else
+						aim_ready();
 				}
 			}
-		}
 	}
-
-	CVisualMemoryManager	*visual_memory_manager = enemy->visual_memory();
-	VERIFY(visual_memory_manager);
-	if (enemy->g_Alive() && !visual_memory_manager->visible_now(&object()))
-		return;
-
-	m_storage->set_property(eWorldPropertyUseSuddenness, false);
 }
 
 //////////////////////////////////////////////////////////////////////////
