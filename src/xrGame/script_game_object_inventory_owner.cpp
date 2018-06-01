@@ -723,8 +723,13 @@ void CScriptGameObject::SetCharacterCommunity(LPCSTR comm, int squad, int group)
     }
     CHARACTER_COMMUNITY	community;
     community.set(comm);
-    pInventoryOwner->SetCommunity(community.index());
-    entity->ChangeTeam(community.team(), squad, group);
+	if (community.index() >= 0)
+	{
+		pInventoryOwner->SetCommunity(community.index());
+		entity->ChangeTeam(community.team(), squad, group);
+	}
+	else
+		ai().script_engine().script_log(ScriptStorage::eLuaMessageTypeInfo, "SetCharacterCommunity can't set %s for %s", comm, Name());
 }
 
 LPCSTR CScriptGameObject::sound_voice_prefix() const
