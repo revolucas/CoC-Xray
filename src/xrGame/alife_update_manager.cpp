@@ -274,7 +274,7 @@ void CALifeUpdateManager::load			(LPCSTR game_name, bool no_assert, bool new_onl
 
 #ifdef DEBUG
 	Memory.mem_compact					();
-	u32									memory_usage = Memory.mem_usage();
+	size_t									memory_usage = Memory.mem_usage();
 #endif
 
 	xr_strcpy								(g_last_saved_game,game_name);

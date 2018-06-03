@@ -84,7 +84,7 @@ IC	u32 CAbstractGraph::vertex_count		() const
 }
 
 TEMPLATE_SPECIALIZATION
-IC	u32 CAbstractGraph::edge_count			() const
+IC	size_t CAbstractGraph::edge_count			() const
 {
 	return						(m_edge_count);
 }

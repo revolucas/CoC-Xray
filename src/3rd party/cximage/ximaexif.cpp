@@ -49,7 +49,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
     for(;;){
         int itemlen;
         int marker = 0;
-        int ll,lh, got;
+        int ll,lh;
         BYTE * Data;
 
         if (SectionsRead >= MAX_SECTIONS){
@@ -99,7 +99,7 @@ bool CxImageJPG::CxExifInfo::DecodeExif(CxFile * hFile, int nReadMode)
         Data[0] = (BYTE)lh;
         Data[1] = (BYTE)ll;
 
-        got = hFile->Read(Data+2, 1, itemlen-2); // Read the whole section.
+        size_t got = hFile->Read(Data+2, 1, itemlen-2); // Read the whole section.
         if (got != itemlen-2){
             strcpy(m_szLastError,"Premature end of file?");
 			return false;

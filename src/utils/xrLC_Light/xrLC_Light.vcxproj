@@ -208,7 +208,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -234,7 +234,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -255,14 +255,14 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;XRLC_LIGHT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling />
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -286,14 +286,14 @@
       <ExceptionHandling>
       </ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -316,14 +316,14 @@
       <ExceptionHandling>
       </ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -347,14 +347,14 @@
       <ExceptionHandling>
       </ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -377,14 +377,14 @@
       <ExceptionHandling>
       </ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -408,14 +408,14 @@
       <ExceptionHandling>
       </ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+      <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -440,7 +440,7 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>
@@ -464,7 +464,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(DxLibDir)Lib\x86;$(xrSdkDir)libraries\$(PlatformShortName)\;$(xrLibDir);$(xrSdkLibDir)FreeImage\Dist;$(xrSdkLibDir)zlib\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <LargeAddressAware>true</LargeAddressAware>

@@ -55,7 +55,7 @@ CObject* IGame_ObjectPool::create(LPCSTR name)
 	CObject* O = (CObject*)NEW_INSTANCE(CLS);
 	if (!O)
 	{
-		LogStackTrace("");
+		//LogStackTrace("");
 		Msg("xrFactory_Create | failed to create %s by clsid %d", name, CLS);
 		return (0);
 	}
@@ -74,7 +74,7 @@ void IGame_ObjectPool::prefetch ()
 {
 R_ASSERT (map_POOL.empty());
 
-u32 mem_0 = Memory.mem_usage();
+size_t mem_0 = Memory.mem_usage();
 float p_time = 1000.f*Device.GetTimerGlobal()->GetElapsed_sec();
 int p_count = 0;
 ::Render->model_Logging (FALSE);
@@ -101,13 +101,13 @@ map_POOL.insert (mk_pair(pObject->cNameSect(),pObject));
 // out statistic
 ::Render->model_Logging (TRUE);
 p_time = 1000.f*Device.GetTimerGlobal()->GetElapsed_sec() - p_time;
-u32 p_mem = Memory.mem_usage() - mem_0;
+size_t p_mem = Memory.mem_usage() - mem_0;
 if (p_count){
 float a_time = float(p_time)/float(p_count);
 Msg ("* [Object-prefetch] objects: %d", p_count);
 Msg ("* [Object-prefetch] time: %d ms", iFloor(p_time));
-Msg ("* [Object-prefetch] memory: %dKb", p_mem/1024);
-Msg ("* [Object-prefetch] average: %2.2f ms, %d bytes", a_time, p_mem/p_count);
+Msg ("* [Object-prefetch] memory: %lldKb", p_mem/1024);
+Msg ("* [Object-prefetch] average: %2.2f ms, %lld bytes", a_time, p_mem/p_count);
 }
 }
 

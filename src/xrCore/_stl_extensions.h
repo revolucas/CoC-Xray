@@ -98,7 +98,7 @@ struct xr_allocator
         typedef xalloc<T> result;
     };
 
-    static void* alloc(const u32& n) { return xr_malloc((u32)n); }
+    static void* alloc(const size_t& n) { return xr_malloc((size_t)n); }
     template <typename T>
     static void dealloc(T*& p) { xr_free(p); }
 };

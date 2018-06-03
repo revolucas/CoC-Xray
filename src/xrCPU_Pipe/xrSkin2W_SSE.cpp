@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #pragma hdrstop
 
+#if 0
+
 #define transform_dir(idx,res,SX,SY,SZ,T1)									\
 __asm	movzx		eax, WORD PTR [esi][idx*(TYPE u16)]S.m					\
 __asm	movaps		res, SX													\
@@ -354,3 +356,5 @@ void __stdcall xrSkin1W_SSE(vertRender*		D,
 	sfence										;	write back cache
 // ------------------------------------------------------------------
 }}
+
+#endif

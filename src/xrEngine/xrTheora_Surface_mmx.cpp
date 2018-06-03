@@ -1,5 +1,7 @@
 #include "stdafx.h"
 
+#if 0
+
 #include "xrTheora_Surface_mmx.h"
 
 #pragma warning(disable:4731)
@@ -275,3 +277,5 @@ lp_tv_uchar tv_yuv2argb(lp_tv_uchar argb_plane, tv_slong argb_width, tv_slong ar
 } // tv_yuv2argb
 
 #pragma warning(default:4731)
+
+#endif

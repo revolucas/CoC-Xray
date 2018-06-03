@@ -48,7 +48,7 @@ void CScriptBinder::clear			()
 void CScriptBinder::reinit			()
 {
 #ifdef DEBUG_MEMORY_MANAGER
-	u32									start = 0;
+	size_t									start = 0;
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
@@ -64,7 +64,7 @@ void CScriptBinder::reinit			()
 	if (g_bMEMO) {
 //		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
 //		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-		Msg					("CScriptBinder::reinit() : %d",Memory.mem_usage() - start);
+		Msg					("CScriptBinder::reinit() : %lld",Memory.mem_usage() - start);
 	}
 #endif // DEBUG_MEMORY_MANAGER
 }
@@ -76,7 +76,7 @@ void CScriptBinder::Load			(LPCSTR section)
 void CScriptBinder::reload			(LPCSTR section)
 {
 #ifdef DEBUG_MEMORY_MANAGER
-	u32									start = 0;
+	size_t									start = 0;
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
@@ -114,7 +114,7 @@ void CScriptBinder::reload			(LPCSTR section)
 	if (g_bMEMO) {
 //		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
 //		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-		Msg					("CScriptBinder::reload() : %d",Memory.mem_usage() - start);
+		Msg					("CScriptBinder::reload() : %lld",Memory.mem_usage() - start);
 	}
 #endif // DEBUG_MEMORY_MANAGER
 }
@@ -122,7 +122,7 @@ void CScriptBinder::reload			(LPCSTR section)
 BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 {
 #ifdef DEBUG_MEMORY_MANAGER
-	u32									start = 0;
+	size_t									start = 0;
 	if (g_bMEMO)
 		start							= Memory.mem_usage();
 #endif // DEBUG_MEMORY_MANAGER
@@ -141,7 +141,7 @@ BOOL CScriptBinder::net_Spawn		(CSE_Abstract* DC)
 	if (g_bMEMO) {
 //		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
 //		lua_gc				(ai().script_engine().lua(),LUA_GCCOLLECT,0);
-		Msg					("CScriptBinder::net_Spawn() : %d",Memory.mem_usage() - start);
+		Msg					("CScriptBinder::net_Spawn() : %lld",Memory.mem_usage() - start);
 	}
 #endif // DEBUG_MEMORY_MANAGER
 

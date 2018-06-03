@@ -94,7 +94,7 @@
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)..\lib\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(xrLibDir)</OutDir>
     <TargetExt>.lib</TargetExt>
     <TargetName>libogg_static</TargetName>
   </PropertyGroup>

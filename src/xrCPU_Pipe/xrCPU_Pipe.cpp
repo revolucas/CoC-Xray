@@ -35,6 +35,7 @@ extern "C" {
 		skin4W_func = xrSkin4W_x86;
 		T->PLC_calc3 = PLC_calc3_x86;
 	
+#if 0
 		// SSE
 		if ( ID->feature & _CPU_FEATURE_SSE) {
 			T->skin1W	= xrSkin1W_SSE;
@@ -44,6 +45,7 @@ extern "C" {
 			skin4W_func = xrSkin4W_SSE;
 			T->PLC_calc3 = PLC_calc3_SSE;
 		}
+#endif
 
 		// Init helper threads
 		ttapi_Init( ID );

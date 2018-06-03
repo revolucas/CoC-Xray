@@ -54,7 +54,7 @@ void CStreamReader::map(const u32& new_offset)
                                  );
     m_current_pointer = m_current_map_view_of_file;
 
-    u32 difference = pure_start_offset - start_offset;
+    size_t difference = pure_start_offset - start_offset;
     m_current_window_size -= difference;
     m_current_pointer += difference;
     m_start_pointer = m_current_pointer;
@@ -63,7 +63,7 @@ void CStreamReader::map(const u32& new_offset)
 void CStreamReader::advance(const int& offset)
 {
     VERIFY(m_current_pointer >= m_start_pointer);
-    VERIFY(u32(m_current_pointer - m_start_pointer) <= m_current_window_size);
+    VERIFY(size_t(m_current_pointer - m_start_pointer) <= m_current_window_size);
     int offset_inside_window = int(m_current_pointer - m_start_pointer);
     if (offset_inside_window + offset >= (int)m_current_window_size)
     {

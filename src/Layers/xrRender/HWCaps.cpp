@@ -6,7 +6,10 @@
 
 #ifndef _EDITOR
 	#include <nvapi.h>
-	#include "ATI/atimgpud.h"
+#ifndef _WIN64
+	#include "ATI/atimgpud.h" //TODO: Fix me! Can't find crossfire SDK anywhere to get atimgpud_s_x64.lib or atimgpud.dll
+#endif
+
 #endif
 
 namespace
@@ -54,7 +57,7 @@ u32 GetNVGpuNum()
 	Msg	("* NVidia MGPU: Logical(%d), Physical(%d)", physicalGPUCount, logicalGPUCount);
 
 	//	Assume that we are running on logical GPU with most physical GPUs connected.
-	for ( u32 i = 0; i<logicalGPUCount; i++ )
+	for ( u32 i = 0; i<logicalGPUCount; ++i )
 	{
 		status = NvAPI_GetPhysicalGPUsFromLogicalGPU( logicalGPUs[i], physicalGPUs, &physicalGPUCount);
 		if (status == NVAPI_OK)
@@ -71,13 +74,16 @@ u32 GetNVGpuNum()
 
 u32 GetATIGpuNum()
 {
+#ifndef _WIN64
 	int iGpuNum = AtiMultiGPUAdapters();
-	
-	if (iGpuNum <= 0)
-		return 0;
+#else
+	int iGpuNum = 1;
+#endif
 
 	if (iGpuNum>1)
+	{
 		Msg	("* ATI MGPU: %d-Way CrossFire detected.", iGpuNum);
+	}
 
 	return iGpuNum;
 }

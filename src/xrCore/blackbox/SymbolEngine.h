@@ -24,7 +24,7 @@ USE_BUGSLAYERUTIL - If defined, the class will have another
                     BUGSLAYERUTIL.H to include this file.
 ----------------------------------------------------------------------*/
 
-#ifndef _SYMBOLENGINE_H
+#if 0 // #ifndef _SYMBOLENGINE_H
 #define _SYMBOLENGINE_H
 
 // You could include either IMAGEHLP.DLL or DBGHELP.DLL.

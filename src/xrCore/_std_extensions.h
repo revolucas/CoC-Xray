@@ -80,14 +80,14 @@ struct XRCORE_API xr_token
 
 IC LPCSTR get_token_name(xr_token* tokens, int key)
 {
-    for (int k = 0; tokens[k].name; k++)
+    for (size_t k = 0; tokens[k].name; k++)
         if (key == tokens[k].id) return tokens[k].name;
     return "";
 }
 
 IC int get_token_id(xr_token* tokens, LPCSTR key)
 {
-    for (int k = 0; tokens[k].name; k++)
+    for (size_t k = 0; tokens[k].name; k++)
         if (stricmp(tokens[k].name, key) == 0)
             return tokens[k].id;
     return -1;
@@ -239,7 +239,7 @@ inline errno_t xr_strcpy(LPSTR destination, size_t const destination_size, LPCST
 
 inline errno_t xr_strcat(LPSTR destination, size_t const buffer_size, LPCSTR source)
 {
-    size_t const destination_length = xr_strlen(destination);
+	size_t const destination_length = strlen(destination);
     LPSTR i = destination + destination_length;
     LPSTR const e = destination + buffer_size - 1;
     if (i > e)
@@ -270,13 +270,13 @@ inline int __cdecl xr_sprintf(char(&destination)[count], LPCSTR format_string, .
 
 # pragma deprecated( strcpy, strcpy_s, sprintf, sprintf_s, strcat, strcat_s )
 
-template <int count>
+template <size_t count>
 inline errno_t xr_strcpy(char(&destination)[count], LPCSTR source)
 {
     return xr_strcpy(destination, count, source);
 }
 
-template <int count>
+template <size_t count>
 inline errno_t xr_strcat(char(&destination)[count], LPCSTR source)
 {
     return xr_strcat(destination, count, source);

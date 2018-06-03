@@ -23,6 +23,8 @@ extern CPHWorld *ph_world;
 ///////////////////////////////////////////////////////////////////
 
 #include "ExtendedGeom.h"
+
+#include <limits>
 //union dInfBytes dInfinityValue = {{0,0,0x80,0x7f}};
 //PhysicsStepTimeCallback		*physics_step_time_callback				= 0;
 
@@ -256,7 +258,7 @@ IC static int CollideIntoGroup(dGeomID o1, dGeomID o2,dJointGroupID jointGroup,C
 
 
 		if	(pushing_neg)
-			surface.mu=dInfinity;
+			surface.mu = std::numeric_limits<dReal>::infinity();;
 		if	(do_collide && collided_contacts<MAX_CONTACTS)
 		{
 			++collided_contacts;

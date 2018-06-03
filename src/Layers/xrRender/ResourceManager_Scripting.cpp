@@ -167,7 +167,12 @@ static void *lua_alloc		(void *ud, void *ptr, size_t osize, size_t nsize) {
 // export
 void	CResourceManager::LS_Load			()
 {
+#ifdef USE_GSC_MEM_ALLOC
 	LSVM			= lua_newstate(lua_alloc, NULL);
+#else
+	LSVM = luaL_newstate();
+#endif //-USE_GSC_MEM_ALLOC
+
 	if (!LSVM)		{
 		Msg			("! ERROR : Cannot initialize LUA VM!");
 		return;

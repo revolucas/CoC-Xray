@@ -3,7 +3,7 @@
 Copyright (c) 1997-2000 John Robbins -- All rights reserved.
 ----------------------------------------------------------------------*/
 
-#ifndef _CRASHHANDLER_H
+#if 0 // #ifndef _CRASHHANDLER_H
 #define _CRASHHANDLER_H
 
 #ifdef __cplusplus

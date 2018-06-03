@@ -6,7 +6,7 @@
 #include "FS_impl.h"
 
 XRCORE_API extern str_container* g_pStringContainer = NULL;
-#define HEADER 16 // ref + len + crc + next
+#define HEADER (12 + sizeof(void*)) // ref + len + crc + next
 
 #if 1
 
@@ -51,11 +51,11 @@ struct str_container_impl
     {
         for (u32 i = 0; i < buffer_size; ++i)
         {
-            str_value** current = &buffer[i];
+			str_value** current = &buffer[i];
 
             while (*current != NULL)
             {
-                str_value* value = *current;
+				str_value* value = *current;
                 if (!value->dwReference)
                 {
                     *current = value->next;
@@ -153,12 +153,7 @@ str_value* str_container::dock(str_c value)
     // calc len
     u32 s_len = xr_strlen(value);
     u32 s_len_with_zero = (u32)s_len + 1;
-
-	if (sizeof(str_value) + s_len_with_zero >= 4096)
-	{
-		LogStackTrace("ERROR: sizeof(str_value) + s_len_with_zero >= 4096");
-	}
-	VERIFY(sizeof(str_value) + s_len_with_zero < 4096);
+    VERIFY(HEADER + s_len_with_zero < 4096);
 
     // setup find structure
     char header[sizeof(str_value)];
@@ -182,7 +177,7 @@ str_value* str_container::dock(str_c value)
        )
     {
 
-		result = (str_value*)Memory.mem_alloc(sizeof(str_value) + s_len_with_zero
+        result = (str_value*)Memory.mem_alloc(HEADER + s_len_with_zero
 #ifdef DEBUG_MEMORY_NAME
                                               , "storage: sstring"
 #endif // DEBUG_MEMORY_NAME

@@ -503,7 +503,7 @@ void *mmap ( void *ptr, INTERNAL_INTPTR_T size, INTERNAL_INTPTR_T prot, INTERNAL
 		if(ptr)
 		{	/* prot==PROT_NONE also appears to be a euphemism for free */
 			MEMORY_BASIC_INFORMATION mbi;
-			DWORD read=0;
+			size_t read=0;
 			for(p=((char *)ptr)+read; read<(DWORD) size && VirtualQuery(p, &mbi, sizeof(mbi)); read+=mbi.RegionSize)
 			{
 				if(mbi.State & MEM_COMMIT)

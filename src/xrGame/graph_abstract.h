@@ -45,7 +45,7 @@ public:
 
 private:
 	VERTICES					m_vertices;
-	u32							m_edge_count;
+	size_t						m_edge_count;
 
 public:
 	IC									CGraphAbstract	();
@@ -58,7 +58,7 @@ public:
 	IC		void						add_edge		(const _vertex_id_type &vertex_id0, const _vertex_id_type &vertex_id1, const _edge_weight_type &edge_weight0, const _edge_weight_type &edge_weight1);
 	IC		void						remove_edge		(const _vertex_id_type &vertex_id0, const _vertex_id_type &vertex_id1);
 	IC		u32							vertex_count	() const;
-	IC		u32							edge_count		() const;
+	IC		size_t						edge_count		() const;
 	IC		bool						empty			() const;
 	IC		const VERTICES				&vertices		() const;
 	IC		VERTICES					&vertices		();
