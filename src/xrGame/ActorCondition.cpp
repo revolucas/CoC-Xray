@@ -22,6 +22,7 @@
 #include "ui/UIMainIngameWnd.h"
 #include "ui/UIStatic.h"
 
+#include "CustomOutfit.h"
 #define MAX_SATIETY					1.0f
 #define START_SATIETY				0.5f
 
@@ -454,10 +455,16 @@ void CActorCondition::ConditionJump(float weight)
 
 void CActorCondition::ConditionWalk(float weight, bool accel, bool sprint)
 {	
-	float power			=	m_fWalkPower;
-	power				+=	m_fWalkWeightPower*weight*(weight>1.f?m_fOverweightWalkK:1.f);
-	power				*=	m_fDeltaTime*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
-	m_fPower			-=	HitPowerEffect(power);
+	float overweight_k = m_fOverweightWalkK;
+
+	CCustomOutfit* outfit = object().GetOutfit();
+	if (outfit)
+		overweight_k += outfit->m_fOverweightWalkK;
+
+	float power = m_fWalkPower;
+	power += m_fWalkWeightPower*weight*(weight>1.f ? overweight_k : 1.f);
+	power *= m_fDeltaTime*(accel?(sprint?m_fSprintK:m_fAccelK):1.f);
+	m_fPower -=	HitPowerEffect(power);
 }
 
 void CActorCondition::ConditionStand(float weight)
