@@ -295,7 +295,12 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 				CCustomOutfit* outfit = GetOutfit();
 				if (outfit)
+				{
 					accel_k *= outfit->m_fWalkAccel;
+
+					if (inventory().TotalWeight() > MaxWalkWeight())
+						accel_k *= outfit->m_fOverweightWalkK;
+				}
 
 				scale	=	accel_k/scale;
 				if (bAccelerated)

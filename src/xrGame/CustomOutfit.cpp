@@ -106,7 +106,7 @@ void CCustomOutfit::Load(LPCSTR section)
 
 	m_fJumpSpeed = READ_IF_EXISTS(pSettings, r_float, section, "jump_speed", 1.f);
 	m_fWalkAccel = READ_IF_EXISTS(pSettings, r_float, section, "walk_accel", 1.f);
-	m_fOverweightWalkK = READ_IF_EXISTS(pSettings, r_float, section, "overweight_walk_k", 1.f);
+	m_fOverweightWalkK = READ_IF_EXISTS(pSettings, r_float, section, "overweight_walk_accel", 1.f);
 
 	//m_full_icon_name		= pSettings->r_string( section, "full_icon_name" );
 	m_artefact_count 		= READ_IF_EXISTS( pSettings, r_u32, section, "artefact_count", 0 );
