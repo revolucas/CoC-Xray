@@ -1,7 +1,7 @@
 #include "pch_script.h"
 #include "InventoryOwner.h"
 #include "GameObject.h"
-
+#include "Inventory.h"
 using namespace luabind;
 
 #pragma optimize("s",on)
@@ -9,8 +9,26 @@ void CInventoryOwner::script_register(lua_State *L)
 {
 	module(L)
 		[
+			class_<CInventory>("CInventory")
+			.def("TotalWeight", &CInventory::TotalWeight)
+			.def("CalcTotalWeight", &CInventory::CalcTotalWeight)
+			.def("GetActiveSlot", &CInventory::GetActiveSlot)
+			.def("SetActiveSlot", &CInventory::SetActiveSlot)
+			.def("GetMaxWeight", &CInventory::GetMaxWeight)
+			.def("SetMaxWeight", &CInventory::SetMaxWeight)
+			.def("BeltWidth", &CInventory::BeltWidth)
+			.def("Activate", &CInventory::Activate)
+			.def("InSlot", &CInventory::InSlot)
+			.def("InBelt", &CInventory::InBelt)
+			.def("InRuck", &CInventory::InRuck)
+			.def("ItemFromSlot", &CInventory::ItemFromSlot)
+			,
 			class_<CInventoryOwner>("CInventoryOwner")
 			//.def(constructor<>())
+			.def("trade_section", &CInventoryOwner::trade_section)
+			.def("sell_useless_items", &CInventoryOwner::sell_useless_items)
+			.def("buy_supplies", &CInventoryOwner::buy_supplies)
+			.def("inventory", (CInventory& (CInventoryOwner::*)())&CInventoryOwner::inventory)
 			.def("IconName", &CInventoryOwner::IconName)
 			.def("get_money", &CInventoryOwner::get_money)
 			.def("EnableTalk", &CInventoryOwner::EnableTalk)
