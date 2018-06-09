@@ -5,7 +5,6 @@
 #include "inventory.h"
 #include "character_info.h"
 #include "xr_level_controller.h"
-#include "UsableScriptObject.h"
 #include "customzone.h"
 #include "../xrEngine/gamemtllib.h"
 #include "ui/UIMainIngameWnd.h"
@@ -206,8 +205,8 @@ void	CActor::PickupModeUpdate_COD	()
 
 	if (pNearestItem && m_bPickupMode && !m_pPersonWeLookingAt)
 	{
-		CUsableScriptObject*	pUsableObject = smart_cast<CUsableScriptObject*>(pNearestItem);
-		if(pUsableObject && (!m_pUsableObject))
+		CGameObject*	pUsableObject = smart_cast<CGameObject*>(pNearestItem);
+		if (pUsableObject && (!m_pObjectWeLookingAt))
 			pUsableObject->use(this);
 
 		//подбирание объекта

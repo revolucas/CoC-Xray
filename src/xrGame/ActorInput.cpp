@@ -17,7 +17,6 @@
 #include "level.h"
 #include "game_cl_base.h"
 #include "xr_level_controller.h"
-#include "UsableScriptObject.h"
 #include "actorcondition.h"
 #include "actor_input_handler.h"
 #include "string_table.h"
@@ -381,9 +380,9 @@ void CActor::ActorUse()
 
 	
 
-	if(m_pUsableObject && NULL==m_pObjectWeLookingAt->cast_inventory_item())
+	if (m_pObjectWeLookingAt && NULL == m_pObjectWeLookingAt->cast_inventory_item())
 	{
-		m_pUsableObject->use(this);
+		m_pObjectWeLookingAt->use(this);
 	}
 	
 	if ( m_pInvBoxWeLookingAt && m_pInvBoxWeLookingAt->nonscript_usable() )
@@ -399,7 +398,7 @@ void CActor::ActorUse()
 		return;
 	}
 
-	if(!m_pUsableObject||m_pUsableObject->nonscript_usable())
+	if (!m_pObjectWeLookingAt || m_pObjectWeLookingAt->nonscript_usable())
 	{
 		bool bCaptured = false;
 

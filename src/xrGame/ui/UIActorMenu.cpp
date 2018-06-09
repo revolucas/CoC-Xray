@@ -182,6 +182,7 @@ void CUIActorMenu::Show(bool status)
 	{
 		PlaySnd								(eSndClose);
 		SetMenuMode							(mmUndefined);
+		Actor()->RepackAmmo();
 	}
 	m_ActorStateInfo->Show					(status);
 }

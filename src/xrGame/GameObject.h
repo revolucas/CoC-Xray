@@ -6,18 +6,18 @@
 #define AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_
 #pragma once
 
+#include "stdafx.h"
 #include "../xrEngine/xr_object.h"
 #include "xrServer_Space.h"
 #include "alife_space.h"
-#include "UsableScriptObject.h"
 #include "script_binder.h"
 #include "Hit.h"
 #include "game_object_space.h"
 
+class CScriptGameObject;
 class CPhysicsShell;
 class CSE_Abstract;
 class CPHSynchronize;
-class CScriptGameObject;
 class CInventoryItem;
 class CEntity;
 class CEntityAlive;
@@ -42,7 +42,6 @@ class CAttachableItem;
 class animation_movement_controller;
 class CBlend;
 class ai_obstacle;
-
 class IKinematics;
 
 template <typename _return_type>
@@ -50,7 +49,6 @@ class CScriptCallbackEx;
 
 class CGameObject : 
 	public CObject, 
-	public CUsableScriptObject,
 	public CScriptBinder
 {
 	typedef CObject inherited;
@@ -91,7 +89,16 @@ public:
 
 public:
 	virtual bool						feel_touch_on_contact	(CObject *)					{return TRUE;}
-	virtual bool						use						(CGameObject* who_use)		{return CUsableScriptObject::use(who_use);};
+	virtual bool		use(CGameObject* who_use);
+	virtual LPCSTR		tip_text();
+	void				set_tip_text(LPCSTR new_text);
+	virtual void		set_tip_text_default();
+	bool				nonscript_usable();
+	void				set_nonscript_usable(bool usable);
+
+private:
+	shared_str			m_sTipText;
+	bool				m_bNonscriptUsable;
 
 public:
 	CInifile				*m_ini_file;

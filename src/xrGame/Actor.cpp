@@ -1,4 +1,4 @@
-#include "pch_script.h"
+п»ї#include "pch_script.h"
 #include "Actor_Flags.h"
 #include "hudmanager.h"
 #ifdef DEBUG
@@ -43,7 +43,6 @@
 #include "game_cl_single.h"
 #include "xrmessages.h"
 #include "string_table.h"
-#include "usablescriptobject.h"
 #include "../xrEngine/cl_intersect.h"
 //#include "ExtendedGeom.h"
 #include "alife_registry_wrappers.h"
@@ -140,7 +139,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     fPrevCamPos = 0.0f;
     vPrevCamDir.set(0.f, 0.f, 1.f);
     fCurAVelocity = 0.0f;
-    // эффекторы
+    // ГЅГґГґГҐГЄГІГ®Г°Г»
     pCamBobbing = 0;
 
 
@@ -180,7 +179,7 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     Device.seqRender.Add	(this,REG_PRIORITY_LOW);
 #endif
 
-    //разрешить использование пояса в inventory
+    //Г°Г Г§Г°ГҐГёГЁГІГј ГЁГ±ГЇГ®Г«ГјГ§Г®ГўГ Г­ГЁГҐ ГЇГ®ГїГ±Г  Гў inventory
     inventory().SetBeltUseful(true);
 
     m_pPersonWeLookingAt = NULL;
@@ -200,9 +199,6 @@ CActor::CActor() : CEntityAlive(), current_ik_cam_shift(0)
     m_fSprintFactor = 4.f;
 
     //hFriendlyIndicator.create(FVF::F_LIT,RCache.Vertex.Buffer(),RCache.QuadIB);
-
-    m_pUsableObject = NULL;
-
 
     m_anims = xr_new<SActorMotions>();
 	//Alundaio: Needed for car
@@ -276,7 +272,6 @@ void CActor::reinit()
     character_physics_support()->in_Init();
     material().reinit();
 
-    m_pUsableObject = NULL;
     if (!g_dedicated_server)
         memory().reinit();
 
@@ -448,7 +443,7 @@ void CActor::Load(LPCSTR section)
     // sheduler
     shedule.t_min = shedule.t_max = 1;
 
-    // настройки дисперсии стрельбы
+    // Г­Г Г±ГІГ°Г®Г©ГЄГЁ Г¤ГЁГ±ГЇГҐГ°Г±ГЁГЁ Г±ГІГ°ГҐГ«ГјГЎГ»
     m_fDispBase = pSettings->r_float(section, "disp_base");
     m_fDispBase = deg2rad(m_fDispBase);
 
@@ -781,7 +776,7 @@ void CActor::Die(CObject* who)
         };
 
 
-        ///!!! чистка пояса
+        ///!!! Г·ГЁГ±ГІГЄГ  ГЇГ®ГїГ±Г 
         TIItemContainer &l_blist = inventory().m_belt;
         while (!l_blist.empty())
             inventory().Ruck(l_blist.front());
@@ -1263,7 +1258,7 @@ void CActor::shedule_Update(u32 DT)
 
     inherited::shedule_Update(DT);
 
-    //эффектор включаемый при ходьбе
+    //ГЅГґГґГҐГЄГІГ®Г° ГўГЄГ«ГѕГ·Г ГҐГ¬Г»Г© ГЇГ°ГЁ ГµГ®Г¤ГјГЎГҐ
     if (!pCamBobbing)
     {
         pCamBobbing = xr_new<CEffectorBobbing>();
@@ -1271,7 +1266,7 @@ void CActor::shedule_Update(u32 DT)
     }
     pCamBobbing->SetState(mstate_real, conditions().IsLimping(), IsZoomAimingMode());
 
-    //звук тяжелого дыхания при уталости и хромании
+    //Г§ГўГіГЄ ГІГїГ¦ГҐГ«Г®ГЈГ® Г¤Г»ГµГ Г­ГЁГї ГЇГ°ГЁ ГіГІГ Г«Г®Г±ГІГЁ ГЁ ГµГ°Г®Г¬Г Г­ГЁГЁ
     if (this == Level().CurrentControlEntity() && !g_dedicated_server)
     {
         if (conditions().IsLimping() && g_Alive() && !psActorFlags.test(AF_GODMODE_RT))
@@ -1339,11 +1334,11 @@ void CActor::shedule_Update(u32 DT)
             m_DangerSnd.stop();
     }
 
-    //если в режиме HUD, то сама модель актера не рисуется
+    //ГҐГ±Г«ГЁ Гў Г°ГҐГ¦ГЁГ¬ГҐ HUD, ГІГ® Г±Г Г¬Г  Г¬Г®Г¤ГҐГ«Гј Г ГЄГІГҐГ°Г  Г­ГҐ Г°ГЁГ±ГіГҐГІГ±Гї
     if (!character_physics_support()->IsRemoved())
         setVisible(!HUDview());
 
-    //что актер видит перед собой
+    //Г·ГІГ® Г ГЄГІГҐГ° ГўГЁГ¤ГЁГІ ГЇГҐГ°ГҐГ¤ Г±Г®ГЎГ®Г©
     collide::rq_result& RQ = HUD().GetCurrentRayQuery();
 
 	float fAcquistionRange = cam_active == eacFirstEye ? 2.0f : 3.0f;
@@ -1351,15 +1346,14 @@ void CActor::shedule_Update(u32 DT)
     {
         CGameObject* game_object = smart_cast<CGameObject*>(RQ.O);
 		m_pObjectWeLookingAt = game_object;
-        m_pUsableObject = smart_cast<CUsableScriptObject*>(game_object);
         m_pInvBoxWeLookingAt = smart_cast<CInventoryBox*>(game_object);
         m_pPersonWeLookingAt = smart_cast<CInventoryOwner*>(game_object);
         m_pVehicleWeLookingAt = smart_cast<CHolderCustom*>(game_object);
         CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(game_object);
 
-		if (m_pUsableObject && m_pUsableObject->tip_text())
+		if (game_object->tip_text())
 		{
-			m_sDefaultObjAction = CStringTable().translate(m_pUsableObject->tip_text());
+			m_sDefaultObjAction = CStringTable().translate(game_object->tip_text());
 		}
 		else
 		{
@@ -1406,7 +1400,6 @@ void CActor::shedule_Update(u32 DT)
     {
         m_pPersonWeLookingAt = NULL;
         m_sDefaultObjAction = NULL;
-        m_pUsableObject = NULL;
         m_pObjectWeLookingAt = NULL;
         m_pVehicleWeLookingAt = NULL;
         m_pInvBoxWeLookingAt = NULL;
@@ -1414,7 +1407,7 @@ void CActor::shedule_Update(u32 DT)
 
     //	UpdateSleep									();
 
-    //для свойст артефактов, находящихся на поясе
+    //Г¤Г«Гї Г±ГўГ®Г©Г±ГІ Г Г°ГІГҐГґГ ГЄГІГ®Гў, Г­Г ГµГ®Г¤ГїГ№ГЁГµГ±Гї Г­Г  ГЇГ®ГїГ±ГҐ
     UpdateArtefactsOnBeltAndOutfit();
     m_pPhysics_support->in_shedule_Update(DT);
     Check_for_AutoPickUp();
@@ -1895,11 +1888,11 @@ bool CActor::can_attach(const CInventoryItem *inventory_item) const
     if (!item || /*!item->enabled() ||*/ !item->can_be_attached())
         return			(false);
 
-    //можно ли присоединять объекты такого типа
+    //Г¬Г®Г¦Г­Г® Г«ГЁ ГЇГ°ГЁГ±Г®ГҐГ¤ГЁГ­ГїГІГј Г®ГЎГєГҐГЄГІГ» ГІГ ГЄГ®ГЈГ® ГІГЁГЇГ 
     if (m_attach_item_sections.end() == std::find(m_attach_item_sections.begin(), m_attach_item_sections.end(), inventory_item->object().cNameSect()))
         return false;
 
-    //если уже есть присоединненый объет такого типа 
+    //ГҐГ±Г«ГЁ ГіГ¦ГҐ ГҐГ±ГІГј ГЇГ°ГЁГ±Г®ГҐГ¤ГЁГ­Г­ГҐГ­Г»Г© Г®ГЎГєГҐГІ ГІГ ГЄГ®ГЈГ® ГІГЁГЇГ  
     if (attached(inventory_item->object().cNameSect()))
         return false;
 
@@ -2159,5 +2152,62 @@ void CActor::SwitchNightVision(bool vision_on, bool use_sounds, bool send_event)
 		packet.w_u32(m_trader_flags.get());
 		object->u_EventSend(packet);
 		//Msg("GE_TRADER_FLAGS event sent %d", m_trader_flags.get());
+	}
+}
+
+void CActor::RepackAmmo()
+{
+	xr_vector<CWeaponAmmo*>  _ammo;
+
+	for (PIItem &_pIItem : inventory().m_ruck)
+	{
+		CWeaponAmmo* pAmmo = smart_cast<CWeaponAmmo*>(_pIItem);
+		if (pAmmo && pAmmo->m_boxCurr < pAmmo->m_boxSize) _ammo.push_back(pAmmo);
+	}
+
+	while (!_ammo.empty())
+	{
+		shared_str asect = _ammo[0]->cNameSect();
+		u16 box_size = _ammo[0]->m_boxSize; 
+		u32 cnt = 0;
+		u16 cart_cnt = 0;
+
+		for (CWeaponAmmo* ammo : _ammo)
+		{
+			if (asect == ammo->cNameSect())
+			{
+				cnt = cnt + ammo->m_boxCurr;
+				cart_cnt++;
+			}
+		}
+
+		if (cart_cnt > 1)
+		{
+			for (CWeaponAmmo* ammo : _ammo)
+			{
+				if (asect == ammo->cNameSect())
+				{
+					if (cnt > 0)
+					{
+						if (cnt > box_size)
+						{
+							ammo->m_boxCurr = box_size;
+							cnt = cnt - box_size;
+						}
+						else
+						{
+							ammo->m_boxCurr = (u16)cnt;
+							cnt = 0;
+						}
+					}
+					else
+					{
+						ammo->DestroyObject();
+					}
+				}
+			}
+		}
+		
+		_ammo.erase(std::remove_if(_ammo.begin(), _ammo.end(), [asect](CWeaponAmmo* a) { return a->cNameSect() == asect; }), _ammo.end());
 	}
 }

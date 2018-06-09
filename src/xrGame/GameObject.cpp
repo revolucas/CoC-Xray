@@ -56,6 +56,9 @@ CGameObject::CGameObject		()
 
 	m_callbacks					= xr_new<CALLBACK_MAP>();
 	m_anim_mov_ctrl				= 0;
+
+	m_bNonscriptUsable = true;
+	set_tip_text_default();
 }
 
 CGameObject::~CGameObject		()
@@ -1144,3 +1147,38 @@ void CGameObject::OnRender			()
 	}
 }
 #endif // DEBUG
+
+#include "doors_door.h"
+#include "doors.h"
+bool CGameObject::use(CGameObject* who_use)
+{
+	VERIFY(who_use);
+	if (this->lua_game_object() && this->lua_game_object()->m_door && (this->lua_game_object()->m_door->is_blocked(doors::door_state_open) || this->lua_game_object()->m_door->is_blocked(doors::door_state_closed)))
+		return false;
+
+	this->callback(GameObject::eUseObject)(lua_game_object(), who_use->lua_game_object());
+
+	return true;
+}
+
+LPCSTR CGameObject::tip_text()
+{
+	return *m_sTipText;
+}
+void CGameObject::set_tip_text(LPCSTR new_text)
+{
+	m_sTipText = new_text;
+}
+void CGameObject::set_tip_text_default()
+{
+	m_sTipText = NULL;
+}
+
+bool CGameObject::nonscript_usable()
+{
+	return m_bNonscriptUsable;
+}
+void CGameObject::set_nonscript_usable(bool usable)
+{
+	m_bNonscriptUsable = usable;
+}
