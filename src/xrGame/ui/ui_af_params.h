@@ -7,6 +7,10 @@ class CUIXml;
 class CUIStatic;
 class CUITextWnd;
 class UIArtefactParamItem;
+class CCustomOutfit;
+class CHelmet;
+class CBackpack;
+class CArtefact;
 
 class CUIArtefactParams : public CUIWindow
 {
@@ -15,8 +19,10 @@ public:
 	virtual			~CUIArtefactParams		();
 			void	InitFromXml				(CUIXml& xml);
 			bool	Check					(const shared_str& af_section);
-			void	SetInfo					(CInventoryItem& pInvItem);
-
+			void	SetInfo					(CCustomOutfit* pInvItem);
+			void	SetInfo					(CHelmet* pInvItem);
+			void	SetInfo					(CBackpack* pInvItem);
+			void	SetInfo					(CArtefact* pInvItem);
 protected:
 	UIArtefactParamItem*	m_immunity_item[9];
 	UIArtefactParamItem*	m_restore_item[ALife::eRestoreTypeMax];
@@ -25,6 +31,7 @@ protected:
 
 	UIArtefactParamItem*	m_fJumpSpeed;
 	UIArtefactParamItem*	m_fWalkAccel;
+	UIArtefactParamItem*	m_fOverweightWalkAccel;
 
 	CUIStatic*				m_Prop_line;
 

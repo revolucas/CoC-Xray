@@ -22,6 +22,8 @@
 #include "../Weapon.h"
 #include "../CustomOutfit.h"
 #include "../ActorHelmet.h"
+#include "../Artefact.h"
+#include "../ActorBackpack.h"
 #include "../eatable_item.h"
 #include "UICellItem.h"
 
@@ -373,30 +375,54 @@ void CUIItemInfo::TryAddWpnInfo( CInventoryItem& pInvItem, CInventoryItem* pComp
 
 void CUIItemInfo::TryAddArtefactInfo	(CInventoryItem& pInvItem)
 {
-	if ( UIArtefactParams->Check( pInvItem.object().cNameSect() ) )
+	if (!UIArtefactParams)
+		return;
+
+	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&pInvItem);
+	CHelmet* helmet = smart_cast<CHelmet*>(&pInvItem);
+	CBackpack* backpack = smart_cast<CBackpack*>(&pInvItem);
+	CArtefact* arte = smart_cast<CArtefact*>(&pInvItem);
+	if (outfit)
 	{
-		UIArtefactParams->SetInfo( pInvItem );
-		UIDesc->AddWindow( UIArtefactParams, false );
+		UIArtefactParams->SetInfo(outfit);
+		UIDesc->AddWindow(UIArtefactParams, false);
+	}
+	else if (arte)
+	{
+		UIArtefactParams->SetInfo(arte);
+		UIDesc->AddWindow(UIArtefactParams, false);
+	}
+	else if (helmet)
+	{
+		UIArtefactParams->SetInfo(helmet);
+		UIDesc->AddWindow(UIArtefactParams, false);
+	}
+	else if (backpack)
+	{
+		UIArtefactParams->SetInfo(backpack);
+		UIDesc->AddWindow(UIArtefactParams, false);
 	}
 }
 
 void CUIItemInfo::TryAddOutfitInfo( CInventoryItem& pInvItem, CInventoryItem* pCompareItem )
 {
+	if (!UIOutfitInfo)
+		return;
+
 	CCustomOutfit* outfit = smart_cast<CCustomOutfit*>(&pInvItem);
 	CHelmet* helmet = smart_cast<CHelmet*>(&pInvItem);
-	if ( outfit && UIOutfitInfo )
+	if (outfit)
 	{
 		CCustomOutfit* comp_outfit = smart_cast<CCustomOutfit*>(pCompareItem);
 		UIOutfitInfo->UpdateInfo( outfit, comp_outfit );
 		UIDesc->AddWindow( UIOutfitInfo, false );
 	}
-	if ( helmet && UIOutfitInfo )
+	else if (helmet)
 	{
 		CHelmet* comp_helmet = smart_cast<CHelmet*>(pCompareItem);
 		UIOutfitInfo->UpdateInfo( helmet, comp_helmet );
 		UIDesc->AddWindow( UIOutfitInfo, false );
 	}
-
 }
 
 void CUIItemInfo::TryAddUpgradeInfo( CInventoryItem& pInvItem )
