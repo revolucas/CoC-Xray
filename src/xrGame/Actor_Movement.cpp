@@ -18,6 +18,7 @@
 #include "player_hud.h"
 
 #include "CustomOutfit.h"
+#include "ActorBackpack.h"
 
 #ifdef DEBUG
 #include "phdebug.h"
@@ -224,6 +225,10 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 			if (outfit)
 				jumpSpd *= outfit->m_fJumpSpeed;
 
+			CBackpack* backpack = smart_cast<CBackpack*>(inventory().ItemFromSlot(BACKPACK_SLOT));
+			if (backpack)
+				jumpSpd *= backpack->m_fJumpSpeed;
+
 			Jump = jumpSpd;
 			m_fJumpTime = s_fJumpTime;
 
@@ -300,6 +305,15 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 
 					if (inventory().TotalWeight() > MaxWalkWeight())
 						accel_k *= outfit->m_fOverweightWalkK;
+				}
+
+				CBackpack* backpack = smart_cast<CBackpack*>(inventory().ItemFromSlot(BACKPACK_SLOT));
+				if (backpack)
+				{
+					accel_k *= backpack->m_fWalkAccel;
+
+					if (inventory().TotalWeight() > MaxWalkWeight())
+						accel_k *= backpack->m_fOverweightWalkK;
 				}
 
 				scale	=	accel_k/scale;
