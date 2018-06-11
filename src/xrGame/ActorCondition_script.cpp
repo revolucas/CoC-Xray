@@ -11,9 +11,14 @@ void BoosterForEach(CActorCondition* conditions, const luabind::functor<bool> &f
 	CEntityCondition::BOOSTER_MAP::const_iterator it_e = cur_booster_influences.end();
 	for (; it != it_e; ++it)
 	{
-		if (funct((*it).first,(*it).second.fBoostTime,(*it).second.fBoostValue) == true)
+		if (funct((*it).first, (*it).second.fBoostTime, (*it).second.fBoostValue) == true)
 			break;
 	}
+}
+
+bool ApplyBooster_script(CActorCondition* cond, const SBooster& B, LPCSTR sect)
+{
+	return cond->ApplyBooster(B, sect);
 }
 
 #pragma optimize("s",on)
@@ -21,6 +26,12 @@ void CActorCondition::script_register(lua_State *L)
 {
 	module(L)
 		[
+			class_<SBooster>("SBooster")
+			.def(constructor<>())
+			.def_readwrite("fBoostTime", &SBooster::fBoostTime)
+			.def_readwrite("fBoostValue", &SBooster::fBoostValue)
+			.def_readwrite("m_type", &SBooster::m_type)
+			,
 			class_<CEntityCondition>("CEntityCondition")
 			//.def(constructor<>())
 			.def("GetWhoHitLastTimeID", &CEntityCondition::GetWhoHitLastTimeID)
@@ -65,6 +76,7 @@ void CActorCondition::script_register(lua_State *L)
 
 			class_<CActorCondition, CEntityCondition>("CActorCondition")
 			//.def(constructor<>())
+			.def("ApplyBooster", &ApplyBooster_script)
 			.def("BoosterForEach", &BoosterForEach)
 			.def("V_Satiety", &CActorCondition::V_Satiety)
 			.def("V_SatietyPower", &CActorCondition::V_SatietyPower)

@@ -486,6 +486,8 @@ void CAI_Stalker::Die				(CObject* who)
 	//запретить использование слотов в инвенторе
 	inventory().SetSlotsUseful		(false);
 
+	//This is done in release manager script
+	/*
 	if (inventory().GetActiveSlot() == NO_ACTIVE_SLOT)
 		return;
 
@@ -509,6 +511,7 @@ void CAI_Stalker::Die				(CObject* who)
 			u_EventSend				(packet);
 		}
 	}
+	*/
 }
 
 void CAI_Stalker::Load				(LPCSTR section)

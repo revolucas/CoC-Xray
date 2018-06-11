@@ -2,11 +2,17 @@
 #include <dinput.h>
 #include "key_binding_registrator.h"
 #include "xr_level_controller.h"
+#include "xrEngine/xr_input.h"
 
 using namespace luabind;
 
 int dik_to_bind(int dik){
 	return get_binded_action(dik);
+}
+
+BOOL key_state(int key)
+{
+	return pInput->iGetAsyncKeyState(key);
 }
 
 #pragma optimize("s",on)
@@ -15,6 +21,8 @@ void key_binding_registrator::script_register(lua_State *L)
 	module(L)
 	[
 		def("dik_to_bind",		&dik_to_bind),
+		def("bind_to_dik", &get_action_dik),
+		def("key_state", &key_state),
 
 		class_<enum_exporter<EGameActions> >("key_bindings")
 			.enum_("commands")
@@ -216,6 +224,11 @@ void key_binding_registrator::script_register(lua_State *L)
 				value("DIK_APPS",						int(DIK_APPS		)),
 				value("MOUSE_1",						int(MOUSE_1			)),
 				value("MOUSE_3",						int(MOUSE_3			)),
+				value("MOUSE_4",						int(MOUSE_4)),
+				value("MOUSE_5",						int(MOUSE_5)),
+				value("MOUSE_6",						int(MOUSE_6)),
+				value("MOUSE_7",						int(MOUSE_7)),
+				value("MOUSE_8",						int(MOUSE_8)),
 				value("DIK_RETURN",						int(DIK_RETURN		)),
 				value("DIK_NUMPADENTER",				int(DIK_NUMPADENTER	))
 				
