@@ -68,3 +68,8 @@ bool CScriptBinderObject::net_SaveRelevant	()
 void CScriptBinderObject::net_Relcase		(CScriptGameObject *object)
 {
 }
+
+bool CScriptBinderObject::install_upgrade_impl(LPCSTR section, bool test)
+{
+	return false;
+}

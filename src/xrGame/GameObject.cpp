@@ -56,9 +56,11 @@ CGameObject::CGameObject		()
 
 	m_callbacks					= xr_new<CALLBACK_MAP>();
 	m_anim_mov_ctrl				= 0;
+	m_story_id = ALife::_STORY_ID(-1);
+	m_bObjectRemoved = false;
 
 	m_bNonscriptUsable = true;
-	set_tip_text_default();
+	m_sTipText = NULL;
 }
 
 CGameObject::~CGameObject		()

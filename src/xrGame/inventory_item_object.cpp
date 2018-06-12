@@ -208,3 +208,10 @@ bool CInventoryItemObject::Useful				() const
 {
 	return			(CInventoryItem::Useful());
 }
+
+bool CInventoryItemObject::install_upgrade_impl(LPCSTR section, bool test)
+{
+	bool result = CScriptBinder::install_upgrade_impl(section, test);
+	result |= CInventoryItem::install_upgrade_impl(section, test);
+	return result;
+}

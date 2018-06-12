@@ -32,6 +32,8 @@ public:
 	virtual BOOL				net_SaveRelevant();
 	virtual void				net_Relcase		(CObject *object);
 			void				set_object		(CScriptBinderObject *object);
+			bool				install_upgrade_impl(LPCSTR section, bool test);
+
 	IC		CScriptBinderObject	*object			();
 };
 
