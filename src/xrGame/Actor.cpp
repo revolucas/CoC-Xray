@@ -79,6 +79,7 @@
 #include "script_hit.h"
 #include "../../xrServerEntities/script_engine.h" 
 using namespace luabind;
+#include "helicopter.h"
 //-Alundaio
 
 const u32		patch_frames = 50;
@@ -1335,8 +1336,11 @@ void CActor::shedule_Update(u32 DT)
     }
 
     //åñëè â ðåæèìå HUD, òî ñàìà ìîäåëü àêòåðà íå ðèñóåòñÿ
-    if (!character_physics_support()->IsRemoved())
-        setVisible(!HUDview());
+	if (!character_physics_support()->IsRemoved())
+	{
+		CHelicopter* heli = smart_cast<CHelicopter*>(m_holder);
+		setVisible(!HUDview() && !heli);
+	}
 
     //÷òî àêòåð âèäèò ïåðåä ñîáîé
     collide::rq_result& RQ = HUD().GetCurrentRayQuery();
