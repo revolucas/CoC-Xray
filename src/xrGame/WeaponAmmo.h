@@ -29,7 +29,7 @@ class CCartridge : public IAnticheatDumpable
 {
 public:
 	CCartridge();
-	void Load(LPCSTR section, u8 LocalAmmoType);
+	void Load(LPCSTR section, u8 LocalAmmoType, float ap_mod = 1.0f);
 	float Weight() const;
 
 	shared_str	m_ammoSect;

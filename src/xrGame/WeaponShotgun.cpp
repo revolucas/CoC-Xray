@@ -212,7 +212,7 @@ u8 CWeaponShotgun::AddCartridge		(u8 cnt)
 
 
 	if (m_DefaultCartridge.m_LocalAmmoType != m_ammoType.type1)
-		m_DefaultCartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1);
+		m_DefaultCartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1, m_APk);
 
 	CCartridge l_cartridge = m_DefaultCartridge;
 	while(cnt)
@@ -261,6 +261,6 @@ void	CWeaponShotgun::net_Import	(NET_Packet& P)
 #ifdef DEBUG
 		Msg("! %s reload to %s", *l_cartridge.m_ammoSect, m_ammoTypes[LocalAmmoType].c_str());
 #endif
-		l_cartridge.Load( m_ammoTypes[LocalAmmoType].c_str(), LocalAmmoType );
+		l_cartridge.Load( m_ammoTypes[LocalAmmoType].c_str(), LocalAmmoType, m_APk );
 	}
 }

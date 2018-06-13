@@ -60,6 +60,7 @@ CWeapon::CWeapon()
 	m_bGrenadeMode = false;
 	
     eHandDependence = hdNone;
+	m_APk = 1.0f;
 
 	m_zoom_params.m_sUseZoomPostprocess = NULL;
     m_zoom_params.m_fCurrentZoomFactor = 1.0;
@@ -516,6 +517,8 @@ void CWeapon::Load(LPCSTR section)
 
 	// Added by Axel, to enable optional condition use on any item
 	m_flags.set( FUsingCondition, READ_IF_EXISTS( pSettings, r_bool, section, "use_condition", TRUE ));
+
+	m_APk = READ_IF_EXISTS(pSettings, r_float, section, "ap_modifier",1.0f);
 }
 
 void CWeapon::LoadFireParams(LPCSTR section)
@@ -580,7 +583,7 @@ BOOL CWeapon::net_Spawn(CSE_Abstract* DC)
 	if (m_ammoType.type1 >= (u8)m_ammoTypes.size())
 		m_ammoType.type1 = 0;
 
-    m_DefaultCartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1);
+	m_DefaultCartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1, m_APk);
     if (m_ammoElapsed.type1)
     {
         m_fCurrentCartirdgeDisp = m_DefaultCartridge.param_s.kDisp;
@@ -1783,7 +1786,7 @@ void CWeapon::SetAmmoElapsed(int ammo_count)
         if (uAmmo > m_magazine.size())
         {
             CCartridge			l_cartridge;
-            l_cartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1);
+			l_cartridge.Load(m_ammoTypes[m_ammoType.type1].c_str(), m_ammoType.type1, m_APk);
             while (uAmmo > m_magazine.size())
                 m_magazine.push_back(l_cartridge);
         }
