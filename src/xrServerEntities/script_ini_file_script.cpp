@@ -135,6 +135,7 @@ void CScriptIniFile::script_register(lua_State *L)
 			.def("set_readonly", &CScriptIniFile::set_readonly)
 #endif
 			//Alundaio: END
+			.def("fname",			&CScriptIniFile::fname)
 			.def("section_exist",	&CScriptIniFile::section_exist	)
 			.def("line_exist",		&CScriptIniFile::line_exist		)
 			.def("r_clsid",			&CScriptIniFile::r_clsid		)
