@@ -32,11 +32,7 @@ int get_texture_load_lod(LPCSTR fn)
 	ENGINE_API bool is_enough_address_space_available();
 	static bool enough_address_space_available = is_enough_address_space_available();
 	if (enough_address_space_available)
-<<<<<<< HEAD
-		return psTextureLOD % 2 == 0? psTextureLOD/2 : psTextureLOD-1;
-=======
-		return psTextureLOD % 2 == 0? psTextureLOD/2 : 0;
->>>>>>> 4888fcf9d1db042b46fc8491cb946dbf7edbd2ea
+		return psTextureLOD;
 	else
 		return 2;
 }
