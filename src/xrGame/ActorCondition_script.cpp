@@ -21,6 +21,13 @@ bool ApplyBooster_script(CActorCondition* cond, const SBooster& B, LPCSTR sect)
 	return cond->ApplyBooster(B, sect);
 }
 
+void ClearAllBoosters(CActorCondition* conditions)
+{
+	CEntityCondition::BOOSTER_MAP cur_booster_influences = conditions->GetCurBoosterInfluences();
+	if (cur_booster_influences.size())
+		cur_booster_influences.clear();
+}
+
 #pragma optimize("s",on)
 void CActorCondition::script_register(lua_State *L)
 {
@@ -76,6 +83,7 @@ void CActorCondition::script_register(lua_State *L)
 
 			class_<CActorCondition, CEntityCondition>("CActorCondition")
 			//.def(constructor<>())
+			.def("ClearAllBoosters", &ClearAllBoosters)
 			.def("ApplyBooster", &ApplyBooster_script)
 			.def("BoosterForEach", &BoosterForEach)
 			.def("V_Satiety", &CActorCondition::V_Satiety)
