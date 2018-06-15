@@ -446,32 +446,12 @@ void CLevel::OnConnectResult(NET_Packet*	P)
 			}break;
 		case ecr_have_been_banned:
 			{
-				if (!xr_strlen(ResultStr))
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate("st_you_have_been_banned").c_str()
-					);
-				} else
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate(ResultStr).c_str()
-					);
-				}
+
 			}break;
 		case ecr_profile_error:
 			{
-				if (!xr_strlen(ResultStr))
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate("st_profile_error").c_str()
-					);
-				} else
-				{
-					MainMenu()->OnSessionTerminate(
-						CStringTable().translate(ResultStr).c_str()
-					);
-				}
-			}
+				
+			}break;
 		}
 	};	
 	m_sConnectResult			= ResultStr;

@@ -642,19 +642,7 @@ BOOL CSE_ALifeItemWeapon::Net_Relevant()
 #ifndef XRGAME_EXPORTS
 void CSE_ALifeItemWeapon::FillProps			(LPCSTR pref, PropItemVec& items)
 {
-	inherited::FillProps			(pref, items);
-	PHelper().CreateU8			(items,PrepareKey(pref,*s_name,"Ammo type:"), &ammo_type,0,255,1);
-	PHelper().CreateU16			(items,PrepareKey(pref,*s_name,"Ammo: in magazine"),	&a_elapsed,0,30,1);
-	
 
-	if (m_scope_status == ALife::eAddonAttachable)
-	       PHelper().CreateFlag8(items,PrepareKey(pref,*s_name,"Addons\\Scope"), 	&m_addon_flags, eWeaponAddonScope);
-
-	if (m_silencer_status == ALife::eAddonAttachable)
-        PHelper().CreateFlag8	(items,PrepareKey(pref,*s_name,"Addons\\Silencer"), 	&m_addon_flags, eWeaponAddonSilencer);
-
-	if (m_grenade_launcher_status == ALife::eAddonAttachable)
-        PHelper().CreateFlag8	(items,PrepareKey(pref,*s_name,"Addons\\Podstvolnik"),&m_addon_flags,eWeaponAddonGrenadeLauncher);
 }
 #endif // #ifndef XRGAME_EXPORTS
 

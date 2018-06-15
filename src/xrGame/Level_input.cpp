@@ -27,9 +27,10 @@
 #include "build_config_defines.h"
 
 //Alundaio
-#include "pch_script.h"
+//#include "pch_script.h"
+#include "script_callback_ex.h"
 #include "../../xrServerEntities/script_engine.h" 
-using namespace luabind; 
+using namespace luabind;
 //-Alundaio
 
 #ifdef DEBUG

@@ -55,7 +55,7 @@ struct HUD_SOUND_ITEM
 
     bool operator == (LPCSTR alias) const
     {
-        return 0 == stricmp(m_alias.c_str(), alias);
+        return 0 == _stricmp(m_alias.c_str(), alias);
     }
 };
 

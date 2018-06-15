@@ -44,7 +44,6 @@
 #include "actor_memory.h"
 #include "actor_statistic_mgr.h"
 #include "characterphysicssupport.h"
-#include "game_cl_base_weapon_usage_statistic.h"
 #include "../xrengine/xr_collide_form.h"
 #ifdef DEBUG
 #	include "debug_renderer.h"

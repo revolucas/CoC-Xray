@@ -4,17 +4,15 @@
 #include "level.h"
 #include "xrmessages.h"
 #include "game_cl_base.h"
+#include "game_sv_base.h"
 #include "net_queue.h"
 //#include "Physics.h"
 #include "xrServer.h"
 #include "Actor.h"
 #include "Artefact.h"
-#include "game_cl_base_weapon_usage_statistic.h"
 #include "ai_space.h"
 #include "saved_game_wrapper.h"
 #include "level_graph.h"
-#include "file_transfer.h"
-#include "message_filter.h"
 #include "../xrphysics/iphworld.h"
 
 extern LPCSTR map_ver_string;
@@ -322,7 +320,7 @@ void CLevel::ClientReceive()
 			}break;
 		case M_GAMESPY_CDKEY_VALIDATION_CHALLENGE:
 			{
-				OnGameSpyChallenge(P);
+
 			}break;
 		case M_AUTH_CHALLENGE:
 			{

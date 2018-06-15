@@ -36,6 +36,7 @@
 #include "../CustomOutfit.h"
 #include "../ActorHelmet.h"
 #include "script_game_object.h" //Alundaio
+#include "script_engine.h"
 
 using namespace luabind; //Alundaio
 // -----

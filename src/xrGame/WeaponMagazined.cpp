@@ -15,7 +15,6 @@
 #include "UIGameCustom.h"
 #include "object_broker.h"
 #include "string_table.h"
-#include "MPPlayersBag.h"
 #include "ui/UIXmlInit.h"
 #include "ui/UIStatic.h"
 #include "game_object_space.h"

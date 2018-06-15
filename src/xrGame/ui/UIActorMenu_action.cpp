@@ -28,6 +28,7 @@
 #include "UIMessageBoxEx.h"
 #include "UIPropertiesBox.h"
 #include "UIMainIngameWnd.h"
+#include "script_engine.h"
 
 using namespace luabind; //Alundaio
 

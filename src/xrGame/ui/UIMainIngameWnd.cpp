@@ -50,7 +50,6 @@
 #include "../game_news.h"
 
 #include "static_cast_checked.hpp"
-#include "game_cl_capture_the_artefact.h"
 #include "UIHudStatesWnd.h"
 #include "UIActorMenu.h"
 

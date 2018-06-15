@@ -11,7 +11,6 @@
 #include "Weapon.h"
 #include "Inventory.h"
 
-#include "SleepEffector.h"
 #include "ActorEffector.h"
 #include "level.h"
 #include "../xrEngine/cl_intersect.h"
@@ -290,7 +289,6 @@ void CActor::cam_Update(float dt, float fFOV)
 	if( (mstate_real & mcClimb) && (cam_active!=eacFreeLook) )
 		camUpdateLadder(dt);
 	on_weapon_shot_update();
-	float y_shift =0;
 	
 	current_ik_cam_shift = 0;
 

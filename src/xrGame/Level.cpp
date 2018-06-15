@@ -36,7 +36,6 @@
 #include "level_sounds.h"
 #include "car.h"
 #include "trade_parameters.h"
-#include "game_cl_base_weapon_usage_statistic.h"
 #include "MainMenu.h"
 #include "xrEngine/XR_IOConsole.h"
 #include "actor.h"
@@ -68,7 +67,7 @@ ENGINE_API BOOL	g_bootComplete;
 extern CUISequencer* g_tutorial;
 extern CUISequencer* g_tutorial2;
 
-float g_cl_lvInterp = 0.1;
+float g_cl_lvInterp = 0.1f;
 u32 lvInterpSteps = 0;
 
 //AVO: get object ID from spawn data (used by SPAWN_ANTIFREEZE by alpet)
@@ -1080,7 +1079,6 @@ void CLevel::OnAlifeSimulatorLoaded()
 
 void CLevel::OnSessionTerminate(LPCSTR reason)
 {
-    MainMenu()->OnSessionTerminate(reason);
 }
 
 u32	GameID()

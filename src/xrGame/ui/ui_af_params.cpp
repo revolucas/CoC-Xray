@@ -310,7 +310,7 @@ void CUIArtefactParams::SetInfo(CCustomOutfit* pInvItem)
 
 	const shared_str& af_section = pInvItem->cNameSect();
 
-	float val = 0.0f, max_val = 1.0f;
+	float val = 0.0f;
 	Fvector2 pos;
 	float h = m_Prop_line->GetWndPos().y + m_Prop_line->GetWndSize().y;
 

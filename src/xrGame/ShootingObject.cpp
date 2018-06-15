@@ -11,7 +11,6 @@
 #include "WeaponAmmo.h"
 
 #include "actor.h"
-#include "spectator.h"
 #include "game_cl_base.h"
 #include "level.h"
 #include "level_bullet_manager.h"
@@ -228,13 +227,7 @@ void CShootingObject::StartParticles (CParticlesObject*& pParticles, LPCSTR part
 	pParticles = CParticlesObject::Create(particles_name,(BOOL)auto_remove_flag);
 	
 	UpdateParticles(pParticles, pos, vel);
-	CSpectator* tmp_spectr = smart_cast<CSpectator*>(Level().CurrentControlEntity());
 	bool in_hud_mode = IsHudModeNow();
-	if (in_hud_mode && tmp_spectr &&
-		(tmp_spectr->GetActiveCam() != CSpectator::eacFirstEye))
-	{
-		in_hud_mode = false;
-	}
 	pParticles->Play(in_hud_mode);
 }
 void CShootingObject::StopParticles (CParticlesObject*&	pParticles)
@@ -314,13 +307,7 @@ void CShootingObject::OnShellDrop	(const Fvector& play_pos,
 	particles_pos.c.set		(play_pos);
 
 	pShellParticles->UpdateParent		(particles_pos, parent_vel);
-	CSpectator* tmp_spectr = smart_cast<CSpectator*>(Level().CurrentControlEntity());
 	bool in_hud_mode = IsHudModeNow();
-	if (in_hud_mode && tmp_spectr &&
-		(tmp_spectr->GetActiveCam() != CSpectator::eacFirstEye))
-	{
-		in_hud_mode = false;
-	}
 	pShellParticles->Play(in_hud_mode);
 }
 
@@ -350,17 +337,8 @@ void CShootingObject::StartFlameParticles	()
 	m_pFlameParticles = CParticlesObject::Create(*m_sFlameParticlesCurrent,FALSE);
 	UpdateFlameParticles();
 	
-	
-	CSpectator* tmp_spectr = smart_cast<CSpectator*>(Level().CurrentControlEntity());
 	bool in_hud_mode = IsHudModeNow();
-	if (in_hud_mode && tmp_spectr &&
-		(tmp_spectr->GetActiveCam() != CSpectator::eacFirstEye))
-	{
-		in_hud_mode = false;
-	}
 	m_pFlameParticles->Play(in_hud_mode);
-		
-
 }
 void CShootingObject::StopFlameParticles	()
 {
