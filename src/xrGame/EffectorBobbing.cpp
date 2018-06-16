@@ -17,7 +17,7 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-CEffectorBobbing::CEffectorBobbing() : CEffectorCam(eCEBobbing,10000.f)
+CEffectorBobbing::CEffectorBobbing() : CEffectorCam(eCEBobbing, 10000.f), fYAmplitude(0),fSpeed(0), dwMState(0), m_bZoomMode(false)
 {
 	fTime			= 0;
 	fReminderFactor	= 0;

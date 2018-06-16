@@ -11,7 +11,7 @@
 #include "player_hud.h"
 #include "weapon.h"
 
-ITEM_INFO::ITEM_INFO()
+ITEM_INFO::ITEM_INFO() : snd_time(0), cur_period(0)
 {
 	pParticle	= NULL;
 	curr_ref	= NULL;

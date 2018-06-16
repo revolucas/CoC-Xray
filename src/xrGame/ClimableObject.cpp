@@ -49,7 +49,7 @@ IC void OrientToNorm(const Fvector& normal,Fmatrix& form,Fobb& box)
 
 
 
-CClimableObject::CClimableObject		():  m_pStaticShell ( NULL ), m_material(u16(-1))
+CClimableObject::CClimableObject() : m_pStaticShell(NULL), m_radius(0), m_material(u16(-1))
 {
 	
 }

@@ -10,7 +10,7 @@
 //#include "PHWorld.h"
 //extern CPHWorld*	ph_world;
 #include "../xrphysics/IPHWorld.h"
-CCar::SCarSound::SCarSound(CCar* car)
+CCar::SCarSound::SCarSound(CCar* car) : eCarSound(), engine_start_delay(0), time_state_start(0)
 {
 	volume                 =1.f;
 	pcar=car;

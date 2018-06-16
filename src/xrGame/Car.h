@@ -185,6 +185,7 @@ public:
 virtual void ApplyDamage			(u16 level);
 		SWheel(CCar* acar)
 		{
+			radius = 0.f;
 			bone_id=BI_NONE;
 			car=acar;
 			joint=NULL;
@@ -323,6 +324,11 @@ virtual void ApplyDamage(u16 level);
 		eState state;
 		SDoor(CCar* acar)
 		{
+			update = false;
+			pos_open = 0.f;
+			opened_angle = 0.f;
+			closed_angle = 0.f;
+			open_time = 0;
 			bone_id=BI_NONE;
 			pcar=acar;
 			joint=NULL;

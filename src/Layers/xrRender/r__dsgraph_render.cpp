@@ -738,7 +738,7 @@ void	R_dsgraph_structure::r_dsgraph_render_R1_box	(IRender_Sector* _S, Fbox& BB,
 	lstVisuals.clear		();
 	lstVisuals.push_back	(S->root());
 	
-	for (u32 test=0; test<lstVisuals.size(); test++)
+	for (size_t test=0; test<lstVisuals.size(); ++test)
 	{
 		dxRender_Visual*	V		= 	lstVisuals[test];
 		

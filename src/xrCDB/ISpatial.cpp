@@ -147,6 +147,10 @@ ISpatial_DB::ISpatial_DB()
 	:cs(MUTEX_PROFILE_ID(ISpatial_DB))
 #endif // PROFILE_CRITICAL_SECTIONS
 {
+	rt_insert_object		= NULL;
+	m_root					= NULL;
+	m_bounds				= NULL;
+	q_result				= NULL;
 	m_root					= NULL;
 	stat_nodes				= 0;
 	stat_objects			= 0;

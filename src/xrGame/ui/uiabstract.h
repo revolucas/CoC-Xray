@@ -41,7 +41,7 @@ enum EWindowAlignment{
 class CUISimpleWindow : public boost::noncopyable
 {
 public:
-							CUISimpleWindow		()											{m_alignment=waNone; m_wndPos.set(0,0); m_wndSize.set(0,0);}
+	CUISimpleWindow() : m_bShowMe(false)											{ m_alignment = waNone; m_wndPos.set(0, 0); m_wndSize.set(0, 0); }
 	virtual void			SetWndPos			(const Fvector2& pos)						{m_wndPos.set(pos.x,pos.y);}
 	IC const Fvector2&		GetWndPos			()						const				{return m_wndPos;}
 	virtual void			SetWndSize			(const Fvector2& size)						{m_wndSize = size;}

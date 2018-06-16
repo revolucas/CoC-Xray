@@ -24,7 +24,9 @@ m_type( epotBox ),
 m_mass( 10.f ),
 m_collision_hit_callback( 0 ),
 bones_snd_player( 0 ),
-m_net_updateData ( 0 )
+m_net_updateData ( 0 ),
+m_just_after_spawn(false),
+m_activated(false)
 {
 }
 

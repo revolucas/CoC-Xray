@@ -278,6 +278,8 @@ BOOL CCameraEffectorControlled::Valid()
 
 SndShockEffector::SndShockEffector	()
 {
+	m_life_time				= 0.f;
+	m_end_time				= 0.f;
 	m_snd_length			= 0.0f;
 	m_cur_length			= 0.0f;
 	m_stored_volume			= -1.0f;

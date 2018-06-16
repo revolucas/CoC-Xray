@@ -12,6 +12,7 @@
 
 CBastArtefact::CBastArtefact(void) 
 {
+	m_pHitedEntity = NULL;
 	m_fImpulseThreshold = 10.f;
 	
 	m_fRadius = 10.f;

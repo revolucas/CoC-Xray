@@ -19,7 +19,7 @@ SPhraseDialogData::~SPhraseDialogData ()
 
 
 
-CPhraseDialog::CPhraseDialog()
+CPhraseDialog::CPhraseDialog() : m_bFirstIsSpeaking(false)
 {
 	m_SaidPhraseID		= "";
 	m_bFinished			= false;
