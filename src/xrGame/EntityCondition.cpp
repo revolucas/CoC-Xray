@@ -373,29 +373,21 @@ CWound* CEntityCondition::AddWound(float hit_power, ALife::EHitType hit_type, u1
 
 	//запомнить кость по которой ударили и силу удара
 	WOUND_VECTOR_IT it = m_WoundVector.begin();
-	for(;it != m_WoundVector.end(); it++)
+	WOUND_VECTOR_IT en = m_WoundVector.end();
+	for(;it != en; ++it)
 	{
-		if((*it)->GetBoneNum() == element)
-			break;
+		CWound* pWound = (*it);
+		if (pWound->GetBoneNum() == element)
+		{
+			pWound->AddHit(hit_power*::Random.randF(0.5f, 1.5f), hit_type);
+			return pWound;
+		}
 	}
 	
-	CWound* pWound = NULL;
+	CWound* pWound = xr_new<CWound>(element);
+	pWound->AddHit(hit_power*::Random.randF(0.5f,1.5f), hit_type);
+	m_WoundVector.push_back(pWound);
 
-	//новая рана
-	if (it == m_WoundVector.end())
-	{
-		pWound = xr_new<CWound>(element);
-		pWound->AddHit(hit_power*::Random.randF(0.5f,1.5f), hit_type);
-		m_WoundVector.push_back(pWound);
-	}
-	//старая 
-	else
-	{
-		pWound = *it;
-		pWound->AddHit(hit_power*::Random.randF(0.5f,1.5f), hit_type);
-	}
-
-	VERIFY(pWound);
 	return pWound;
 }
 

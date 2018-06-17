@@ -8,60 +8,51 @@
 
 void xrServer::Perform_connect_spawn(CSE_Abstract* E, xrClientData* CL, NET_Packet& P)
 {
-	P.B.count = 0;
-	xr_vector<u16>::iterator it = std::find(conn_spawned_ids.begin(), conn_spawned_ids.end(), E->ID);
-	if(it != conn_spawned_ids.end())
-	{
-//.		Msg("Rejecting redundant SPAWN data [%d]", E->ID);
+	if (E->net_Processed)
 		return;
-	}
+	if (E->s_flags.is(M_SPAWN_OBJECT_PHANTOM))	
+		return;
 	
-	conn_spawned_ids.push_back(E->ID);
-	
-	if (E->net_Processed)						return;
-	if (E->s_flags.is(M_SPAWN_OBJECT_PHANTOM))	return;
+	E->net_Processed = TRUE;
 
-//.	Msg("Perform connect spawn [%d][%s]", E->ID, E->s_name.c_str());
+	P.B.count = 0;
 
 	// Connectivity order
-	CSE_Abstract* Parent = ID_to_entity	(E->ID_Parent);
-	if (Parent)		Perform_connect_spawn	(Parent,CL,P);
+	CSE_Abstract* Parent = ID_to_entity(E->ID_Parent);
+	if (Parent)	
+		Perform_connect_spawn(Parent,CL,P);
 
 	// Process
-	Flags16			save = E->s_flags;
-	//-------------------------------------------------
-	E->s_flags.set	(M_SPAWN_UPDATE,TRUE);
+	Flags16 save = E->s_flags;
+	E->s_flags.set(M_SPAWN_UPDATE,TRUE);
+	
 	if (0==E->owner)	
 	{
 		// PROCESS NAME; Name this entity
 		if (E->s_flags.is(M_SPAWN_OBJECT_ASPLAYER))
 		{
-			CL->owner			= E;
-			E->set_name_replace	(CL->ps?CL->ps->getName():"player");
+			CL->owner = E;
+			E->set_name_replace(CL->ps?CL->ps->getName():"player");
 		}
 
 		// Associate
-		E->owner		= CL;
-		E->Spawn_Write	(P,TRUE	);
-		E->UPDATE_Write	(P);
+		E->owner = CL;
+		E->Spawn_Write(P,TRUE);
+		E->UPDATE_Write(P);
 
-		CSE_ALifeObject*	object = smart_cast<CSE_ALifeObject*>(E);
-		VERIFY				(object);
+		CSE_ALifeObject* object = smart_cast<CSE_ALifeObject*>(E);
+		VERIFY(object);
 		if (!object->keep_saved_data_anyway())
-			object->client_data.clear	();
+			object->client_data.clear();
 	}
 	else				
 	{
 		E->Spawn_Write	(P, FALSE);
 		E->UPDATE_Write	(P);
-//		CSE_ALifeObject*	object = smart_cast<CSE_ALifeObject*>(E);
-//		VERIFY				(object);
-//		VERIFY				(object->client_data.empty());
 	}
-	//-----------------------------------------------------
-	E->s_flags			= save;
-	SendTo				(CL->ID,P,net_flags(TRUE,TRUE));
-	E->net_Processed	= TRUE;
+	
+	E->s_flags = save;
+	SendTo(CL->ID,P,net_flags(TRUE,TRUE));
 }
 
 void xrServer::SendConfigFinished(ClientID const & clientId)
@@ -73,13 +64,13 @@ void xrServer::SendConfigFinished(ClientID const & clientId)
 
 void xrServer::SendConnectionData(IClient* _CL)
 {
-	conn_spawned_ids.clear();
-	xrClientData*	CL				= (xrClientData*)_CL;
-	NET_Packet		P;
+	xrClientData* CL = (xrClientData*)_CL;
+	NET_Packet P;
 	// Replicate current entities on to this client
 	xrS_entities::iterator	I=entities.begin(),E=entities.end();
-	for (; I!=E; ++I)						I->second->net_Processed	= FALSE;
-	for (I=entities.begin(); I!=E; ++I)		Perform_connect_spawn		(I->second,CL,P);
+	for (; I!=E; ++I)		
+		Perform_connect_spawn(I->second,CL,P);
+
 	SendConfigFinished(CL->ID);
 };
 

@@ -180,6 +180,8 @@ void CLevel::ClientSend(bool bForce)
 	if (bForce)
 		cur_index = 0;
 
+	NET_Packet P;
+
 	u32 object_count = Objects.o_count();
 	u32 position;
 	for (u32 start = cur_index; start < (bForce ? object_count : cur_index + g_objects_per_client_update); start++)
@@ -193,7 +195,6 @@ void CLevel::ClientSend(bool bForce)
 
 		if (pO && !pO->getDestroy() && pO->net_Relevant())
 		{
-			NET_Packet P;
 			P.w_begin(M_UPDATE);
 
 			P.w_u16(u16(pO->ID()));
@@ -242,6 +243,7 @@ u32	CLevel::Objects_net_Save	(NET_Packet* _Packet, u32 start, u32 max_object_siz
 
 void CLevel::ClientSave	()
 {
+	NET_Packet P;
 	u32 position;
 	for (u32 start = 0; start < Objects.o_count(); start++) 
 	{
@@ -250,7 +252,6 @@ void CLevel::ClientSave	()
 
 		if (pGO && !pGO->getDestroy() && pGO->net_SaveRelevant())
 		{
-			NET_Packet P;
 			P.w_begin(M_SAVE_PACKET);
 
 			P.w_u16(u16(pGO->ID()));

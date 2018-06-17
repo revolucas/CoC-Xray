@@ -58,27 +58,11 @@ public:
 
 
 // main
-struct	svs_respawn
-{
-	u32		timestamp;
-	u16		phantom;
-};
-IC bool operator < (const svs_respawn& A, const svs_respawn& B)	{ return A.timestamp<B.timestamp; }
-
-struct CheaterToKick
-{
-	shared_str	reason;
-	ClientID	cheater_id;
-};
-typedef xr_vector<CheaterToKick> cheaters_t;
-
 class xrServer	: public IPureServer  
 {
 private:
 	xrS_entities				entities;
-	xr_multiset<svs_respawn>	q_respawn;
 	xr_vector<u16>				conn_spawned_ids;
-	cheaters_t					m_cheaters;
 	
 	typedef server_updates_compressor::send_ready_updates_t::const_iterator update_iterator_t;
 	update_iterator_t			m_update_begin;
@@ -128,7 +112,7 @@ private:
 
 protected:
 	void					Server_Client_Check				(IClient* CL);
-	void					PerformCheckClientsForMaxPing	();
+
 public:
 	game_sv_GameState*		game;
 
@@ -172,14 +156,13 @@ public:
 	virtual void			OnBuildVersionRespond				(IClient* CL, NET_Packet& P);
 protected:
 	xrClientsPool			m_disconnected_clients;
-	bool					CheckAdminRights		(const shared_str& user, const shared_str& pass, string512& reason);
+
 	virtual IClient*		new_client				( SClientConnectData* cl_data );
 	
 	virtual bool			Check_ServerAccess( IClient* CL, string512& reason )	{ return true; }
 
 			void			RequestClientDigest					(IClient* CL);
 			void			ProcessClientDigest					(xrClientData* xrCL, NET_Packet* P);
-			void			KickCheaters						();
 	
 	virtual bool			NeedToCheckClient_BuildVersion		(IClient* CL);
 	virtual void			Check_BuildVersion_Success			(IClient* CL);
@@ -244,9 +227,6 @@ public:
 	virtual void			Assign_ServerType	( string512& res ) {};
 	virtual bool			HasPassword			()	{ return false; }
 	virtual bool			HasProtected		()	{ return false; }
-			void			AddCheater			(shared_str const & reason, ClientID const & cheaterID);
-			void			MakeScreenshot		(ClientID const & admin_id, ClientID const & cheater_id);
-			void			MakeConfigDump		(ClientID const & admin_id, ClientID const & cheater_id);
 
 	virtual void			GetServerInfo		( CServerInfo* si );
 			void			SendPlayersInfo		(ClientID const & to_client);

@@ -886,7 +886,7 @@ void CUIMainIngameWnd::DrawMainIndicatorsForInventory()
 	m_ui_hud_states->DrawZoneIndicators();
 }
 
-void CUIMainIngameWnd::UpdateBoosterIndicators(const xr_map<EBoostParams, SBooster> influences)
+void CUIMainIngameWnd::UpdateBoosterIndicators(const xr_map<EBoostParams, SBooster>& influences)
 {
 	m_ind_boost_psy->Show(false);
 	m_ind_boost_radia->Show(false);
