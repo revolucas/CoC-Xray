@@ -11,43 +11,25 @@
 #include "../xrEngine/x_ray.h"
 #include "../xrEngine/dedicated_server_only.h"
 #include "../xrEngine/no_single.h"
+#include "level.h"
 
-game_sv_Single::game_sv_Single			()
+game_sv_Single::game_sv_Single()
 {
 	m_alife_simulator			= NULL;
 	m_type						= eGameIDSingle;
 };
 
-game_sv_Single::~game_sv_Single			()
+game_sv_Single::~game_sv_Single()
 {
 	delete_data					(m_alife_simulator);
 }
 
-void	game_sv_Single::Create			(shared_str& options)
+void	game_sv_Single::Create(shared_str& options)
 {
-	inherited::Create					(options);
-
-#ifndef NO_SINGLE
-	if (strstr(*options,"/alife"))
-		m_alife_simulator				= xr_new<CALifeSimulator>(&server(),&options);
-#endif //#ifndef NO_SINGLE
-
-	switch_Phase						(GAME_PHASE_INPROGRESS);
+	inherited::Create(options);
+	m_alife_simulator = xr_new<CALifeSimulator>(&server(),&options);
+	switch_Phase(GAME_PHASE_INPROGRESS);
 }
-
-/**
-CSE_Abstract*		game_sv_Single::get_entity_from_eid		(u16 id)
-{
-	if (!ai().get_alife())
-		return			(inherited::get_entity_from_eid(id));
-
-	CSE_Abstract		*object = ai().alife().objects().object(id,true);
-	if (!object)
-		return			(inherited::get_entity_from_eid(id));
-
-	return				(object);
-}
-/**/
 
 void	game_sv_Single::OnCreate		(u16 id_who)
 {
@@ -161,14 +143,7 @@ void game_sv_Single::OnDetach(u16 eid_who, u16 eid_what)
 
 void	game_sv_Single::Update			()
 {
-	inherited::Update	();
-/*	switch(phase) 	{
-		case GAME_PHASE_PENDING : {
-			OnRoundStart();
-			switch_Phase(GAME_PHASE_INPROGRESS);
-			break;
-		}
-	}*/
+	inherited::Update();
 }
 
 ALife::_TIME_ID game_sv_Single::GetStartGameTime	()

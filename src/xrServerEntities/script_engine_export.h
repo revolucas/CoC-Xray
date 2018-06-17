@@ -146,10 +146,5 @@
 #	include "space_restrictor.h"
 #	include "physicobject.h"
 #	include "smart_cover_object.h"
-#	include "ui/FactionState.h"
 #	include "actor.h"
-#	include "login_manager.h"
-#	include "account_manager.h"
-#	include	"profile_store.h"
-#	include	"profile_data_types.h"
 #endif

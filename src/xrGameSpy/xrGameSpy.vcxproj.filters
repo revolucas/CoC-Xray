@@ -360,9 +360,6 @@
     <ClCompile Include="xrGameSpy_Available.cpp">
       <Filter>xrGameSpy_Available</Filter>
     </ClCompile>
-    <ClCompile Include="xrGameSpy_QR2.cpp">
-      <Filter>xrGameSpy_QR2</Filter>
-    </ClCompile>
     <ClCompile Include="xrGameSpy_CDKey.cpp">
       <Filter>xrGameSpy_CDKey</Filter>
     </ClCompile>
@@ -390,9 +387,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="xrGameSpy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="xrGameSpy_MainDefs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="gamespy\darray.h">
@@ -658,9 +652,6 @@
     </ClInclude>
     <ClInclude Include="xrGameSpy_Available.h">
       <Filter>xrGameSpy_Available</Filter>
-    </ClInclude>
-    <ClInclude Include="xrGameSpy_QR2.h">
-      <Filter>xrGameSpy_QR2</Filter>
     </ClInclude>
     <ClInclude Include="xrGameSpy_CDKey.h">
       <Filter>xrGameSpy_CDKey</Filter>

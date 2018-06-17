@@ -357,7 +357,7 @@ void CLevel::ClientReceive()
 			}break;
 		case M_SV_DIGEST:
 			{
-				SendClientDigestToServer();
+
 			}break;
 		case M_CHANGE_LEVEL_GAME:
 			{

@@ -241,17 +241,8 @@ void CScriptEngine::script_register(lua_State *L)
         def("time_global_async", &script_time_global_async),
 #ifdef XRGAME_EXPORTS
         def("device", &get_device),
-        def("is_enough_address_space_available", &is_enough_address_space_available_impl),
+        def("is_enough_address_space_available", &is_enough_address_space_available_impl)
 #endif //-XRGAME_EXPORTS
-        class_<profile_timer_script>("profile_timer")
-            .def(constructor<>())
-            .def(constructor<profile_timer_script&>())
-            .def(const_self + profile_timer_script())
-            .def(const_self < profile_timer_script())
-            .def(tostring(self))
-            .def("start", &profile_timer_script::start)
-            .def("stop", &profile_timer_script::stop)
-            .def("time", &profile_timer_script::time)
     ];
 
     //function(L, "print_stack", PrintStack);

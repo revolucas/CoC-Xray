@@ -31,7 +31,6 @@
 #include "ai/monsters/BaseMonster/base_monster.h"
 #include "date_time.h"
 #include "mt_config.h"
-#include "ui/UIOptConCom.h"
 #include "UIGameSP.h"
 #include "ui/UIActorMenu.h"
 #include "ui/UIStatic.h"
@@ -45,9 +44,6 @@
 #include "cameralook.h"
 #include "character_hit_animations_params.h"
 #include "inventory_upgrade_manager.h"
-
-#include "GameSpy/GameSpy_Full.h"
-#include "GameSpy/GameSpy_Patching.h"
 
 #include "ai_debug_variables.h"
 #include "../xrphysics/console_vars.h"
@@ -108,7 +104,6 @@ extern BOOL		g_invert_zoom; //Alundaio
 
 ENGINE_API extern float	g_console_sensitive;
 
-void register_mp_console_commands();
 //-----------------------------------------------------------
 
 BOOL	g_bCheckTime = FALSE;
@@ -142,8 +137,6 @@ enum E_COMMON_FLAGS
 {
 	flAiUseTorchDynamicLights = 1
 };
-
-CUIOptConCom g_OptConCom;
 
 #ifndef PURE_ALLOC
 //#	ifndef USE_MEMORY_MONITOR
@@ -1794,28 +1787,6 @@ public:
 	CCC_GSCheckForUpdates(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = true; };
 	virtual void Execute(LPCSTR arguments)
 	{
-		if (!MainMenu()) return;
-		/*
-		CGameSpy_Available GSA;
-		shared_str result_string;
-		if (!GSA.CheckAvailableServices(result_string))
-		{
-		Msg(*result_string);
-		//			return;
-		};
-		CGameSpy_Patching GameSpyPatching;
-		*/
-		bool InformOfNoPatch = true;
-		if (arguments && *arguments)
-		{
-			int bInfo = 1;
-			sscanf(arguments, "%d", &bInfo);
-			InformOfNoPatch = (bInfo != 0);
-		}
-
-		//		GameSpyPatching.CheckForPatch(InformOfNoPatch);
-
-		MainMenu()->GetGS()->GetGameSpyPatching()->CheckForPatch(InformOfNoPatch);
 	}
 };
 
@@ -1878,8 +1849,6 @@ public:
 void CCC_RegisterCommands()
 {
 	// options
-	g_OptConCom.Init();
-
 	CMD1(CCC_MemStats, "stat_memory");
 #ifdef DEBUG
 	CMD1(CCC_MemCheckpoint, "stat_memory_checkpoint");
@@ -2340,5 +2309,4 @@ void CCC_RegisterCommands()
 	CMD3(CCC_String, "slot_3", g_quick_use_slots[3], 32);
 
 	CMD4(CCC_Integer, "keypress_on_start", &g_keypress_on_start, 0, 1);
-	register_mp_console_commands();
 }

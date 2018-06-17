@@ -12,9 +12,7 @@
 #include <math.h>
 #include "../Actor.h"
 #include "../saved_game_wrapper.h"
-#include "../login_manager.h"
 #include "MainMenu.h"
-#include "../gamespy/GameSpy_Full.h"
 
 extern string_path g_last_saved_game;
 
@@ -182,7 +180,7 @@ void CUIMMShniaga::ShowPage		(enum_page_id page_id)
 		}break;
 	case epi_new_network_game:
 		{
-			ShowNetworkGame();
+
 		}break;
 	};//switch (page_id)
 }
@@ -207,20 +205,6 @@ void CUIMMShniaga::ShowNewGame()
 
 	SelectBtn(m_buttons_new[0]);
 }
-
-void CUIMMShniaga::ShowNetworkGame()
-{
-	m_page = epi_new_network_game;
-    m_view->Clear();
-
-	for (u32	i = 0,
-				count = m_buttons_new_network.size(); i < count; ++i)
-	{
-		m_view->AddWindow(m_buttons_new_network[i], false);
-	}
-	SelectBtn(m_buttons_new_network[0]);
-}
-
 
 bool CUIMMShniaga::IsButton(CUIWindow* st)
 {

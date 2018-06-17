@@ -3,7 +3,6 @@
 #include "game_base_space.h"
 #include "alife_space.h"
 #include "gametype_chooser.h"
-#include "player_account.h"
 
 #pragma pack(push,1)
 
@@ -72,7 +71,6 @@ struct game_PlayerState
 	MONEY_BONUS	m_aBonusMoney;
 	bool		m_bPayForSpawn;
 	u32			m_online_time;
-	player_account	m_account;
 	
 	shared_str	m_player_ip;
 	shared_str	m_player_digest;
@@ -86,7 +84,7 @@ struct game_PlayerState
 			bool	testFlag				(u16 f) const;
 			void	setFlag					(u16 f);
 			void	resetFlag				(u16 f);
-			LPCSTR	getName					() const {return m_account.name().c_str();}
+			LPCSTR	getName					() const {return "callofchernobyl";}
 			//void	setName					(LPCSTR s){xr_strcpy(name,s);}
 			void	SetGameID				(u16 NewID);
 			bool	HasOldID				(u16 ID);

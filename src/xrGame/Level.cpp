@@ -41,7 +41,6 @@
 #include "actor.h"
 #include "player_hud.h"
 #include "UI/UIGameTutorial.h"
-#include "file_transfer.h"
 #include "message_filter.h"
 #include "demoplay_control.h"
 #include "demoinfo.h"
@@ -442,8 +441,6 @@ void CLevel::ProcessGameEvents()
             }
             case M_FILE_TRANSFER:
             {
-                if (m_file_transfer) // in case of net_Stop
-                    m_file_transfer->on_message(&P);
                 break;
             }
             case M_GAMEMESSAGE:

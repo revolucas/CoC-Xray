@@ -24,6 +24,7 @@
 #include "../../../alife_simulator.h"
 #include "../../../alife_object_registry.h"
 #include "../../../xrServer.h"
+#include "../../../game_sv_base.h"
 #include "../../../inventory_item.h"
 #include "../../../../xrServerEntities/xrServer_objects_ALife.h"
 #include "../../../phMovementControl.h"

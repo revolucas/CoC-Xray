@@ -326,7 +326,7 @@ void xrServer::Process_event	(NET_Packet& P, ClientID sender)
 		}break;
 	case GEG_PLAYER_ITEM_SELL:
 		{
-			game->OnPlayer_Sell_Item(sender, P);
+			//game->OnPlayer_Sell_Item(sender, P);
 		}break;
 	case GE_TELEPORT_OBJECT:
 		{

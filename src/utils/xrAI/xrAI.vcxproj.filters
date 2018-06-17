@@ -831,9 +831,6 @@
     <ClInclude Include="..\..\xrServerEntities\object_type_traits.h">
       <Filter>ALife\Shared\ObjectBroker</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\xrServerEntities\clsid_game.h">
-      <Filter>ALife\Shared\Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\xrServerEntities\smart_cast.h">
       <Filter>ALife\Shared\Common</Filter>
     </ClInclude>

@@ -28,6 +28,7 @@ struct SMemberGoal
 	u32					node;
 
 	SMemberGoal			() {
+		node			= 0;
 		type			= MG_None;
 		entity			= 0;
 	}

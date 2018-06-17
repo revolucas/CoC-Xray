@@ -4,23 +4,8 @@
 #include "alife_space.h"
 #include "script_export_space.h"
 #include "../xrCore/client_id.h"
-#include "game_sv_base_console_vars.h"
 #include "game_sv_event_queue.h"
-#include "game_sv_item_respawner.h"
 #include "../xrNetServer/NET_Server.h"
-
-#define MAX_PLAYERS_COUNT 32
-
-enum ERoundEnd_Result
-{
-	eRoundEnd_Finish		= u32(0),
-	eRoundEnd_GameRestarted,
-	eRoundEnd_GameRestartedFast,
-	eRoundEnd_TimeLimit,
-	eRoundEnd_FragLimit,
-	eRoundEnd_ArtrefactLimit,
-	eRoundEnd_Force			= u32(-1)
-};
 
 class CSE_Abstract;
 class xrServer;
@@ -37,93 +22,27 @@ protected:
 	xrServer*						m_server;
 	
 	GameEventQueue*					m_event_queue;
-	item_respawn_manager			m_item_respawner;
 		
 	//Events
 	virtual		void				OnEvent					(NET_Packet &tNetPacket, u16 type, u32 time, ClientID sender );
 
-	virtual		void				ReadOptions				(shared_str &options);
-	virtual		void				ConsoleCommands_Create	();
-	virtual		void				ConsoleCommands_Clear	();
-
-	struct SMapRot{
-		shared_str	map_name;
-		shared_str	map_ver;
-	};
-	DEF_DEQUE(MAP_ROTATION_LIST,	SMapRot);
-	bool							m_bMapRotation;
-	bool							m_bMapNeedRotation;
-	bool							m_bMapSwitched;
-	bool							m_bFastRestart;
-	MAP_ROTATION_LIST				m_pMapRotation_List;
-
 public:
-#define		TEAM_COUNT 4
-
 	BOOL							sv_force_sync;
-	float							rpoints_MinDist [TEAM_COUNT];
-	xr_vector<RPoint>				rpoints	[TEAM_COUNT];
-	DEF_VECTOR(RPRef, RPoint*);
-	RPRef							rpointsBlocked;
-	
-	ERoundEnd_Result				round_end_reason;
-	
-	virtual		void				SaveMapList				();
-	virtual		bool				HasMapRotation			() {return m_bMapRotation; };
+	void							GenerateGameMessage		(NET_Packet &P);
 
-				bool				FindPlayerName			(char const * name, IClient const * to_exclude);
-				void				GenerateNewName			(char const * old_name, char * dest, u32 const dest_size);
-				void				CheckPlayerName			(xrClientData* CL);
-public:
-	virtual		void				OnPlayerConnect			(ClientID id_who);
-	virtual		void				OnPlayerDisconnect		(ClientID id_who, LPSTR Name, u16 GameID);
-	virtual		void				OnPlayerReady			(ClientID id_who)							   {};
-	virtual		void				OnPlayerEnteredGame		(ClientID id_who)	{};
-	virtual		void				OnPlayerConnectFinished	(ClientID id_who)	{};
-	virtual		void				OnPlayerFire			(ClientID id_who, NET_Packet &P) {};
-	virtual		void				OnPlayer_Sell_Item		(ClientID id_who, NET_Packet &P) {};
-				void				GenerateGameMessage		(NET_Packet &P);
-	
-
-	virtual		void				OnRoundStart			();									// старт раунда
-	virtual		void				OnRoundEnd				();	//	round_end_reason			// конец раунда
-
-				void				MapRotation_AddMap		(LPCSTR MapName, LPCSTR MapVer);
-				void				MapRotation_ListMaps	();
-	virtual		bool				OnNextMap				()									{return false;}
-	virtual		void				OnPrevMap				()									{}
-	virtual		bool				SwitchToNextMap			()	{ return m_bMapNeedRotation; };
-	
-	virtual		BOOL				IsVotingEnabled			();
-	virtual		BOOL				IsVotingEnabled			(u16 flag);
-	virtual		bool				IsVotingActive			()	{ return false; };
-	virtual		void				SetVotingActive			( bool Active )	{ };
-	virtual		void				OnVoteStart				(LPCSTR VoteCommand, ClientID sender)			{};
-	virtual		void				OnVoteStop				()				{};
-
-public:
 									game_sv_GameState		();
 	virtual							~game_sv_GameState		();
 	// Main accessors
 	virtual		game_PlayerState*	get_eid					(u16 id);
 	virtual		void*				get_client				(u16 id); //if exist
-	//virtual		game_PlayerState*	get_it					(u32 it);
 	virtual		game_PlayerState*	get_id					(ClientID id);
-	
-	//virtual		LPCSTR				get_name_it				(u32 it);
 	virtual		LPCSTR				get_name_id				(ClientID id);								
 				LPCSTR				get_player_name_id		(ClientID id);								
 	virtual		u16					get_id_2_eid			(ClientID id);
-	//virtual		ClientID			get_it_2_id				(u32 it);*/
-	virtual		u32					get_players_count		();
 				CSE_Abstract*		get_entity_from_eid		(u16 id);
-				RPoint				getRP					(u16 team_idx, u32 rp_idx);
-				u32					getRPcount				(u16 team_idx);
+
 	// Signals
 	virtual		void				signal_Syncronize		();
-	virtual		void				assign_RP				(CSE_Abstract* E, game_PlayerState* ps_who);
-	virtual		bool				IsPointFreezed			(RPoint* rp);
-	virtual		void				SetPointFreezed			(RPoint* rp);
 
 #ifdef DEBUG
 	virtual		void				OnRender				();
@@ -137,7 +56,7 @@ public:
 	float							get_option_f			(LPCSTR lst, LPCSTR name, float def = 0.0f);
 	s32								get_option_i			(LPCSTR lst, LPCSTR name, s32 def = 0);
 	string64&						get_option_s			(LPCSTR lst, LPCSTR name, LPCSTR def = 0);
-	virtual		u32					get_alive_count			(u32 team);
+
 	virtual		xr_vector<u16>*		get_children			(ClientID id_who);
 	void							u_EventGen				(NET_Packet& P, u16 type, u16 dest	);
 	void							u_EventSend				(NET_Packet& P, u32 dwFlags = DPNSEND_GUARANTEED);
@@ -153,7 +72,9 @@ public:
 	virtual		void				OnDestroyObject			(u16 eid_who);			
 
 	virtual		void				OnHit					(u16 id_hitter, u16 id_hitted, NET_Packet& P);	//кто-то получил Hit
-	virtual		void				OnPlayerHitPlayer		(u16 id_hitter, u16 id_hitted, NET_Packet& P){}; //игрок получил Hit
+	virtual		void				OnPlayerConnect(ClientID id_who);
+	virtual		void				OnPlayerDisconnect(ClientID id_who, LPSTR Name, u16 GameID);
+	virtual		void				OnPlayerConnectFinished(ClientID id_who)	{};
 
 	// Main
 	virtual		void				Create					(shared_str& options);
@@ -189,8 +110,4 @@ public:
 	static		shared_str			parse_level_version		(const shared_str &server_options);
 
 	virtual		void				on_death				(CSE_Abstract *e_dest, CSE_Abstract *e_src);
-
-	virtual		void				DumpOnlineStatistic		(){};
-				
-				bool				CheckNewPlayer			(xrClientData* CL);
 };

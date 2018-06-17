@@ -878,7 +878,6 @@
     <ClInclude Include="..\..\xrServerEntities\associative_vector_compare_predicate_inline.h" />
     <ClInclude Include="..\..\xrServerEntities\associative_vector_inline.h" />
     <ClInclude Include="..\..\xrServerEntities\character_info_defs.h" />
-    <ClInclude Include="..\..\xrServerEntities\clsid_game.h" />
     <ClInclude Include="..\..\xrServerEntities\DrawUtils.h" />
     <ClInclude Include="..\..\xrServerEntities\FastDelegate.h" />
     <ClInclude Include="..\..\xrServerEntities\game_base_space.h" />

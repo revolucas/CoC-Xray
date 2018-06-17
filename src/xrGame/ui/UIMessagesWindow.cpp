@@ -9,7 +9,6 @@
 #include "StdAfx.h"
 #include "UIMessagesWindow.h"
 #include "UIGameLog.h"
-#include "UIChatWnd.h"
 #include "xrUIXmlParser.h"
 #include "UIXmlInit.h"
 #include "UIInventoryUtilities.h"
@@ -42,7 +41,6 @@ void CUIMessagesWindow::PendingMode(bool const is_pending_mode)
 		if (m_in_pending_mode)
 			return;
 		
-		m_pChatWnd->PendingMode	(is_pending_mode);
 		m_pChatLog->SetWndRect	(m_pending_chat_log_rect);
 		m_in_pending_mode		= true;
 		return;
@@ -50,7 +48,6 @@ void CUIMessagesWindow::PendingMode(bool const is_pending_mode)
 	if (!m_in_pending_mode)
 		return;
 	
-	m_pChatWnd->PendingMode		(is_pending_mode);
 	m_pChatLog->SetWndRect		(m_inprogress_chat_log_rect);
 	m_in_pending_mode			= false;
 }
@@ -93,7 +90,7 @@ void CUIMessagesWindow::AddIconedPdaMessage(GAME_NEWS_DATA* news)
 
 void CUIMessagesWindow::AddChatMessage(shared_str msg, shared_str author)
 {
-	 m_pChatLog->AddChatMessage(*msg, *author);
+
 }
 /*
 void CUIMessagesWindow::SetChatOwner(game_cl_GameState* owner)
@@ -104,8 +101,6 @@ void CUIMessagesWindow::SetChatOwner(game_cl_GameState* owner)
 */
 void CUIMessagesWindow::Show(bool show)
 {
-	if (m_pChatWnd)
-		m_pChatWnd->Show(show);
 	if (m_pGameLog)
 		m_pGameLog->Show(show);
 	if (m_pChatLog)
