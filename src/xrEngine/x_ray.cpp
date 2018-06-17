@@ -64,7 +64,6 @@ static int start_year = 1999; // 1999
 
 #ifndef DEDICATED_SERVER
 
-#include "../xrGameSpy/gamespy/md5c.c"
 #include <ctype.h>
 
 #define DEFAULT_MODULE_HASH "3CAABCFCFF6F3A810019C6A72180F166"
@@ -72,6 +71,7 @@ static char szEngineHash[33] = DEFAULT_MODULE_HASH;
 
 PROTECT_API char* ComputeModuleHash(char* pszHash)
 {
+	/*
     //SECUROM_MARKER_HIGH_SECURITY_ON(3)
 
     char szModuleFileName[MAX_PATH];
@@ -122,7 +122,7 @@ PROTECT_API char* ComputeModuleHash(char* pszHash)
     CloseHandle(hModuleHandle);
 
     //SECUROM_MARKER_HIGH_SECURITY_OFF(3)
-
+	*/
     return pszHash;
 }
 #endif // DEDICATED_SERVER

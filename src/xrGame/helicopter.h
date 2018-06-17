@@ -71,6 +71,7 @@ struct SHeliMovementState{
 		float		dir_h;
 		STmpPt		(const Fvector& p, const float h):point(p),dir_h(h){};
 	};
+	SHeliMovementState				();
 	~SHeliMovementState				();
 	CHelicopter*					parent;
 	EHeilMovementState				type;
@@ -182,7 +183,7 @@ public:
 	CInventory*				GetInventory(){ return (0); }
 	static	void 			ActorObstacleCallback(bool& do_colide, bool bo1, dContact& c, SGameMtl* material_1, SGameMtl* material_2);
 	//-holder
-
+	virtual void ForceTransform(const Fmatrix& m);
 // heli weapons
 	bool							m_use_rocket_on_attack;
 	bool							m_use_mgun_on_attack;

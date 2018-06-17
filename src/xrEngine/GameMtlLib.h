@@ -126,6 +126,7 @@ public:
     {
         ID = -1;
         m_Name = "unknown";
+		m_Desc = "unknown";
         Flags.zero();
         // factors
         fFlotationFactor = 1.f;
@@ -248,7 +249,7 @@ class MTL_EXPORT_API CGameMtlLibrary
     GameMtlPairVec material_pairs_rt;
 #endif
 public:
-    CGameMtlLibrary();
+	CGameMtlLibrary();
     ~CGameMtlLibrary()
     {
         /*
