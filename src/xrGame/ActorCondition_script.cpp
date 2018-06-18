@@ -1,6 +1,7 @@
 #include "pch_script.h"
 #include "ActorCondition.h"
 #include "EntityCondition.h"
+#include "Wound.h"
 
 using namespace luabind;
 
@@ -33,6 +34,18 @@ void ClearAllBoosters(CActorCondition* conditions)
 	cur_booster_influences.clear();
 }
 
+void WoundForEach(CActorCondition* conditions, const luabind::functor<bool> &funct)
+{
+	CEntityCondition::WOUND_VECTOR const& cur_wounds = conditions->wounds();
+	CEntityCondition::WOUND_VECTOR::const_iterator it = conditions->wounds().begin();
+	CEntityCondition::WOUND_VECTOR::const_iterator it_e = conditions->wounds().end();
+	for (; it != it_e ; ++it)
+	{
+		if (funct((*it)) == true)
+			break;
+	}
+}
+
 #pragma optimize("s",on)
 void CActorCondition::script_register(lua_State *L)
 {
@@ -44,8 +57,24 @@ void CActorCondition::script_register(lua_State *L)
 			.def_readwrite("fBoostValue", &SBooster::fBoostValue)
 			.def_readwrite("m_type", &SBooster::m_type)
 			,
+			class_<CWound>("CWound")
+			//.def(constructor<>())
+			.def("TypeSize", &CWound::TypeSize)
+			.def("BloodSize", &CWound::BloodSize)
+			.def("AddHit", &CWound::AddHit)
+			.def("Incarnation", &CWound::Incarnation)
+			.def("TotalSize", &CWound::TotalSize)
+			.def("SetBoneNum", &CWound::SetBoneNum)
+			.def("GetBoneNum", &CWound::GetBoneNum)
+			.def("GetParticleBoneNum", &CWound::GetParticleBoneNum)
+			.def("SetParticleBoneNum", &CWound::SetParticleBoneNum)
+			.def("SetDestroy", &CWound::SetDestroy)
+			.def("GetDestroy", &CWound::GetDestroy)
+			,
 			class_<CEntityCondition>("CEntityCondition")
 			//.def(constructor<>())
+			.def("AddWound", &CEntityCondition::AddWound)
+			.def("ClearWounds", &CEntityCondition::ClearWounds)
 			.def("GetWhoHitLastTimeID", &CEntityCondition::GetWhoHitLastTimeID)
 			.def("GetPower", &CEntityCondition::GetPower)
 			.def("GetRadiation", &CEntityCondition::GetRadiation)
@@ -91,6 +120,7 @@ void CActorCondition::script_register(lua_State *L)
 			.def("ClearAllBoosters", &ClearAllBoosters)
 			.def("ApplyBooster", &ApplyBooster_script)
 			.def("BoosterForEach", &BoosterForEach)
+			.def("WoundForEach", &WoundForEach)
 			.def("V_Satiety", &CActorCondition::V_Satiety)
 			.def("V_SatietyPower", &CActorCondition::V_SatietyPower)
 			.def("V_SatietyHealth", &CActorCondition::V_SatietyHealth)
