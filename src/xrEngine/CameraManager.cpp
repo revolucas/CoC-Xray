@@ -432,7 +432,7 @@ void CCameraManager::UpdatePPEffectors()
 }
 
 
-
+extern float view_port_near_koef;
 void CCameraManager::ApplyDevice(float _viewport_near)
 {
     // Device params
@@ -446,7 +446,7 @@ void CCameraManager::ApplyDevice(float _viewport_near)
     // projection
     Device.fFOV = m_cam_info.fFov;
     Device.fASPECT = m_cam_info.fAspect;
-    Device.mProject.build_projection(deg2rad(m_cam_info.fFov), m_cam_info.fAspect, _viewport_near, m_cam_info.fFar);
+	Device.mProject.build_projection(deg2rad(m_cam_info.fFov), m_cam_info.fAspect, _viewport_near* view_port_near_koef, m_cam_info.fFar);
 
     if (g_pGamePersistent && g_pGamePersistent->m_pMainMenu->IsActive())
         ResetPP();

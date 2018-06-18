@@ -178,8 +178,9 @@ protected:
 	//и скорость потери крови из раны
 public:
 	DEFINE_VECTOR(CWound*, WOUND_VECTOR, WOUND_VECTOR_IT);
-	WOUND_VECTOR			m_WoundVector;
 protected:
+	WOUND_VECTOR			m_WoundVector;
+
 	//очистка массива ран
 	
 
