@@ -55,9 +55,6 @@ public:
 
 
 	void					Activate			(u16 slot, /*EActivationReason reason=eGeneral, */bool bForce=false);
-	void					ActivateDeffered();
-	PIItem					GetNextActiveGrenade();
-	bool					ActivateNextGrenage();
 	
 	PIItem					ActiveItem			()const					{return (m_iActiveSlot==NO_ACTIVE_SLOT)?NULL:ItemFromSlot(m_iActiveSlot);}
 	PIItem					ItemFromSlot		(u16 slot) const;
@@ -163,8 +160,6 @@ protected:
 	u32					m_dwModifyFrame;
 
 	bool				m_drop_last_frame;
-
-	bool				m_change_after_deactivate;
 
 	void				SendActionEvent		(u16 cmd, u32 flags);
 

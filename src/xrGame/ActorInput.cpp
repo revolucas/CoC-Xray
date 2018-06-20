@@ -11,7 +11,6 @@
 
 #include "hit.h"
 #include "PHDestroyable.h"
-#include "Car.h"
 #include "UIGameSP.h"
 #include "inventory.h"
 #include "level.h"
@@ -32,6 +31,7 @@
 #include "clsid_game.h"
 #include "hudmanager.h"
 #include "Weapon.h"
+#include "holder_custom.h"
 
 extern u32 hud_adj_mode;
 
@@ -228,7 +228,7 @@ void CActor::IR_OnKeyboardRelease(int cmd)
 		switch(cmd)
 		{
 		case kJUMP:		mstate_wishful &=~mcJump;		break;
-		case kDROP:		if(GAME_PHASE_INPROGRESS == Game().Phase()) g_PerformDrop();				break;
+		case kDROP:		if (GAME_PHASE_INPROGRESS == Game().Phase()) g_PerformDrop();				break;
 		}
 	}
 }
@@ -323,14 +323,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 {
 
 	if(m_holder){
-		bool b = false;
-		CGameObject* holderGO			= smart_cast<CGameObject*>(m_holder);
-		
-		if(smart_cast<CCar*>(holderGO))
-			b = use_Vehicle(0);
-		else
-			b = use_HolderEx(0,false);
-
+		bool b = use_HolderEx(0,false);
 		if(inventory().ActiveItem()){
 			CHudItem* hi = smart_cast<CHudItem*>(inventory().ActiveItem());
 			if(hi) hi->OnAnimationEnd(hi->GetState());
@@ -338,13 +331,7 @@ bool CActor::use_Holder				(CHolderCustom* holder)
 
 		return b;
 	}else{
-		bool b = false;
-		//CGameObject* holderGO			= smart_cast<CGameObject*>(holder);
-		if(smart_cast<CCar*>(holder))
-			b = use_Vehicle(holder);
-		else
-			b = use_HolderEx(holder,false);
-		
+		bool b = use_HolderEx(holder,false);
 		if(b){//used succesfully
 			// switch off torch...
 			CAttachableItem *I = CAttachmentOwner::attachedItem(CLSID_DEVICE_TORCH);

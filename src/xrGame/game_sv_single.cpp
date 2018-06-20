@@ -29,6 +29,7 @@ void	game_sv_Single::Create(shared_str& options)
 	inherited::Create(options);
 	m_alife_simulator = xr_new<CALifeSimulator>(&server(),&options);
 	switch_Phase(GAME_PHASE_INPROGRESS);
+	Msg("alife simulator created");
 }
 
 void	game_sv_Single::OnCreate		(u16 id_who)
@@ -329,4 +330,7 @@ void game_sv_Single::restart_simulator			(LPCSTR saved_game_name)
 	g_pGamePersistent->LoadTitle		();
 	Device.PreCache			(60, true, true);
 	pApp->LoadEnd			();
+
+	switch_Phase(GAME_PHASE_INPROGRESS);
+	Msg("alife simulator restarted");
 }

@@ -258,7 +258,6 @@ protected:
     CHolderCustom*			m_holder;
     u16						m_holderID;
     bool					use_Holder				(CHolderCustom* holder);
-    bool					use_Vehicle				(CHolderCustom* object);
     void					ActorUse				();
 	void					actor_kick();
 
