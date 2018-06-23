@@ -237,7 +237,6 @@ void CTorch::net_Destroy()
 void CTorch::OnH_A_Chield() 
 {
 	inherited::OnH_A_Chield			();
-	m_focus.set						(Position());
 }
 
 void CTorch::OnH_B_Independent(bool just_before_destroy) 
@@ -298,22 +297,22 @@ void CTorch::UpdateCL()
 
 				if(true /*false*/)
 				{
-					offset						= M.c; 
-					offset.mad					(M.i,m_omni_offset.x);
-					offset.mad					(M.j,m_omni_offset.y);
-					offset.mad					(M.k,m_omni_offset.z);
-					light_omni->set_position	(offset);
+					offset = M.c; 
+					offset.mad(M.i,m_omni_offset.x);
+					offset.mad(M.j,m_omni_offset.y);
+					offset.mad(M.k,m_omni_offset.z);
+					light_omni->set_position(offset);
 				}
 			}//if (true)
 			glow_render->set_position	(M.c);
 
 			if (true)
 			{
-				light_render->set_rotation	(dir, right);
+				light_render->set_rotation(dir, right);
 				
 				if(true /*false*/)
 				{
-					light_omni->set_rotation	(dir, right);
+					light_omni->set_rotation(dir, right);
 				}
 			}//if (true)
 			glow_render->set_direction	(dir);
@@ -323,15 +322,15 @@ void CTorch::UpdateCL()
 		{
 			if (can_use_dynamic_lights()) 
 			{
-				light_render->set_position	(M.c);
-				light_render->set_rotation	(M.k,M.i);
+				light_render->set_position(M.c);
+				light_render->set_rotation(M.k,M.i);
 
 				Fvector offset				= M.c; 
-				offset.mad					(M.i,OMNI_OFFSET.x);
-				offset.mad					(M.j,OMNI_OFFSET.y);
-				offset.mad					(M.k,OMNI_OFFSET.z);
-				light_omni->set_position	(M.c);
-				light_omni->set_rotation	(M.k,M.i);
+				offset.mad(M.i, m_omni_offset.x);
+				offset.mad(M.j, m_omni_offset.y);
+				offset.mad(M.k, m_omni_offset.z);
+				light_omni->set_position(M.c);
+				light_omni->set_rotation(M.k,M.i);
 			}//if (can_use_dynamic_lights()) 
 
 			glow_render->set_position	(M.c);

@@ -1498,6 +1498,7 @@
     <ClInclude Include="fire_disp_controller.h" />
     <ClInclude Include="first_bullet_controller.h" />
     <ClInclude Include="flare.h" />
+    <ClInclude Include="Flashlight.h" />
     <ClInclude Include="FoodItem.h" />
     <ClInclude Include="FryupZone.h" />
     <ClInclude Include="fs_registrator.h" />
@@ -3058,6 +3059,7 @@
     <ClCompile Include="fire_disp_controller.cpp" />
     <ClCompile Include="first_bullet_controller.cpp" />
     <ClCompile Include="flare.cpp" />
+    <ClCompile Include="Flashlight.cpp" />
     <ClCompile Include="FoodItem.cpp" />
     <ClCompile Include="FoodItem_script.cpp">
       <PrecompiledHeaderFile>pch_script.h</PrecompiledHeaderFile>

@@ -2,6 +2,7 @@
 #include <dinput.h>
 #include "Actor.h"
 #include "Torch.h"
+#include "Flashlight.h"
 #include "trade.h"
 #include "../xrEngine/CameraBase.h"
 
@@ -108,6 +109,11 @@ void CActor::IR_OnKeyboardPress(int cmd)
 	case kTORCH:
 		{
 			SwitchTorch();
+			/*
+			CFlashlight* flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT));
+			if (flashlight)
+				flashlight->Switch();
+			*/
 			break;
 		}
 
@@ -119,6 +125,12 @@ void CActor::IR_OnKeyboardPress(int cmd)
 				CCustomDetector* det			= smart_cast<CCustomDetector*>(det_active);
 				if (det)
 					det->ToggleDetector				(g_player_hud->attached_item(0)!=NULL);
+				else
+				{
+					CFlashlight* flashlight = smart_cast<CFlashlight*>(det_active);
+					if (flashlight)
+						flashlight->ToggleDevice(g_player_hud->attached_item(0) != NULL);
+				}
 				return;
 			}
 		}break;

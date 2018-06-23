@@ -6920,6 +6920,7 @@
     <ClInclude Include="firedeps.h" />
     <ClInclude Include="ph_shell_interface.h" />
     <ClInclude Include="raypick.h" />
+    <ClInclude Include="Flashlight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="damage_manager.cpp">
@@ -10092,6 +10093,7 @@
     </ClCompile>
     <ClCompile Include="ui\UIAchievements.cpp" />
     <ClCompile Include="game_sv_base.cpp" />
+    <ClCompile Include="Flashlight.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="ai\monsters\chimera\chimera_attack_state.h">
