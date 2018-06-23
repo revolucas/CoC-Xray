@@ -303,7 +303,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 				{
 					accel_k *= outfit->m_fWalkAccel;
 
-					if (inventory().TotalWeight() > MaxWalkWeight())
+					if (inventory().TotalWeight() > MaxCarryWeight())
 						accel_k *= outfit->m_fOverweightWalkK;
 				}
 
@@ -312,7 +312,7 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector &vControlAccel, float &Ju
 				{
 					accel_k *= backpack->m_fWalkAccel;
 
-					if (inventory().TotalWeight() > MaxWalkWeight())
+					if (inventory().TotalWeight() > MaxCarryWeight())
 						accel_k *= backpack->m_fOverweightWalkK;
 				}
 
