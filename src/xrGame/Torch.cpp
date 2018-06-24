@@ -282,40 +282,27 @@ void CTorch::UpdateCL()
 				m_prev_hp.y = angle_inertion_var(m_prev_hp.y, -actor->cam_FirstEye()->pitch, m_torch_inertion_speed_min, m_torch_inertion_speed_max, TORCH_INERTION_CLAMP, Device.fTimeDelta);
 			}
 
-			Fvector			dir,right,up;	
-			dir.setHP		(m_prev_hp.x+m_delta_h,m_prev_hp.y);
+			Fvector dir,right,up;	
+			dir.setHP(m_prev_hp.x+m_delta_h,m_prev_hp.y);
 			Fvector::generate_orthonormal_basis_normalized(dir,up,right);
 
+			Fvector offset = M.c; 
+			offset.mad(M.i, m_torch_offset.x);
+			offset.mad(M.j, m_torch_offset.y);
+			offset.mad(M.k, m_torch_offset.z);
+			light_render->set_position	(offset);
 
-			if (true)
-			{
-				Fvector offset				= M.c; 
-				offset.mad(M.i, m_torch_offset.x);
-				offset.mad(M.j, m_torch_offset.y);
-				offset.mad(M.k, m_torch_offset.z);
-				light_render->set_position	(offset);
+			offset = M.c; 
+			offset.mad(M.i,m_omni_offset.x);
+			offset.mad(M.j,m_omni_offset.y);
+			offset.mad(M.k,m_omni_offset.z);
+			light_omni->set_position(offset);
 
-				if(true /*false*/)
-				{
-					offset = M.c; 
-					offset.mad(M.i,m_omni_offset.x);
-					offset.mad(M.j,m_omni_offset.y);
-					offset.mad(M.k,m_omni_offset.z);
-					light_omni->set_position(offset);
-				}
-			}//if (true)
-			glow_render->set_position	(M.c);
+			glow_render->set_position(M.c);
 
-			if (true)
-			{
-				light_render->set_rotation(dir, right);
-				
-				if(true /*false*/)
-				{
-					light_omni->set_rotation(dir, right);
-				}
-			}//if (true)
-			glow_render->set_direction	(dir);
+			light_render->set_rotation(dir, right);
+			light_omni->set_rotation(dir, right);
+			glow_render->set_direction(dir);
 
 		}// if(actor)
 		else 
