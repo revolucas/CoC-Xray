@@ -73,6 +73,7 @@ extern	float	psSqueezeVelocity;
 extern	int		psLUA_GCSTEP;
 extern Fvector	m_hud_offset_pos;
 extern Fvector	m_hand_offset_pos;
+extern BOOL		g_use_aim_inertion;
 
 extern	int		x_m_x;
 extern	int		x_m_z;
@@ -1899,6 +1900,7 @@ void CCC_RegisterCommands()
 	CMD4(CCC_Float, "fov", &g_fov, 5.0f, 180.0f);
 	CMD4(CCC_Float, "scope_fov", &g_scope_fov, 5.0f, 180.0f);
 	CMD4(CCC_Integer, "objects_per_client_update", &g_objects_per_client_update, 1, 65535)
+	CMD4(CCC_Integer, "g_use_aim_inertion", &g_use_aim_inertion, 0, 1);
 	//#endif // DEBUG
 
 	// Demo
