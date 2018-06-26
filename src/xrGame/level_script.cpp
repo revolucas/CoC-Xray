@@ -860,6 +860,15 @@ void LevelHoldAction(EGameActions cmd)
 	Level().IR_OnKeyboardHold(cmd);
 }
 
+void patrol_path_add(LPCSTR patrol_path, CPatrolPath* path) {
+	ai().patrol_paths_raw().add_path(shared_str(patrol_path), path);
+}
+
+
+void patrol_path_remove(LPCSTR patrol_path) {
+	ai().patrol_paths_raw().remove_path(shared_str(patrol_path));
+}
+
 #pragma optimize("s",on)
 void CLevel::script_register(lua_State *L)
 {
@@ -872,6 +881,8 @@ void CLevel::script_register(lua_State *L)
 
 	module(L,"level")
 	[
+		def("patrol_path_add", &patrol_path_add),
+		def("patrol_path_remove", &patrol_path_remove),
 		//Alundaio: Extend level namespace exports
 #ifdef NAMESPACE_LEVEL_EXPORTS
 		def("u_event_gen", &u_event_gen), //Send events via packet

@@ -22,7 +22,7 @@ private:
 
 protected:
 	typedef CGraphAbstractSerialize<CPatrolPoint,float,u32> inherited;
-
+	friend class CPatrolPathScript;
 public:
 #ifdef DEBUG
 	shared_str				m_name;
@@ -42,6 +42,9 @@ public:
 	virtual void			load			(IReader &stream);
 	IC		void			name			(const shared_str &name);
 #endif
+
+	CPatrolPoint add_point(Fvector);
+	CPatrolPoint point(u32);
 };
 
 #include "patrol_path_inline.h"

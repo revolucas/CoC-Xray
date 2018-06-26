@@ -14,6 +14,8 @@
 #include "../Include/xrRender/RenderVisual.h"
 #include "../Include/xrRender/Kinematics.h"
 #include "ai/stalker/ai_stalker.h"
+#include "patrol_path.h"
+#include "patrol_point.h"
 
 using namespace luabind;
 
@@ -127,10 +129,10 @@ void CObjectScript::script_register		(lua_State *L)
 
 			.def("use",					&CGameObject::use,	&CGameObjectWrapper::use_static)
 
-//			.def("setVisible",			&CGameObject::setVisible)
+			.def("setVisible",			&CGameObject::setVisible)
 			.def("getVisible",			&CGameObject::getVisible)
 			.def("getEnabled",			&CGameObject::getEnabled)
-//			.def("setEnabled",			&CGameObject::setEnabled)
+			.def("setEnabled",			&CGameObject::setEnabled)
 
 //		,class_<CPhysicsShellHolder,CGameObject>("CPhysicsShellHolder")
 //			.def(constructor<>())
@@ -202,3 +204,35 @@ void FHierrarhyVisualScript::script_register		(lua_State *L)
 		];
 }
 */
+
+LPCSTR CPatrolPointScript::getName(CPatrolPoint *pp) {
+	return pp->m_name.c_str();
+}
+
+void CPatrolPointScript::setName(CPatrolPoint *pp, LPCSTR str) {
+	pp->m_name = shared_str(str);
+}
+
+void CPatrolPointScript::script_register(lua_State *L) {
+	module(L)[
+		class_<CPatrolPoint>("CPatrolPoint")
+			.def(constructor<>())
+			.def_readwrite("m_position", &CPatrolPoint::m_position)
+			.def_readwrite("m_flags", &CPatrolPoint::m_flags)
+			.def_readwrite("m_level_vertex_id", &CPatrolPoint::m_level_vertex_id)
+			.def_readwrite("m_game_vertex_id", &CPatrolPoint::m_game_vertex_id)
+			.property("m_name", &CPatrolPointScript::getName, &CPatrolPointScript::setName)
+			.def("position", (CPatrolPoint& (CPatrolPoint::*) (Fvector)) (&CPatrolPoint::position))
+	];
+}
+
+
+void CPatrolPathScript::script_register(lua_State *L) {
+	module(L)[
+		class_<CPatrolPath>("CPatrolPath")
+			.def(constructor<>())
+			.def("add_point", &CPatrolPath::add_point)
+			.def("point", (CPatrolPoint(CPatrolPath::*) (u32)) (&CPatrolPath::point))
+			.def("add_vertex", &CPatrolPath::add_vertex)
+	];
+}
