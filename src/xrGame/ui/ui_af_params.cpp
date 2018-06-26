@@ -368,7 +368,7 @@ void CUIArtefactParams::SetInfo(CCustomOutfit* pInvItem)
 
 void CUIArtefactParams::SetInfo(CHelmet* pInvItem)
 {
-
+	DetachAll();
 }
 
 void CUIArtefactParams::SetInfo(CBackpack* pInvItem)
