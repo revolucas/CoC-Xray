@@ -80,6 +80,7 @@
 #include "../../xrServerEntities/script_engine.h" 
 using namespace luabind;
 #include "helicopter.h"
+#include "Flashlight.h"
 //-Alundaio
 
 const u32		patch_frames = 50;
@@ -1421,6 +1422,12 @@ void CActor::renderable_Render	()
 {
     VERIFY(_valid(XFORM()));
     inherited::renderable_Render();
+
+	//Alun: Due to glitchy shadows this is forced
+	CFlashlight* flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT));
+	if (flashlight && flashlight->torch_active())
+		return;
+
     //if(1/*!HUDview()*/) //Swartz: replaced by block below for actor shadow
 if ((cam_active==eacFirstEye && // first eye cam
 ::Render->get_generation() == ::Render->GENERATION_R2 && // R2
