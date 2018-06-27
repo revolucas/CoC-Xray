@@ -59,6 +59,14 @@ GameGraph::LEVEL_MAP const& get_levels	( CGameGraph const* graph )
 	return				graph->header().levels();
 }
 
+u32 vertex_count(const CGameGraph *self) {
+	return self->header().vertex_count();
+}
+
+const CGameLevelCrossTable *get_cross_table() {
+	return &ai().cross_table();
+}
+
 #pragma optimize("s",on)
 void CGameGraph::script_register		(lua_State *L)
 {
@@ -84,6 +92,14 @@ void CGameGraph::script_register		(lua_State *L)
 			.def("game_point",		&CVertex__game_point)
 			.def("level_id",		&CVertex::level_id)
 			.def("level_vertex_id",	&CVertex::level_vertex_id)
-			.def("mask", 			&CVertex__vertex_type)
+			.def("mask", 			&CVertex__vertex_type),
+
+			def("cross_table", &get_cross_table),
+
+			class_<CGameLevelCrossTable>("CGameLevelCrossTable")
+			.def("vertex", &CGameLevelCrossTable::vertex),
+
+			class_<CGameLevelCrossTable::CCell>("CGameLevelCrossTable__CCell")
+			.def("game_vertex_id", &CGameLevelCrossTable::CCell::game_vertex_id)
 	];
 }

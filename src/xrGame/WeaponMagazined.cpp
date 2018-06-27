@@ -1352,6 +1352,12 @@ void CWeaponMagazined::OnZoomIn()
     if (GetState() == eIdle)
         PlayAnimIdle();
 
+#ifdef EXTENDED_WEAPON_CALLBACKS
+	CGameObject	*object = smart_cast<CGameObject*>(H_Parent());
+	if (object)
+		object->callback(GameObject::eOnWeaponZoomIn)(object->lua_game_object(), this->lua_game_object());
+#endif
+
     CActor* pActor = smart_cast<CActor*>(H_Parent());
     if (pActor)
     {
