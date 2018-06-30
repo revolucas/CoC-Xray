@@ -134,15 +134,16 @@ void CActor::RunTalkDialog(CInventoryOwner* talk_partner, bool disable_break)
 	}
 }
 
+#include "Flashlight.h"
 void CActor::StartTalk (CInventoryOwner* talk_partner)
 {
-	PIItem det_active					= inventory().ItemFromSlot(DETECTOR_SLOT);
-	if(det_active)
-	{
-		CCustomDetector* det			= smart_cast<CCustomDetector*>(det_active);
-		det->HideDetector				(true);
-	}
+	CCustomDetector* det = smart_cast<CCustomDetector*>(inventory().ItemFromSlot(DETECTOR_SLOT));
+	if (det)
+		det->HideDetector(true);
 
+	CFlashlight* flashlight = smart_cast<CFlashlight*>(inventory().ItemFromSlot(DETECTOR_SLOT));
+	if (flashlight)
+		flashlight->HideDevice(true);
 
 	CGameObject* GO = smart_cast<CGameObject*>(talk_partner); VERIFY(GO);
 	CInventoryOwner::StartTalk(talk_partner);
