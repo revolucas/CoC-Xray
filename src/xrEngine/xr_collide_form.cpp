@@ -31,6 +31,7 @@ ICollisionForm::ICollisionForm(CObject* _owner, ECollisionFormType tp)
     owner = _owner;
     m_type = tp;
     bv_sphere.identity();
+	bv_box.identity();
 }
 
 ICollisionForm::~ICollisionForm()

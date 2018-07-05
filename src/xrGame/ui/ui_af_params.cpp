@@ -29,6 +29,11 @@ CUIArtefactParams::CUIArtefactParams()
 		m_restore_item[i] = NULL;
 	}
 	m_additional_weight = NULL;
+	m_disp_condition = NULL;
+	m_fJumpSpeed = NULL;
+	m_fWalkAccel = NULL;
+	m_fOverweightWalkAccel = NULL;
+	m_Prop_line = NULL;
 }
 
 CUIArtefactParams::~CUIArtefactParams()
@@ -36,6 +41,10 @@ CUIArtefactParams::~CUIArtefactParams()
 	delete_data	( m_immunity_item );
 	delete_data	( m_restore_item );
 	xr_delete	( m_additional_weight );
+	xr_delete(m_disp_condition);
+	xr_delete(m_fJumpSpeed);
+	xr_delete(m_fWalkAccel);
+	xr_delete(m_fOverweightWalkAccel);
 	xr_delete	( m_Prop_line );
 }
 
@@ -171,15 +180,14 @@ void CUIArtefactParams::InitFromXml( CUIXml& xml )
 		m_fOverweightWalkAccel->SetCaption(name);
 		xml.SetLocalRoot(base_node);
 	}
-	
+
 	{
 		m_additional_weight = xr_new<UIArtefactParamItem>();
-		m_additional_weight->Init( xml, "additional_weight" );
+		m_additional_weight->Init(xml, "additional_weight");
 		m_additional_weight->SetAutoDelete(false);
 
-		LPCSTR name = CStringTable().translate( "ui_inv_weight" ).c_str();
-		m_additional_weight->SetCaption( name );
-
+		LPCSTR name = CStringTable().translate("ui_inv_weight").c_str();
+		m_additional_weight->SetCaption(name);
 		//xml.SetLocalRoot( base_node );
 	}
 
@@ -239,7 +247,7 @@ void CUIArtefactParams::SetInfo(CArtefact* pInvItem)
 
 	{
 		float val = pInvItem->m_fJumpSpeed;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
 			m_fJumpSpeed->SetValue(val*pInvItem->GetCondition());
 			pos.set(m_fJumpSpeed->GetWndPos());
@@ -249,7 +257,7 @@ void CUIArtefactParams::SetInfo(CArtefact* pInvItem)
 			AttachChild(m_fJumpSpeed);
 		}
 		val = pInvItem->m_fWalkAccel;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
 			m_fWalkAccel->SetValue(val*pInvItem->GetCondition());
 			pos.set(m_fWalkAccel->GetWndPos());
@@ -316,9 +324,9 @@ void CUIArtefactParams::SetInfo(CCustomOutfit* pInvItem)
 
 	{
 		float val = pInvItem->m_fJumpSpeed;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
-			m_fJumpSpeed->SetValue(val*pInvItem->GetCondition());
+			m_fJumpSpeed->SetValue(val);
 			pos.set(m_fJumpSpeed->GetWndPos());
 			pos.y = h;
 			m_fJumpSpeed->SetWndPos(pos);
@@ -326,9 +334,9 @@ void CUIArtefactParams::SetInfo(CCustomOutfit* pInvItem)
 			AttachChild(m_fJumpSpeed);
 		}
 		val = pInvItem->m_fWalkAccel;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
-			m_fWalkAccel->SetValue(val*pInvItem->GetCondition());
+			m_fWalkAccel->SetValue(val - 1.f);
 			pos.set(m_fWalkAccel->GetWndPos());
 			pos.y = h;
 			m_fWalkAccel->SetWndPos(pos);
@@ -336,9 +344,9 @@ void CUIArtefactParams::SetInfo(CCustomOutfit* pInvItem)
 			AttachChild(m_fWalkAccel);
 		}
 		val = pInvItem->m_fOverweightWalkK;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
-			m_fOverweightWalkAccel->SetValue(val*pInvItem->GetCondition());
+			m_fOverweightWalkAccel->SetValue(val - 1.f);
 			pos.set(m_fOverweightWalkAccel->GetWndPos());
 			pos.y = h;
 			m_fOverweightWalkAccel->SetWndPos(pos);
@@ -351,7 +359,7 @@ void CUIArtefactParams::SetInfo(CCustomOutfit* pInvItem)
 		val = pSettings->r_float(af_section, "additional_inventory_weight");
 		if (!fis_zero(val))
 		{
-			val *= pInvItem->GetCondition();
+			//val *= pInvItem->GetCondition();
 			m_additional_weight->SetValue(val);
 
 			pos.set(m_additional_weight->GetWndPos());
@@ -390,9 +398,9 @@ void CUIArtefactParams::SetInfo(CBackpack* pInvItem)
 
 	{
 		float val = pInvItem->m_fJumpSpeed;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
-			m_fJumpSpeed->SetValue(val*pInvItem->GetCondition());
+			m_fJumpSpeed->SetValue(val);
 			pos.set(m_fJumpSpeed->GetWndPos());
 			pos.y = h;
 			m_fJumpSpeed->SetWndPos(pos);
@@ -400,9 +408,9 @@ void CUIArtefactParams::SetInfo(CBackpack* pInvItem)
 			AttachChild(m_fJumpSpeed);
 		}
 		val = pInvItem->m_fWalkAccel;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
-			m_fWalkAccel->SetValue(val*pInvItem->GetCondition());
+			m_fWalkAccel->SetValue(val - 1.f);
 			pos.set(m_fWalkAccel->GetWndPos());
 			pos.y = h;
 			m_fWalkAccel->SetWndPos(pos);
@@ -410,9 +418,9 @@ void CUIArtefactParams::SetInfo(CBackpack* pInvItem)
 			AttachChild(m_fWalkAccel);
 		}
 		val = pInvItem->m_fOverweightWalkK;
-		if (_abs(val) < 1.f - EPS)
+		if (val != 1.f)
 		{
-			m_fOverweightWalkAccel->SetValue(val*pInvItem->GetCondition());
+			m_fOverweightWalkAccel->SetValue(val - 1.f);
 			pos.set(m_fOverweightWalkAccel->GetWndPos());
 			pos.y = h;
 			m_fOverweightWalkAccel->SetWndPos(pos);
