@@ -630,6 +630,7 @@ bool CInventory::Action(u16 cmd, u32 flags)
 		case kWPN_FIREMODE_PREV:
 		case kWPN_ZOOM	 : 
 		case kTORCH:
+		case kFLASH:		//Romann
 		case kNIGHT_VISION:
 			{
 				SendActionEvent(cmd, flags);
