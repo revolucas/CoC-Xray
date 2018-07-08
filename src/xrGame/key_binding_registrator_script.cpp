@@ -72,6 +72,7 @@ void key_binding_registrator::script_register(lua_State *L)
 				value("kPDA_TAB5",					int(kPDA_TAB5)),
 				value("kPDA_TAB6",					int(kPDA_TAB6)),
 				
+				value("kFLASH",						int(kFLASH)),	//Romann
 				value("kTORCH",						int(kTORCH)),
 				value("kNIGHT_VISION",				int(kNIGHT_VISION)),
 				value("kWPN_1",						int(kWPN_1)),

@@ -33,6 +33,7 @@ _action  actions[]		= {
 	{ "cam_zoom_in",		kCAM_ZOOM_IN			,_both},	
 	{ "cam_zoom_out",		kCAM_ZOOM_OUT			,_both},
 															
+	{ "flashlight",			kFLASH					,_both},	//Romann
 	{ "torch",				kTORCH					,_both},	
 	{ "night_vision",		kNIGHT_VISION			,_both},	
 	{ "show_detector",		kDETECTOR				,_sp},		
