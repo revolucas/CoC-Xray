@@ -49,6 +49,7 @@
 		<command id="kb_drop"						  	exe="drop"/>		
 	</group>
 	<group name="kb_grp_common">
+		<command id="kb_kick"							exe="kick"/>
 		<command id="kb_cam_autoaim"					exe="cam_autoaim"/>
 		<command id="kb_pause"							exe="pause"/>
 		<command id="kb_use"						 	exe="use"/>			
