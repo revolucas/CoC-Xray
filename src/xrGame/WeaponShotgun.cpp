@@ -96,6 +96,15 @@ void CWeaponShotgun::OnAnimationEnd(u32 state)
 void CWeaponShotgun::Reload() 
 {
 	if(m_bTriStateReload){
+		if (m_pInventory)
+		{
+			CActor* A = smart_cast<CActor*>(H_Parent());
+			if (A)
+			{
+				int	AC = GetSuitableAmmoTotal();
+				A->callback(GameObject::eWeaponNoAmmoAvailable)(lua_game_object(), AC);
+			}
+		}
 		TriStateReload();
 	}else
 		inherited::Reload();
