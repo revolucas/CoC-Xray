@@ -431,6 +431,7 @@ class_<CScriptGameObject> &script_register_game_object2(class_<CScriptGameObject
 		.def("cast_Torch", &CScriptGameObject::cast_Torch)
 		.def("cast_WeaponMagazinedWGrenade", &CScriptGameObject::cast_WeaponMagazinedWGrenade)
 		.def("cast_InventoryBox", &CScriptGameObject::cast_InventoryBox)
+		.def("bones_protection_sect", &CScriptGameObject::bones_protection_sect)
 		//Alundaio: END
         //AVO: additional functions
 		.def("is_on_belt", &CScriptGameObject::IsOnBelt)

@@ -22,8 +22,11 @@
 #	include "patrol_path.h"
 #endif
 
-CPatrolPoint::CPatrolPoint									(const CPatrolPath *path)
+CPatrolPoint::CPatrolPoint(const CPatrolPath *path) : m_flags(0)
 {
+	m_position = { 0.f, 0.f, 0.f };
+	m_level_vertex_id = u32(-1);
+	m_name = "";
 #ifdef DEBUG
 	m_path				= path;
 	m_initialized		= false;

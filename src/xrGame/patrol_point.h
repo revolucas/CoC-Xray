@@ -21,7 +21,7 @@ class CPatrolPoint : public IPureSerializeObject<IReader,IWriter> {
 protected:
 	shared_str							m_name;
 	Fvector								m_position;
-	u32									m_flags = 0x0;
+	u32									m_flags;
 	u32									m_level_vertex_id;
 	GameGraph::_GRAPH_ID				m_game_vertex_id;
 

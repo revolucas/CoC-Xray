@@ -903,6 +903,7 @@ public:
 
 			//CAI_Stalker
 			void				ResetBoneProtections(LPCSTR imm_sect, LPCSTR bone_sect);
+			LPCSTR				bones_protection_sect();
 			//Anything with PPhysicShell (ie. car, actor, stalker, monster, heli)
 			void				ForceSetPosition(Fvector pos, bool bActivate = false);
 

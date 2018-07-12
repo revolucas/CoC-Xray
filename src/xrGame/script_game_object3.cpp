@@ -1524,5 +1524,18 @@ void CScriptGameObject::RemoveDanger(const CDangerObject& dobject)
 
 	stalker->memory().danger().remove(dobject);
 }
+
+LPCSTR CScriptGameObject::bones_protection_sect()
+{
+	IKinematics* pKinematics = smart_cast<IKinematics*>(object().Visual());
+	if (!pKinematics)
+		return "";
+
+	CInifile* ini = pKinematics->LL_UserData();
+	if (ini)
+		return ini->r_string("bone_protection", "bones_protection_sect");
+
+	return "";
+}
 #endif
 //-Alundaio
