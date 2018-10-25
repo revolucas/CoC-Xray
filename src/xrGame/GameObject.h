@@ -317,6 +317,8 @@ public:
 	}
 
 	virtual void			on_matrix_change	(const Fmatrix &previous);
+
+	void					FootStepCallback(float power,bool b_play,bool b_on_ground,bool b_hud_view);
 };
 
 #endif // !defined(AFX_GAMEOBJECT_H__3DA72D03_C759_4688_AEBB_89FA812AA873__INCLUDED_)

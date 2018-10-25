@@ -971,8 +971,15 @@ bool CWeapon::Action(u16 cmd, u32 flags)
     {
         //если оружие чем-то занято, то ничего не делать
         {
+			CActor *pA = smart_cast<CActor *>(H_Parent());
+			if (pA && !pA->CanUseWeapon())
+				return false;
+
+			if (m_flags.test(FWeaponDisabled))
+				return false;
+
             if (IsPending())
-                return				false;
+                return false;
 
             if (flags&CMD_START)
                 FireStart();

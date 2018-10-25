@@ -89,6 +89,7 @@ namespace GameObject
 		eAttachVehicle,
 		eDetachVehicle,
 		eUseVehicle,
+		eOnFootStep,
 #endif
         //-AVO
 

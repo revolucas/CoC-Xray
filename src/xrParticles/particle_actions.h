@@ -13,7 +13,7 @@ namespace PAPI{
 		};
 		Flags32			m_Flags;
 		PActionEnum		type;	// Type field
-		ParticleAction	(){m_Flags.zero();}
+		ParticleAction() : type(action_enum_force_dword){ m_Flags.zero(); }
         
 		virtual void 	Execute		(ParticleEffect *pe, const float dt, float& m_max)	= 0;
 		virtual void 	Transform	(const Fmatrix& m)				= 0;
@@ -31,12 +31,8 @@ namespace PAPI{
 		IC void			clear			()
         {
 			R_ASSERT(!m_bLocked);
-			while (!actions.empty())
-			{
-				ParticleAction* pa = actions.back();
-				actions.pop_back();
-				xr_delete(pa);
-			}
+			for (auto& it : actions)
+				xr_delete(it);
 			actions.clear();
 		}
 		IC void			append			(ParticleAction* pa)	{R_ASSERT(!m_bLocked);actions.push_back(pa);	}

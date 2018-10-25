@@ -797,7 +797,11 @@ public:
 	void	SetNightVisionAllowed(bool bAllow) { m_bNightVisionAllow = bAllow; }
 	CNightVisionEffector* GetNightVision() { return m_night_vision; }
 	void RepackAmmo();
+	
+	bool	CanUseWeapon() { return m_bCanUseWeapon; }
+	void	CanUseWeapon(bool val) { m_bCanUseWeapon = val; }
 protected:
+	bool					m_bCanUseWeapon;
 	bool					m_bNightVisionOn;
 	bool					m_bNightVisionAllow;
 

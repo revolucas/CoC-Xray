@@ -128,6 +128,7 @@ void CScriptGameObject::script_register(lua_State *L)
 				value("item_to_belt", int(GameObject::eItemToBelt)),
 				value("item_to_slot", int(GameObject::eItemToSlot)),
 				value("item_to_ruck", int(GameObject::eItemToRuck)),
+				value("on_foot_step", int(GameObject::eOnFootStep)),
 #endif
 				//-AVO
                 

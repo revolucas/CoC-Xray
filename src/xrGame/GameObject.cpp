@@ -1184,3 +1184,9 @@ void CGameObject::set_nonscript_usable(bool usable)
 {
 	m_bNonscriptUsable = usable;
 }
+
+//because don't want to use pch_script.h in step_manager.cpp
+void CGameObject::FootStepCallback(float power, bool b_play, bool b_on_ground, bool b_hud_view)
+{
+	this->callback(GameObject::eOnFootStep)(this->lua_game_object(), power, b_play, b_on_ground, b_hud_view);
+}
