@@ -972,11 +972,11 @@ bool CWeapon::Action(u16 cmd, u32 flags)
         //если оружие чем-то занято, то ничего не делать
         {
 			CActor *pA = smart_cast<CActor *>(H_Parent());
-			if (pA && !pA->CanUseWeapon())
-				return false;
-
 			if (m_flags.test(FWeaponDisabled))
-				return false;
+			{
+				FireEnd();
+				return true;
+			}
 
             if (IsPending())
                 return false;

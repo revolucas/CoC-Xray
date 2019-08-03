@@ -54,6 +54,7 @@ CInventoryItem::CInventoryItem()
 	m_can_trade = TRUE;
 	m_flags.set(FCanTrade, m_can_trade);
 	m_flags.set(FUsingCondition, FALSE);
+	m_flags.set(FWeaponDisabled, FALSE);
 	m_fCondition = 1.0f;
 
 	m_name = m_nameShort = NULL;
